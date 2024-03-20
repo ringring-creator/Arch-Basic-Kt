@@ -1,6 +1,6 @@
 package com.ring.ring
 
-import com.ring.ring.plugins.*
+import com.ring.ring.router.configureRouting
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
