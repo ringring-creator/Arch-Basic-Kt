@@ -2,17 +2,17 @@ package com.ring.ring.usecase.user
 
 import com.ring.ring.data.UserRepository
 import com.ring.ring.data.db.User
+import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
 
 class CreateUser(
-    private val repository: UserRepository = UserRepository(),
+    private val repository: UserRepository = DataModules.userRepository,
 ) : UseCase<CreateUser.Req, CreateUser.Res>() {
     override suspend fun execute(req: Req): Res {
         val user = req.toUser()
         repository.save(user = user)
         return Res()
     }
-
 
     data class Req(
         val email: String,
