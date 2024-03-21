@@ -33,7 +33,7 @@ class Login(
         val session: Session?
     ) : UseCase.Res {
         data class Session(
-            val userId: String,
+            val userId: Long,
             val credential: String,
         )
     }

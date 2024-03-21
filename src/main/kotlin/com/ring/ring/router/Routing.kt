@@ -1,5 +1,6 @@
 package com.ring.ring.router
 
+import com.ring.ring.router.user.apiTodoRouting
 import com.ring.ring.router.user.apiUserRouting
 import com.ring.ring.router.user.todoViewRouting
 import com.ring.ring.router.user.userViewRouting
@@ -10,6 +11,7 @@ fun Application.configureRouting() {
     routing {
         apiUserRouting()
         userViewRouting()
+        apiTodoRouting()
         todoViewRouting()
     }
 }

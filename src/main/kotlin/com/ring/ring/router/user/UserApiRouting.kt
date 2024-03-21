@@ -49,11 +49,9 @@ fun Route.apiUserRouting() {
 }
 
 private fun convertLoginReq(parameters: Parameters): Login.Req {
-    val email = parameters.getOrFail("email")
-    val password = parameters.getOrFail("password")
     return Login.Req(
-        email = email,
-        password = password,
+        email = parameters.getOrFail("email"),
+        password = parameters.getOrFail("password"),
     )
 }
 

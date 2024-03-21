@@ -11,7 +11,7 @@ data class Session(
     val credential: String,
 ) {
     fun toLoginSession(): Login.Res.Session = Login.Res.Session(
-        userId = userId.toString(),
+        userId = userId,
         credential = credential,
     )
 }
