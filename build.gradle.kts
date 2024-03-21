@@ -1,7 +1,7 @@
-
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
+val sqldelight_version: String by project
 
 plugins {
     kotlin("jvm") version "1.9.23"
@@ -26,8 +26,10 @@ repositories {
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("app.cash.sqldelight:sqlite-driver:$sqldelight_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
@@ -35,7 +37,7 @@ dependencies {
 sqldelight {
     databases {
         create("LocalDb") {
-            packageName.set("./")
+            packageName.set("data.local.db")
             srcDirs("src/main/kotlin/com/ring/ring/")
         }
     }

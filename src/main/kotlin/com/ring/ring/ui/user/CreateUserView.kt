@@ -2,16 +2,16 @@ package com.ring.ring.ui.user
 
 import kotlinx.html.*
 
-fun HTML.loginView() {
+fun HTML.signUpView() {
     head {
         title {
             buildString {
-                append("Login")
+                append("Sign Up")
             }
         }
     }
     body {
-        form(action = "api/login", encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {
+        form(action = "api", encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {
             p {
                 +"Email:"
                 textInput(name = "email")
@@ -21,13 +21,7 @@ fun HTML.loginView() {
                 passwordInput(name = "password")
             }
             p {
-                submitInput { value = "Login" }
-            }
-        }
-        p {
-            +"Don't have an account? "
-            a(href = "signup") {
-                + "Sign up"
+                submitInput { value = "Create" }
             }
         }
     }

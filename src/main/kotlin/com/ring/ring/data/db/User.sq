@@ -1,0 +1,26 @@
+
+CREATE TABLE UserTable(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM UserTable;
+
+selectById:
+SELECT * FROM UserTable WHERE id = :id;
+
+insert:
+INSERT OR IGNORE INTO UserTable(email,password)
+VALUES(?,?);
+
+update:
+UPDATE UserTable
+SET email = :email,
+    password = :password
+WHERE id = :id;
+
+delete:
+DELETE FROM UserTable
+WHERE id = :id;
