@@ -1,4 +1,3 @@
-
 CREATE TABLE UserTable(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL,
@@ -10,6 +9,10 @@ SELECT * FROM UserTable;
 
 selectById:
 SELECT * FROM UserTable WHERE id = :id;
+
+selectIdByEmailAndPassword:
+SELECT id FROM UserTable
+WHERE email = :email AND password = :password;
 
 insert:
 INSERT OR IGNORE INTO UserTable(email,password)

@@ -1,21 +1,21 @@
 package com.ring.ring.data.db
 
+import com.ring.ring.data.User
 import com.ring.ring.di.DataModules
 import data.db.UserQueries
 import data.db.UserTable
 
-data class User(
-    val id: Long?,
-    val email: String,
-    val password: String,
-)
-
 class UserDataSource(
     private val queries: UserQueries = DataModules.db.userQueries
 ) {
-    fun get(id: Long): User = queries.selectById(id).executeAsOne().let {
-        convert(it)
-    }
+    fun get(id: Long): User = queries
+        .selectById(id)
+        .executeAsOne()
+        .let { convert(it) }
+
+    fun loadId(user: User): Long? = queries
+        .selectIdByEmailAndPassword(user.email, user.password)
+        .executeAsOneOrNull()
 
     fun upsert(user: User) {
         if (user.id == null) {
@@ -27,12 +27,10 @@ class UserDataSource(
 
     fun delete(id: Long) = queries.delete(id)
 
-    private fun insert(user: User) {
-        queries.insert(
-            email = user.email,
-            password = user.password,
-        )
-    }
+    private fun insert(user: User) = queries.insert(
+        email = user.email,
+        password = user.password,
+    )
 
     private fun update(user: User) {
         val id = user.id ?: return

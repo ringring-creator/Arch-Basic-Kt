@@ -28,6 +28,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
+    implementation("io.ktor:ktor-server-sessions:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("app.cash.sqldelight:sqlite-driver:$sqldelight_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
