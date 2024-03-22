@@ -1,5 +1,6 @@
 package com.ring.ring.ui.todo
 
+import com.ring.ring.ui.bootstrap
 import com.ring.ring.usecase.todo.GetTodo
 import kotlinx.html.*
 
@@ -10,6 +11,7 @@ fun HTML.todoView(res: GetTodo.Res) {
                 append("Todo")
             }
         }
+        bootstrap()
     }
     body {
         p {

@@ -1,5 +1,6 @@
 package com.ring.ring.ui.todo
 
+import com.ring.ring.ui.bootstrap
 import kotlinx.html.*
 
 fun HTML.createTodoView(userId: Long) {
@@ -9,6 +10,7 @@ fun HTML.createTodoView(userId: Long) {
                 append("Create Todo")
             }
         }
+        bootstrap()
     }
     body {
         form(

@@ -1,5 +1,6 @@
 package com.ring.ring.ui.user
 
+import com.ring.ring.ui.bootstrap
 import kotlinx.html.*
 
 fun HTML.signUpView() {
@@ -9,6 +10,7 @@ fun HTML.signUpView() {
                 append("Sign Up")
             }
         }
+        bootstrap()
     }
     body {
         form(action = "api", encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {
