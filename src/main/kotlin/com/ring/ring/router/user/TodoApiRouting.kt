@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kotlinx.datetime.*
 
-fun Route.apiTodoRouting() {
+fun Route.todoApiRouting() {
     route("/todo/api") {
         post {
             val parameters = call.receiveParameters()

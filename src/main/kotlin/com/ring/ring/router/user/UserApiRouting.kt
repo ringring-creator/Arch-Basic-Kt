@@ -12,7 +12,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.util.*
 
-fun Route.apiUserRouting() {
+fun Route.userApiRouting() {
     route("/user/api") {
         get("{id}") {
 
