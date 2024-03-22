@@ -12,20 +12,20 @@ import io.ktor.server.sessions.*
 
 fun Route.todoViewRouting() {
     route("/todo") {
-        get {
-            val id = call.parameters["id"]?.toLong() ?: 0L
-            val getTodo = GetTodo()
-            val todo = getTodo(req = convertGetTodoReq(id = id))
-            call.respondHtml(HttpStatusCode.OK) {
-                todoView(todo)
-            }
-        }
         get("list") {
             val session = call.sessions.get<Login.Res.Session>()
             val getTodoList = GetTodoList()
             val res = getTodoList(GetTodoList.Req(session!!.userId))
             call.respondHtml(HttpStatusCode.OK) {
                 todoListView(res)
+            }
+        }
+        get {
+            val id = call.parameters["id"]?.toLong() ?: 0L
+            val getTodo = GetTodo()
+            val todo = getTodo(req = convertGetTodoReq(id = id))
+            call.respondHtml(HttpStatusCode.OK) {
+                todoView(todo)
             }
         }
         get("create") {

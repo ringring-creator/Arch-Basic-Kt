@@ -1,7 +1,7 @@
 package com.ring.ring.router.user
 
-import com.ring.ring.ui.user.signUpView
 import com.ring.ring.ui.user.loginView
+import com.ring.ring.ui.user.signUpView
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
@@ -13,10 +13,13 @@ fun Route.userViewRouting() {
         get("signup") {
             call.respondHtml(HttpStatusCode.OK) { signUpView() }
         }
+        get("mypage") {
+            call.respondHtml(HttpStatusCode.OK) { }
+        }
         get("delete") {
 
         }
-        get("update") {
+        get("edit") {
 
         }
         get("login") {
