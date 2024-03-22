@@ -1,9 +1,6 @@
 package com.ring.ring.router.user
 
-import com.ring.ring.ui.todo.createTodoView
-import com.ring.ring.ui.todo.editTodoView
-import com.ring.ring.ui.todo.todoListView
-import com.ring.ring.ui.todo.todoView
+import com.ring.ring.ui.todo.*
 import com.ring.ring.usecase.todo.GetTodo
 import com.ring.ring.usecase.todo.GetTodoList
 import com.ring.ring.usecase.user.Login
@@ -47,8 +44,10 @@ fun Route.todoViewRouting() {
         }
         get("delete") {
             val id = call.parameters["id"]?.toLong() ?: 0L
+            val getTodo = GetTodo()
+            val todo = getTodo(req = convertGetTodoReq(id = id))
             call.respondHtml(HttpStatusCode.OK) {
-//                editTodoView()
+                deleteTodoView(todo)
             }
         }
     }
