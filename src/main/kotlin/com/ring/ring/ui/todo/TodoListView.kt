@@ -13,7 +13,7 @@ fun HTML.todoListView(res: GetTodoList.Res) {
     }
     body {
         res.todoList.forEach { todo ->
-            a(href = "/todo/edit?id=${todo.id}", classes = "card") {
+            a(href = "/todo?id=${todo.id}", classes = "card") {
                 div {
                     input(type = InputType.checkBox) {
                         checked = todo.done
