@@ -13,7 +13,7 @@ fun HTML.editTodoView(res: GetTodo.Res) {
     }
     body {
         form(
-            action = "api",
+            action = "api/edit",
             encType = FormEncType.applicationXWwwFormUrlEncoded,
             method = FormMethod.post
         ) {
@@ -49,9 +49,12 @@ fun HTML.editTodoView(res: GetTodo.Res) {
                 hiddenInput(name = "userId") {
                     value = res.todo.userId
                 }
+                hiddenInput(name = "id") {
+                    value = res.todo.id
+                }
             }
             p {
-                submitInput { value = "Create" }
+                submitInput { value = "Edit" }
             }
         }
     }

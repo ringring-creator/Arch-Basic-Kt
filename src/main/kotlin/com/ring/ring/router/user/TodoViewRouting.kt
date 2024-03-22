@@ -36,9 +36,6 @@ fun Route.todoViewRouting() {
                 editTodoView(todo)
             }
         }
-        get("update") {
-
-        }
     }
 }
 
