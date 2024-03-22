@@ -55,7 +55,12 @@ object DataModules {
 
     private fun createDeadlineAdapter() = DeadlineAdapter()
 
-    private fun createSqliteDriver(): SqlDriver {
+    private fun createSqliteDriver(): SqlDriver = JdbcSqliteDriver(
+        url = "jdbc:sqlite:db/database.db",
+        schema = LocalDb.Schema,
+    )
+
+    private fun createInMemorySqliteDriver(): SqlDriver {
         val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
         LocalDb.Schema.create(driver)
         return driver
