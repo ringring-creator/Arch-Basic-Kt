@@ -19,7 +19,7 @@ data class Session(
 class SessionRepository(
     private val dataSource: SessionDataSource = DataModules.sessionDataSource
 ) {
-    fun save(userId: Long): Session? {
+    fun save(userId: Long): Session {
         val session = Session(
             userId = userId,
             credential = generateSecureRandomString(),
@@ -27,6 +27,8 @@ class SessionRepository(
         dataSource.insert(session)
         return session
     }
+
+    fun delete(session: Session) = dataSource.delete(session)
 
     private fun generateSecureRandomString(): String {
         val secureRandom = SecureRandom()

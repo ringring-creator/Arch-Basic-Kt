@@ -21,19 +21,16 @@ fun HTML.mypageView(res: GetUser.Res) {
             }
         }
         form(
-            action = "user/logout",
+            action = "logout",
             encType = FormEncType.applicationXWwwFormUrlEncoded,
             method = FormMethod.get
         ) {
-            hiddenInput(name = "id") {
-                value = res.user.id
-            }
             p {
                 submitInput { value = "Logout" }
             }
         }
         form(
-            action = "user/edit",
+            action = "edit",
             encType = FormEncType.applicationXWwwFormUrlEncoded,
             method = FormMethod.get
         ) {
@@ -45,7 +42,7 @@ fun HTML.mypageView(res: GetUser.Res) {
             }
         }
         form(
-            action = "todo/delete",
+            action = "delete",
             encType = FormEncType.applicationXWwwFormUrlEncoded,
             method = FormMethod.get
         ) {

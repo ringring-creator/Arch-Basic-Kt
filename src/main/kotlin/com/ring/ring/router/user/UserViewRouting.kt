@@ -1,6 +1,7 @@
 package com.ring.ring.router.user
 
 import com.ring.ring.ui.user.loginView
+import com.ring.ring.ui.user.logoutView
 import com.ring.ring.ui.user.mypageView
 import com.ring.ring.ui.user.signUpView
 import com.ring.ring.usecase.user.GetUser
@@ -32,7 +33,6 @@ fun Route.userViewRouting() {
             }
         }
         get("delete") {
-
         }
         get("edit") {
 
@@ -41,7 +41,7 @@ fun Route.userViewRouting() {
             call.respondHtml(HttpStatusCode.OK) { loginView() }
         }
         get("logout") {
-
+            call.respondHtml(HttpStatusCode.OK) { logoutView() }
         }
     }
 }

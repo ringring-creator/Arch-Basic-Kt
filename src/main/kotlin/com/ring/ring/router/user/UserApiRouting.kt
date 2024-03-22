@@ -3,6 +3,7 @@ package com.ring.ring.router.user
 import com.ring.ring.ui.user.loginView
 import com.ring.ring.usecase.user.CreateUser
 import com.ring.ring.usecase.user.Login
+import com.ring.ring.usecase.user.Logout
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
@@ -27,8 +28,7 @@ fun Route.userApiRouting() {
         put {
 
         }
-        delete("{id}") {
-
+        post("delete") {
         }
         post("login") {
             val parameters = call.receiveParameters()
@@ -43,7 +43,12 @@ fun Route.userApiRouting() {
             }
         }
         post("logout") {
-
+            val session = call.sessions.get<Login.Res.Session>()
+            session?.let {
+                val logout = Logout()
+                logout(Logout.Req(it.userId, it.credential))
+            }
+            call.respondRedirect("/user/login")
         }
     }
 }
