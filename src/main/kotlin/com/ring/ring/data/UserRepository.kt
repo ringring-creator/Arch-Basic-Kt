@@ -30,4 +30,8 @@ class UserRepository(
     suspend fun save(user: User) = withContext(Dispatchers.IO) {
         dataSource.upsert(user = user)
     }
+
+    suspend fun delete(id: Long) = withContext(Dispatchers.IO) {
+        dataSource.delete(id = id)
+    }
 }

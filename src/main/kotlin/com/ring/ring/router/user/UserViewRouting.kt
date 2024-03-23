@@ -29,7 +29,13 @@ fun Route.userViewRouting() {
                 mypageView(res)
             }
         }
-        get("delete") {
+        get("withdrawal") {
+            val session = call.sessions.get<Login.Res.Session>()
+            val getUser = GetUser()
+            val res = getUser(GetUser.Req(session!!.userId))
+            call.respondHtml(HttpStatusCode.OK) {
+                withdrawalUserView(res)
+            }
         }
         get("edit") {
             val session = call.sessions.get<Login.Res.Session>()

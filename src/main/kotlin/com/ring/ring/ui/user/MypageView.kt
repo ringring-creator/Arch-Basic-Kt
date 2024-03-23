@@ -39,7 +39,7 @@ fun HTML.mypageView(res: GetUser.Res) {
             }
         }
         form(
-            action = "delete",
+            action = "withdrawal",
             encType = FormEncType.applicationXWwwFormUrlEncoded,
             method = FormMethod.get
         ) {

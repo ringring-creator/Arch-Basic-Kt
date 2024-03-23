@@ -1,10 +1,7 @@
 package com.ring.ring.router.user
 
 import com.ring.ring.ui.user.loginView
-import com.ring.ring.usecase.user.CreateUser
-import com.ring.ring.usecase.user.EditUser
-import com.ring.ring.usecase.user.Login
-import com.ring.ring.usecase.user.Logout
+import com.ring.ring.usecase.user.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
@@ -31,6 +28,11 @@ fun Route.userApiRouting() {
             call.respondRedirect("/user/mypage")
         }
         post("delete") {
+            val parameters = call.receiveParameters()
+            val req = convertWithdrawalUserReq(parameters)
+            val withdrawalUser = WithdrawalUser()
+            withdrawalUser(req)
+            call.respondRedirect("/user/login")
         }
         post("login") {
             val parameters = call.receiveParameters()
@@ -55,17 +57,6 @@ fun Route.userApiRouting() {
     }
 }
 
-private fun convertEditUserReq(parameters: Parameters): EditUser.Req = EditUser.Req(
-    id = parameters.getOrFail("id").toLong(),
-    email = parameters.getOrFail("email"),
-    password = parameters.getOrFail("password"),
-)
-
-private fun convertLoginReq(parameters: Parameters): Login.Req = Login.Req(
-    email = parameters.getOrFail("email"),
-    password = parameters.getOrFail("password"),
-)
-
 private fun convertCreateUserReq(parameters: Parameters): CreateUser.Req {
     val email = parameters.getOrFail("email")
     val password = parameters.getOrFail("password")
@@ -74,3 +65,17 @@ private fun convertCreateUserReq(parameters: Parameters): CreateUser.Req {
         password = password,
     )
 }
+
+private fun convertEditUserReq(parameters: Parameters): EditUser.Req = EditUser.Req(
+    id = parameters.getOrFail("id").toLong(),
+    email = parameters.getOrFail("email"),
+    password = parameters.getOrFail("password"),
+)
+
+private fun convertWithdrawalUserReq(parameters: Parameters): WithdrawalUser.Req =
+    WithdrawalUser.Req(id = parameters.getOrFail("id").toLong())
+
+private fun convertLoginReq(parameters: Parameters): Login.Req = Login.Req(
+    email = parameters.getOrFail("email"),
+    password = parameters.getOrFail("password"),
+)
