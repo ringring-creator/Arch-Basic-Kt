@@ -2,6 +2,7 @@ package com.ring.ring.router.user
 
 import com.ring.ring.ui.user.loginView
 import com.ring.ring.usecase.user.CreateUser
+import com.ring.ring.usecase.user.EditUser
 import com.ring.ring.usecase.user.Login
 import com.ring.ring.usecase.user.Logout
 import io.ktor.http.*
@@ -15,9 +16,6 @@ import io.ktor.server.util.*
 
 fun Route.userApiRouting() {
     route("/user/api") {
-        get("{id}") {
-
-        }
         post {
             val parameters = call.receiveParameters()
             val req = convertCreateUserReq(parameters)
@@ -25,8 +23,12 @@ fun Route.userApiRouting() {
             createUser(req)
             call.respondRedirect("/user/login")
         }
-        put {
-
+        post("edit") {
+            val parameters = call.receiveParameters()
+            val req = convertEditUserReq(parameters)
+            val editUser = EditUser()
+            editUser(req)
+            call.respondRedirect("/user/mypage")
         }
         post("delete") {
         }
@@ -53,12 +55,16 @@ fun Route.userApiRouting() {
     }
 }
 
-private fun convertLoginReq(parameters: Parameters): Login.Req {
-    return Login.Req(
-        email = parameters.getOrFail("email"),
-        password = parameters.getOrFail("password"),
-    )
-}
+private fun convertEditUserReq(parameters: Parameters): EditUser.Req = EditUser.Req(
+    id = parameters.getOrFail("id").toLong(),
+    email = parameters.getOrFail("email"),
+    password = parameters.getOrFail("password"),
+)
+
+private fun convertLoginReq(parameters: Parameters): Login.Req = Login.Req(
+    email = parameters.getOrFail("email"),
+    password = parameters.getOrFail("password"),
+)
 
 private fun convertCreateUserReq(parameters: Parameters): CreateUser.Req {
     val email = parameters.getOrFail("email")

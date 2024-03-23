@@ -17,10 +17,10 @@ fun HTML.createTodoView(userId: Long) {
             action = "api",
             encType = FormEncType.applicationXWwwFormUrlEncoded,
             method = FormMethod.post
-        ) { // メソッドをPOSTに変更
+        ) {
             p {
                 +"Title: "
-                textInput(name = "title") { required = true } // 必須フィールド
+                textInput(name = "title") { required = true }
             }
             p {
                 +"Description: "
@@ -32,14 +32,14 @@ fun HTML.createTodoView(userId: Long) {
             }
             p {
                 +"Deadline: "
-                // dateInputはKotlinx.htmlにはないため、textInputを使用してtypeをdateに設定
+
                 textInput(name = "deadline") {
                     attributes["type"] = "date"
                 }
             }
             p {
-                // userIdを隠しフィールドとして送信
-                hiddenInput(name = "userId") {
+
+            hiddenInput(name = "userId") {
                     value = userId.toString()
                 }
             }

@@ -1,9 +1,6 @@
 package com.ring.ring.router.user
 
-import com.ring.ring.ui.user.loginView
-import com.ring.ring.ui.user.logoutView
-import com.ring.ring.ui.user.mypageView
-import com.ring.ring.ui.user.signUpView
+import com.ring.ring.ui.user.*
 import com.ring.ring.usecase.user.GetUser
 import com.ring.ring.usecase.user.Login
 import io.ktor.http.*
@@ -35,7 +32,12 @@ fun Route.userViewRouting() {
         get("delete") {
         }
         get("edit") {
-
+            val session = call.sessions.get<Login.Res.Session>()
+            val getUser = GetUser()
+            val res = getUser(GetUser.Req(session!!.userId))
+            call.respondHtml(HttpStatusCode.OK) {
+                editUserView(res)
+            }
         }
         get("login") {
             call.respondHtml(HttpStatusCode.OK) { loginView() }

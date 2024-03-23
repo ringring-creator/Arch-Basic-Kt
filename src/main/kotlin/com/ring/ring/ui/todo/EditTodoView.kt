@@ -40,14 +40,12 @@ fun HTML.editTodoView(res: GetTodo.Res) {
             }
             p {
                 +"Deadline: "
-                // dateInputはKotlinx.htmlにはないため、textInputを使用してtypeをdateに設定
                 textInput(name = "deadline") {
                     attributes["type"] = "date"
                     value = res.todo.deadline
                 }
             }
             p {
-                // userIdを隠しフィールドとして送信
                 hiddenInput(name = "userId") {
                     value = res.todo.userId
                 }

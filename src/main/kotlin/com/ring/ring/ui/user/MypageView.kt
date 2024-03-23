@@ -8,7 +8,7 @@ fun HTML.mypageView(res: GetUser.Res) {
     head {
         title {
             buildString {
-                append("Todo")
+                append("My Page")
             }
         }
         bootstrap()
@@ -34,9 +34,6 @@ fun HTML.mypageView(res: GetUser.Res) {
             encType = FormEncType.applicationXWwwFormUrlEncoded,
             method = FormMethod.get
         ) {
-            hiddenInput(name = "id") {
-                value = res.user.id
-            }
             p {
                 submitInput { value = "Edit" }
             }
