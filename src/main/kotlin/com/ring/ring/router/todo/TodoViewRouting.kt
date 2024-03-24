@@ -1,56 +1,17 @@
 package com.ring.ring.router.todo
 
-import com.ring.ring.ui.todo.*
-import com.ring.ring.usecase.todo.GetTodo
-import com.ring.ring.usecase.todo.GetTodoList
-import com.ring.ring.usecase.user.Login
-import io.ktor.http.*
+import com.ring.ring.controller.todo.TodoController
 import io.ktor.server.application.*
-import io.ktor.server.html.*
 import io.ktor.server.routing.*
-import io.ktor.server.sessions.*
 
-fun Route.todoViewRouting() {
+fun Route.todoViewRouting(
+    controller: TodoController = TodoController()
+) {
     route("/todo") {
-        get("list") {
-            val session = call.sessions.get<Login.Res.Session>()
-            val getTodoList = GetTodoList()
-            val res = getTodoList(GetTodoList.Req(session!!.userId))
-            call.respondHtml(HttpStatusCode.OK) {
-                todoListView(res)
-            }
-        }
-        get {
-            val id = call.parameters["id"]?.toLong() ?: 0L
-            val getTodo = GetTodo()
-            val todo = getTodo(req = convertGetTodoReq(id = id))
-            call.respondHtml(HttpStatusCode.OK) {
-                todoView(todo)
-            }
-        }
-        get("create") {
-            val session = call.sessions.get<Login.Res.Session>()
-            call.respondHtml(HttpStatusCode.OK) {
-                createTodoView(session!!.userId)
-            }
-        }
-        get("edit") {
-            val id = call.parameters["id"]?.toLong() ?: 0L
-            val getTodo = GetTodo()
-            val todo = getTodo(req = convertGetTodoReq(id = id))
-            call.respondHtml(HttpStatusCode.OK) {
-                editTodoView(todo)
-            }
-        }
-        get("delete") {
-            val id = call.parameters["id"]?.toLong() ?: 0L
-            val getTodo = GetTodo()
-            val todo = getTodo(req = convertGetTodoReq(id = id))
-            call.respondHtml(HttpStatusCode.OK) {
-                deleteTodoView(todo)
-            }
-        }
+        get("list") { controller.list(call) }
+        get { controller.get(call) }
+        get("create") { controller.create(call) }
+        get("edit") { controller.edit(call) }
+        get("delete") { controller.delete(call) }
     }
 }
-
-private fun convertGetTodoReq(id: Long): GetTodo.Req = GetTodo.Req(id = id)

@@ -30,7 +30,7 @@ fun HTML.deleteTodoView(res: GetTodo.Res) {
             }
         }
         form(
-            action = "todo/list",
+            action = "list",
             encType = FormEncType.applicationXWwwFormUrlEncoded,
             method = FormMethod.get
         ) {

@@ -32,7 +32,7 @@ fun HTML.withdrawalUserView(res: GetUser.Res) {
             }
         }
         form(
-            action = "user/mypage",
+            action = "mypage",
             encType = FormEncType.applicationXWwwFormUrlEncoded,
             method = FormMethod.get
         ) {
