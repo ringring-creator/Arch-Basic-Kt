@@ -1,4 +1,4 @@
-package com.ring.ring.router.user
+package com.ring.ring.router.todo
 
 import com.ring.ring.ui.todo.*
 import com.ring.ring.usecase.todo.GetTodo
