@@ -3,6 +3,7 @@ package com.ring.ring.usecase.todo
 import com.ring.ring.data.Todo
 import com.ring.ring.data.TodoRepository
 import com.ring.ring.di.DataModules
+import com.ring.ring.exception.BadRequestException
 import com.ring.ring.usecase.UseCase
 import kotlinx.datetime.LocalDate
 
@@ -25,7 +26,7 @@ class EditTodo(
         val userId: Long,
     ) : UseCase.Req {
         fun toTodo(): Todo = Todo(
-            id = id.toLong(),
+            id = id.toLongOrNull() ?: throw BadRequestException(message = "Id is invalid"),
             title = title,
             description = description,
             done = done,

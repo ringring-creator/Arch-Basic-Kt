@@ -1,6 +1,7 @@
 package com.ring.ring.controller.user
 
 
+import com.ring.ring.exception.NotLoggedInException
 import com.ring.ring.ui.user.*
 import com.ring.ring.usecase.user.GetUser
 import com.ring.ring.usecase.user.Login
@@ -18,24 +19,27 @@ class UserController(
     }
 
     suspend fun mypage(call: ApplicationCall) {
-        val session = call.sessions.get<Login.Res.Session>()
-        val res = getUser(GetUser.Req(session!!.userId))
+        val userId = call.sessions.get<Login.Res.Session>()?.userId
+            ?: throw NotLoggedInException(message = "User not logged in.")
+        val res = getUser(GetUser.Req(userId))
         call.respondHtml(HttpStatusCode.OK) {
             mypageView(res)
         }
     }
 
     suspend fun withdrawal(call: ApplicationCall) {
-        val session = call.sessions.get<Login.Res.Session>()
-        val res = getUser(GetUser.Req(session!!.userId))
+        val userId = call.sessions.get<Login.Res.Session>()?.userId
+            ?: throw NotLoggedInException(message = "User not logged in.")
+        val res = getUser(GetUser.Req(userId))
         call.respondHtml(HttpStatusCode.OK) {
             withdrawalUserView(res)
         }
     }
 
     suspend fun edit(call: ApplicationCall) {
-        val session = call.sessions.get<Login.Res.Session>()
-        val res = getUser(GetUser.Req(session!!.userId))
+        val userId = call.sessions.get<Login.Res.Session>()?.userId
+            ?: throw NotLoggedInException(message = "User not logged in.")
+        val res = getUser(GetUser.Req(userId))
         call.respondHtml(HttpStatusCode.OK) {
             editUserView(res)
         }

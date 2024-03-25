@@ -1,5 +1,7 @@
 package com.ring.ring.controller.todo
 
+import com.ring.ring.exception.BadRequestException
+import com.ring.ring.exception.NotLoggedInException
 import com.ring.ring.usecase.todo.CreateTodo
 import com.ring.ring.usecase.todo.DeleteTodo
 import com.ring.ring.usecase.todo.EditTodo
@@ -7,7 +9,6 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import io.ktor.server.util.*
 import kotlinx.datetime.*
 
 class TodoApiController(
@@ -38,7 +39,7 @@ class TodoApiController(
         description = parameters["description"] ?: "",
         done = parameters["done"].toBoolean(),
         deadline = parameters["deadline"]?.toLocalDate() ?: currentLocalDate(),
-        userId = parameters.getOrFail("userId").toLong(),
+        userId = parameters["userId"]?.toLong() ?: throw NotLoggedInException(message = "User not logged in."),
     )
 
     private fun convertEditTodoReq(parameters: Parameters): EditTodo.Req = EditTodo.Req(
@@ -47,11 +48,11 @@ class TodoApiController(
         description = parameters["description"] ?: "",
         done = parameters["done"].toBoolean(),
         deadline = parameters["deadline"]?.toLocalDate() ?: currentLocalDate(),
-        userId = parameters.getOrFail("userId").toLong(),
+        userId = parameters["userId"]?.toLong() ?: throw NotLoggedInException(message = "User not logged in."),
     )
 
     private fun convertDeleteTodoReq(parameters: Parameters): DeleteTodo.Req = DeleteTodo.Req(
-        id = parameters["id"] ?: "",
+        id = parameters["id"] ?: throw BadRequestException(message = "Id is not found."),
     )
 
     private fun currentLocalDate(): LocalDate = Clock.System.now()
