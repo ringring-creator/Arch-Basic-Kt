@@ -14,7 +14,7 @@ fun HTML.todoListView(res: GetTodoList.Res) {
         bootstrap()
     }
     body {
-        navbar()
+        todoNavBar()
         div(classes = "container mt-4") {
             h1(classes = "h3 mb-4 text-center") { +"Todo List" }
             res.todoList.forEach { todo ->
@@ -41,36 +41,6 @@ fun HTML.todoListView(res: GetTodoList.Res) {
                 classes = "mt-3"
             ) {
                 button(classes = "btn btn-primary", type = ButtonType.submit) { +"Create New Todo" }
-            }
-        }
-    }
-}
-
-private fun BODY.navbar() {
-    nav(classes = "navbar navbar-expand-lg navbar-dark bg-dark") {
-        div(classes = "container-fluid") {
-            a(classes = "navbar-brand") {
-                +"Sample app"
-                br
-                +" for architecture basic"
-            }
-            button(classes = "navbar-toggler", type = ButtonType.button) {
-                attributes["data-bs-toggle"] = "collapse"
-                attributes["data-bs-target"] = "#navbarNav"
-                attributes["aria-controls"] = "navbarNav"
-                attributes["aria-expanded"] = "false"
-                attributes["aria-label"] = "Toggle navigation"
-                span(classes = "navbar-toggler-icon")
-            }
-            div(classes = "collapse navbar-collapse") {
-                ul(classes = "navbar-nav me-auto") {
-                    li(classes = "nav-item") {
-                        a(classes = "nav-link active", href = "list") { +"Todo" }
-                    }
-                    li(classes = "nav-item") {
-                        a(classes = "nav-link", href = "../user/mypage") { +"My Page" }
-                    }
-                }
             }
         }
     }
