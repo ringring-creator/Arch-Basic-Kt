@@ -5,11 +5,12 @@ import com.ring.ring.exception.NotLoggedInException
 import com.ring.ring.usecase.todo.CreateTodo
 import com.ring.ring.usecase.todo.DeleteTodo
 import com.ring.ring.usecase.todo.EditTodo
+import com.ring.ring.util.DateUtil
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import kotlinx.datetime.*
+import kotlinx.datetime.toLocalDate
 
 class TodoApiController(
     private val createTodo: CreateTodo = CreateTodo(),
@@ -38,7 +39,7 @@ class TodoApiController(
         title = parameters["title"] ?: "",
         description = parameters["description"] ?: "",
         done = parameters["done"].toBoolean(),
-        deadline = parameters["deadline"]?.toLocalDate() ?: currentLocalDate(),
+        deadline = parameters["deadline"]?.toLocalDate() ?: DateUtil.currentLocalDate(),
         userId = parameters["userId"]?.toLong() ?: throw NotLoggedInException(message = "User not logged in."),
     )
 
@@ -47,7 +48,7 @@ class TodoApiController(
         title = parameters["title"] ?: "",
         description = parameters["description"] ?: "",
         done = parameters["done"].toBoolean(),
-        deadline = parameters["deadline"]?.toLocalDate() ?: currentLocalDate(),
+        deadline = parameters["deadline"]?.toLocalDate() ?: DateUtil.currentLocalDate(),
         userId = parameters["userId"]?.toLong() ?: throw NotLoggedInException(message = "User not logged in."),
     )
 
@@ -55,8 +56,4 @@ class TodoApiController(
         id = parameters["id"] ?: throw BadRequestException(message = "Id is not found."),
     )
 
-    private fun currentLocalDate(): LocalDate = Clock.System.now()
-        .toLocalDateTime(
-            TimeZone.currentSystemDefault()
-        ).date
 }

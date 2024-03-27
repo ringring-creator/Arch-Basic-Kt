@@ -1,6 +1,7 @@
 package com.ring.ring.ui.todo
 
 import com.ring.ring.ui.bootstrap
+import com.ring.ring.util.DateUtil
 import kotlinx.html.*
 
 fun HTML.createTodoView(userId: Long) {
@@ -50,6 +51,7 @@ fun HTML.createTodoView(userId: Long) {
                         label(classes = "form-label") { +"Deadline:" }
                         textInput(classes = "form-control", name = "deadline") {
                             attributes["type"] = "date"
+                            value = DateUtil.currentLocalDate().toString()
                         }
                     }
                     hiddenInput(name = "userId") {
