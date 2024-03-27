@@ -6,7 +6,7 @@ CREATE TABLE SessionTable(
 );
 
 insert:
-INSERT OR IGNORE INTO SessionTable(userId, credential)
+INSERT INTO SessionTable(userId, credential)
 VALUES(?,?);
 
 delete:

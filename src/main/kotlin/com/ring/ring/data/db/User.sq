@@ -16,7 +16,7 @@ SELECT id FROM UserTable
 WHERE email = :email AND password = :password;
 
 insert:
-INSERT OR IGNORE INTO UserTable(email,password)
+INSERT INTO UserTable(email,password)
 VALUES(?,?);
 
 update:

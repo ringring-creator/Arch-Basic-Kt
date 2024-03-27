@@ -17,7 +17,7 @@ selectById:
 SELECT * FROM TodoTable WHERE id = :id;
 
 insert:
-INSERT OR IGNORE INTO TodoTable(title, description, done, deadline,userId)
+INSERT INTO TodoTable(title, description, done, deadline,userId)
 VALUES(?,?,?,?,?);
 
 update:
