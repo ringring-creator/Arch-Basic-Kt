@@ -18,7 +18,7 @@ fun HTML.todoListView(res: GetTodoList.Res) {
         div(classes = "container mt-4") {
             h1(classes = "h3 mb-4 text-center") { +"Todo List" }
             res.todoList.forEach { todo ->
-                a(href = "/todo?id=${todo.id}", classes = "card mb-3 p-2 text-decoration-none text-dark") {
+                a(href = "/todo/get?id=${todo.id}", classes = "card mb-3 p-2 text-decoration-none text-dark") {
                     div(classes = "d-flex justify-content-between align-items-center") {
                         div {
                             input(type = InputType.checkBox, classes = "form-check-input me-2") {

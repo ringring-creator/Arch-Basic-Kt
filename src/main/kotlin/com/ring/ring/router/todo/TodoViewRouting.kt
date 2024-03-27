@@ -9,7 +9,7 @@ fun Route.todoViewRouting(
 ) {
     route("/todo") {
         get("list") { controller.list(call) }
-        get { controller.get(call) }
+        get("get") { controller.get(call) }
         get("create") { controller.create(call) }
         get("edit") { controller.edit(call) }
         get("delete") { controller.delete(call) }
