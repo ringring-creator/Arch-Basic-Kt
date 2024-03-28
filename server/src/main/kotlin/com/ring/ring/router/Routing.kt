@@ -7,9 +7,5 @@ import io.ktor.server.routing.*
 fun Application.configureRouting() {
     routing {
         userRestApiRouting()
-//        userApiRouting()
-//        userViewRouting()
-//        todoApiRouting()
-//        todoViewRouting()
     }
 }

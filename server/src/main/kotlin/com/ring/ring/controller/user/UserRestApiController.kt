@@ -18,8 +18,6 @@ class UserRestApiController(
     suspend fun signUp(call: ApplicationCall) {
         try {
             val req = call.receive<CreateUser.Req>()
-//            val parameters = call.receiveParameters()
-//            val req = convertCreateUserReq(parameters)
             createUser(req)
             call.respond(HttpStatusCode.OK)
         } catch (e: Throwable) {
