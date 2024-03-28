@@ -5,6 +5,7 @@ build/
 !**/src/test/**/build/
 db/
 .DS_Store
+kotlin-js-store/
 
 ### IntelliJ IDEA ###
 .idea
