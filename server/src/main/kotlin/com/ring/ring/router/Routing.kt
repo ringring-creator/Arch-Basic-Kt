@@ -1,17 +1,15 @@
 package com.ring.ring.router
 
-import com.ring.ring.router.todo.todoApiRouting
-import com.ring.ring.router.todo.todoViewRouting
-import com.ring.ring.router.user.userApiRouting
-import com.ring.ring.router.user.userViewRouting
+import com.ring.ring.router.user.userRestApiRouting
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
     routing {
-        userApiRouting()
-        userViewRouting()
-        todoApiRouting()
-        todoViewRouting()
+        userRestApiRouting()
+//        userApiRouting()
+//        userViewRouting()
+//        todoApiRouting()
+//        todoViewRouting()
     }
 }

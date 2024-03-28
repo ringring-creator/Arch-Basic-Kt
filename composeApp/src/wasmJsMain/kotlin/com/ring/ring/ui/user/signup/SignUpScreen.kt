@@ -1,6 +1,5 @@
-package com.ring.ring.ui.login
+package com.ring.ring.ui.user.signup
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -9,62 +8,70 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(
-    viewModel: LoginViewModel = remember { LoginViewModel() },
-    toSignUpScreen: () -> Unit,
+fun SignUpScreen(
+    viewModel: SignUpViewModel = remember { SignUpViewModel() },
+    toLoginScreen: () -> Unit,
 ) {
-    LoginScreen(
-        uiState = LoginViewModel.rememberLoginUiState(viewModel),
-        updater = viewModel,
-        toSignUpScreen = toSignUpScreen
+    SignUpScreen(
+        uiState = SignUpViewModel.rememberSignUpUiState(viewModel),
+        updater = viewModel
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.toLoginScreenEvent.collect {
+            toLoginScreen()
+        }
+    }
 }
 
-data class LoginUiState(
+data class SignUpUiState(
     val email: String,
     val password: String,
 )
 
-interface LoginUiUpdater {
+interface SignUpUiUpdater {
     fun setEmail(email: String)
     fun setPassword(password: String)
-    fun login()
+    suspend fun signUp()
 }
 
 @Composable
-fun LoginScreen(
-    uiState: LoginUiState,
-    updater: LoginUiUpdater,
-    toSignUpScreen: () -> Unit,
+fun SignUpScreen(
+    uiState: SignUpUiState,
+    updater: SignUpUiUpdater,
+    scope: CoroutineScope = rememberCoroutineScope()
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Login", style = MaterialTheme.typography.headlineMedium)
+        Text("Sign Up", style = MaterialTheme.typography.headlineMedium)
 
         // Email input field
         OutlinedTextField(
             value = uiState.email,
             onValueChange = updater::setEmail,
-            label = { Text("Email address") },
-            singleLine = true,
+            label = { Text("Email") },
             modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
         )
 
         Spacer(Modifier.height(8.dp))
 
-        // Password input field
         OutlinedTextField(
             value = uiState.password,
             onValueChange = updater::setPassword,
@@ -73,22 +80,20 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
-                // Implement action on keyboard done, e.g., login
+                // Implement action on keyboard done, e.g., sign up
             })
         )
 
         Spacer(Modifier.height(16.dp))
 
+        // Sign Up button
         Button(
-            onClick = updater::login,
+            onClick = {
+                scope.launch { updater.signUp() }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Login")
+            Text("Sign Up")
         }
-
-        Spacer(Modifier.height(24.dp))
-
-        // Signup link
-        Text("Don't have an account? Sign up", Modifier.clickable(onClick = toSignUpScreen))
     }
 }

@@ -4,13 +4,16 @@ compose-plugin = "1.6.0"
 junit = "4.13.2"
 kotlin = "1.9.22"
 kotlinx-datetime = "0.4.1"
+kotlinx-coroutines = "1.7.3"
+ktor = "2.3.9"
+ktor-wasm = "3.0.0-wasm2"
 
 # Server
-ktor = "2.3.9"
 logback = "1.5.3"
 sqldelight = "2.0.1"
 
 [libraries]
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -18,6 +21,14 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+ktor = { group = "io.ktor", name = "ktor", version.ref = "ktor-wasm" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor-wasm" }
+ktor-client-json = { group = "io.ktor", name = "ktor-client-json", version.ref = "ktor-wasm" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor-wasm" }
+ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor-wasm" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor-wasm" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor-wasm" }
+ktor-server-cors = { group = "io.ktor", name = "ktor-server-cors", version.ref = "ktor" }
 
 # Sever
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
@@ -29,6 +40,15 @@ ktor-server-html-builder = { module = "io.ktor:ktor-server-html-builder", versio
 ktor-server-sessions = { module = "io.ktor:ktor-server-sessions", version.ref = "ktor" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
+
+[bundles]
+ktor-common = ["ktor-client-core",
+    "ktor-client-json",
+    "ktor-client-logging",
+    "ktor-client-serialization",
+    "ktor-client-content-negotiation",
+    "ktor-serialization-kotlinx-json",
+]
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

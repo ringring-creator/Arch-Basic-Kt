@@ -1,16 +1,23 @@
-package com.ring.ring.ui.login
+package com.ring.ring.ui.user.signup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.ring.ring.usecase.user.SignUp
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 
-class LoginViewModel : LoginUiUpdater {
+class SignUpViewModel(
+    private val signUpUseCase: SignUp = SignUp()
+) : SignUpUiUpdater {
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
+    private val _toLoginScreenEvent = Channel<Unit>()
+    val toLoginScreenEvent = _toLoginScreenEvent.receiveAsFlow()
 
     override fun setEmail(email: String) {
         if (this.email.value == email) return
@@ -22,19 +29,21 @@ class LoginViewModel : LoginUiUpdater {
         _password.value = password
     }
 
-    override fun login() {
-        TODO("Not yet implemented")
+    override suspend fun signUp() {
+        signUpUseCase(SignUp.Req(email.value, password.value))
+        _toLoginScreenEvent.trySend(Unit)
     }
 
     companion object {
         @Composable
-        fun rememberLoginUiState(viewModel: LoginViewModel): LoginUiState {
+        fun rememberSignUpUiState(viewModel: SignUpViewModel): SignUpUiState {
             val email by viewModel.email.collectAsState()
             val password by viewModel.password.collectAsState()
-            return LoginUiState(
+            return SignUpUiState(
                 email = email,
                 password = password,
             )
         }
     }
+
 }

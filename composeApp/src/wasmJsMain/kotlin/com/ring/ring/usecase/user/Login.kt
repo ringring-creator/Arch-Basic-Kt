@@ -1,27 +1,27 @@
 package com.ring.ring.usecase.user
 
-import com.ring.ring.data.User
-import com.ring.ring.data.UserRepository
+import com.ring.ring.data.user.User
+import com.ring.ring.data.user.UserRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
-import kotlinx.serialization.Serializable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class CreateUser(
+class Login(
     private val repository: UserRepository = DataModules.userRepository,
-) : UseCase<CreateUser.Req, CreateUser.Res>() {
-    override suspend fun execute(req: Req): Res {
+) : UseCase<Login.Req, Login.Res>() {
+    override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
         val user = req.toUser()
-        repository.save(user = user)
-        return Res()
+        repository.signUp(user = user)
+        return@withContext Res()
     }
 
-    @Serializable
     data class Req(
         val email: String,
         val password: String,
     ) : UseCase.Req {
         fun toUser(): User = User(
-            id = null,
+
             email = email,
             password = password,
         )
