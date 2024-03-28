@@ -2,7 +2,6 @@ package com.ring.ring.data
 
 import com.ring.ring.data.db.SessionDataSource
 import com.ring.ring.di.DataModules
-import com.ring.ring.usecase.user.Login
 import java.security.SecureRandom
 import java.util.*
 
@@ -10,10 +9,10 @@ data class Session(
     val userId: Long,
     val credential: String,
 ) {
-    fun toLoginSession(): Login.Res.Session = Login.Res.Session(
-        userId = userId,
-        credential = credential,
-    )
+//    fun toLoginSession(): Login.Res.Session = Login.Res.Session(
+//        userId = userId,
+//        credential = credential,
+//    )
 }
 
 class SessionRepository(

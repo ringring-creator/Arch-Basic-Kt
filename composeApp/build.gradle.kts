@@ -35,7 +35,8 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.bundles.ktor.common)
+            implementation(libs.bundles.ktor.wasm)
+            implementation(libs.multiplatform.settings)
         }
     }
 }

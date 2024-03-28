@@ -9,22 +9,34 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.ring.ring.usecase.user.Login
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = remember { LoginViewModel() },
     toSignUpScreen: () -> Unit,
+    toTodoListScreen: (Login.Res.Session) -> Unit,
 ) {
     LoginScreen(
         uiState = LoginViewModel.rememberLoginUiState(viewModel),
         updater = viewModel,
         toSignUpScreen = toSignUpScreen
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.toTodoListScreenEvent.collect {
+            toTodoListScreen(it)
+        }
+    }
 }
 
 data class LoginUiState(
@@ -35,7 +47,7 @@ data class LoginUiState(
 interface LoginUiUpdater {
     fun setEmail(email: String)
     fun setPassword(password: String)
-    fun login()
+    suspend fun login()
 }
 
 @Composable
@@ -43,6 +55,7 @@ fun LoginScreen(
     uiState: LoginUiState,
     updater: LoginUiUpdater,
     toSignUpScreen: () -> Unit,
+    scope: CoroutineScope = rememberCoroutineScope()
 ) {
     Column(
         modifier = Modifier
@@ -52,7 +65,6 @@ fun LoginScreen(
     ) {
         Text("Login", style = MaterialTheme.typography.headlineMedium)
 
-        // Email input field
         OutlinedTextField(
             value = uiState.email,
             onValueChange = updater::setEmail,
@@ -64,7 +76,6 @@ fun LoginScreen(
 
         Spacer(Modifier.height(8.dp))
 
-        // Password input field
         OutlinedTextField(
             value = uiState.password,
             onValueChange = updater::setPassword,
@@ -73,14 +84,15 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
-                // Implement action on keyboard done, e.g., login
             })
         )
 
         Spacer(Modifier.height(16.dp))
 
         Button(
-            onClick = updater::login,
+            onClick = {
+                scope.launch { updater.login() }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
@@ -88,7 +100,6 @@ fun LoginScreen(
 
         Spacer(Modifier.height(24.dp))
 
-        // Signup link
         Text("Don't have an account? Sign up", Modifier.clickable(onClick = toSignUpScreen))
     }
 }

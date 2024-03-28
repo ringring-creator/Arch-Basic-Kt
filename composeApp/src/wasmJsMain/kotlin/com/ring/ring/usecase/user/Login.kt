@@ -1,5 +1,7 @@
 package com.ring.ring.usecase.user
 
+import com.ring.ring.data.session.SessionRepository
+import com.ring.ring.data.user.Session
 import com.ring.ring.data.user.User
 import com.ring.ring.data.user.UserRepository
 import com.ring.ring.di.DataModules
@@ -8,12 +10,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class Login(
-    private val repository: UserRepository = DataModules.userRepository,
+    private val userRepository: UserRepository = DataModules.userRepository,
+    private val sessionRepository: SessionRepository = DataModules.sessionRepository,
 ) : UseCase<Login.Req, Login.Res>() {
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
         val user = req.toUser()
-        repository.signUp(user = user)
-        return@withContext Res()
+        val session = userRepository.login(user = user)
+        sessionRepository.save(session)
+        return@withContext Res(session.toLogin())
     }
 
     data class Req(
@@ -21,11 +25,17 @@ class Login(
         val password: String,
     ) : UseCase.Req {
         fun toUser(): User = User(
-
             email = email,
             password = password,
         )
     }
 
-    class Res : UseCase.Res
+    data class Res(
+        val session: Session,
+    ) : UseCase.Res {
+        data class Session(
+            val userId: Long,
+            val credential: String,
+        )
+    }
 }

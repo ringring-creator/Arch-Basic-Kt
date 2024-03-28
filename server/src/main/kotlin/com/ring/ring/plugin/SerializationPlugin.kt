@@ -1,5 +1,6 @@
 package com.ring.ring.plugin
 
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -12,7 +13,8 @@ fun Application.configureSerialization() {
                 prettyPrint = true
                 isLenient = true
                 ignoreUnknownKeys = true
-            }
+            },
+            ContentType.Application.Json
         )
     }
 }

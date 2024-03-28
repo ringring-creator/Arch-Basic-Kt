@@ -6,7 +6,6 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import io.ktor.server.sessions.*
 
 class UserRestApiController(
     private val createUser: CreateUser = CreateUser(),
@@ -40,29 +39,19 @@ class UserRestApiController(
     }
 
     suspend fun login(call: ApplicationCall) {
-        val parameters = call.receiveParameters()
-        val req = convertLoginReq(parameters)
+        val req = call.receive<Login.Req>()
         val res = login(req)
-        call.respond(HttpStatusCode.OK, res.session)
+        call.respond(HttpStatusCode.OK, res)
     }
 
-    suspend fun logout(call: ApplicationCall) {
-        val session = call.sessions.get<Login.Res.Session>()
-        session?.let {
-            logout(Logout.Req(it.userId, it.credential))
-            call.sessions.clear<Login.Res.Session>()
-        }
-        call.respondRedirect("/user/login")
-    }
-
-    private fun convertCreateUserReq(parameters: Parameters): CreateUser.Req {
-        val email = parameters["email"] ?: throw BadRequestException(message = "Id is not found.")
-        val password = parameters["password"] ?: throw BadRequestException(message = "Id is not found.")
-        return CreateUser.Req(
-            email = email,
-            password = password,
-        )
-    }
+//    suspend fun logout(call: ApplicationCall) {
+//        val session = call.sessions.get<Login.Res.Session>()
+//        session?.let {
+//            logout(Logout.Req(it.userId, it.credential))
+//            call.sessions.clear<Login.Res.Session>()
+//        }
+//        call.respondRedirect("/user/login")
+//    }
 
     private fun convertEditUserReq(parameters: Parameters): EditUser.Req = EditUser.Req(
         id = parameters["id"]?.toLong() ?: throw BadRequestException(message = "Id is not found."),

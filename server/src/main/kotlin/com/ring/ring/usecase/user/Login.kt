@@ -6,6 +6,7 @@ import com.ring.ring.data.UserRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.exception.LoginFailureException
 import com.ring.ring.usecase.UseCase
+import kotlinx.serialization.Serializable
 
 class Login(
     private val userRepository: UserRepository = DataModules.userRepository,
@@ -15,9 +16,10 @@ class Login(
         val userId = userRepository.loadId(req.toUser())
             ?: throw LoginFailureException(message = "Id is not found.")
         val session = sessionRepository.save(userId)
-        return Res(session = session.toLoginSession())
+        return Res(session.userId, session.credential)
     }
 
+    @Serializable
     data class Req(
         val email: String,
         val password: String,
@@ -29,12 +31,9 @@ class Login(
         )
     }
 
+    @Serializable
     data class Res(
-        val session: Session
-    ) : UseCase.Res {
-        data class Session(
-            val userId: Long,
-            val credential: String,
-        )
-    }
+        val userId: Long,
+        val credential: String,
+    ) : UseCase.Res
 }

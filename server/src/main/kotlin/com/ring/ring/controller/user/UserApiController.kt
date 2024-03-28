@@ -6,7 +6,6 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import io.ktor.server.sessions.*
 
 class UserApiController(
     private val createUser: CreateUser = CreateUser(),
@@ -40,19 +39,19 @@ class UserApiController(
         val parameters = call.receiveParameters()
         val req = convertLoginReq(parameters)
         val res = login(req)
-        res.session.let { session ->
-            call.sessions.set(session)
-            call.respondRedirect("/todo/list")
-        }
+//        res.session.let { session ->
+//            call.sessions.set(session)
+//            call.respondRedirect("/todo/list")
+//        }
     }
 
     suspend fun logout(call: ApplicationCall) {
-        val session = call.sessions.get<Login.Res.Session>()
-        session?.let {
-            logout(Logout.Req(it.userId, it.credential))
-            call.sessions.clear<Login.Res.Session>()
-        }
-        call.respondRedirect("/user/login")
+//        val session = call.sessions.get<Login.Res.Session>()
+//        session?.let {
+//            logout(Logout.Req(it.userId, it.credential))
+//            call.sessions.clear<Login.Res.Session>()
+//        }
+//        call.respondRedirect("/user/login")
     }
 
     private fun convertCreateUserReq(parameters: Parameters): CreateUser.Req {
