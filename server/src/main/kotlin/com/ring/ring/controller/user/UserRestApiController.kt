@@ -32,10 +32,9 @@ class UserRestApiController(
     }
 
     suspend fun edit(call: ApplicationCall) {
-        val parameters = call.receiveParameters()
-        val req = convertEditUserReq(parameters)
+        val req = call.receive<EditUser.Req>()
         editUser(req)
-        call.respondRedirect("/user/mypage")
+        call.respond(HttpStatusCode.OK)
     }
 
     suspend fun delete(call: ApplicationCall) {
@@ -59,12 +58,6 @@ class UserRestApiController(
 //        }
 //        call.respondRedirect("/user/login")
 //    }
-
-    private fun convertEditUserReq(parameters: Parameters): EditUser.Req = EditUser.Req(
-        id = parameters["id"]?.toLong() ?: throw BadRequestException(message = "Id is not found."),
-        email = parameters["email"] ?: throw BadRequestException(message = "Id is not found."),
-        password = parameters["password"] ?: throw BadRequestException(message = "Id is not found."),
-    )
 
     private fun convertWithdrawalUserReq(parameters: Parameters): WithdrawalUser.Req =
         WithdrawalUser.Req(

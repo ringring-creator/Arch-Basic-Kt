@@ -10,7 +10,7 @@ fun Route.userRestApiRouting(
     route("/user") {
         post("get") { controller.get(call) }
         post("signup") { controller.signUp(call) }
-//        post("edit") { controller.edit(call) }
+        post("edit") { controller.edit(call) }
 //        post("delete") { controller.delete(call) }
         post("login") { controller.login(call) }
 //        post("logout") { controller.logout(call) }

@@ -6,6 +6,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
 
 class RemoteUserDataSource(
     private val httpClient: HttpClient
@@ -29,6 +30,19 @@ class RemoteUserDataSource(
             contentType(ContentType.Application.Json)
             setBody(session)
         }.body()
+    }
+
+    @Serializable
+    data class EditRequest(
+        val user: User,
+        val session: Session,
+    )
+
+    suspend fun edit(user: User, session: Session) {
+        httpClient.post("$URL/user/edit") {
+            contentType(ContentType.Application.Json)
+            setBody(EditRequest(user, session))
+        }
     }
 
     companion object {

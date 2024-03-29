@@ -43,4 +43,8 @@ class UserRepository(
     suspend fun get(session: Session): User = withContext(Dispatchers.Default) {
         return@withContext remoteDataSource.get(session)
     }
+
+    suspend fun edit(user: User, session: Session) {
+        remoteDataSource.edit(user, session)
+    }
 }

@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import com.ring.ring.ui.todo.create.CreateTodoScreen
 import com.ring.ring.ui.todo.edit.EditTodoScreen
 import com.ring.ring.ui.todo.list.TodoListScreen
+import com.ring.ring.ui.user.edit.EditUserScreen
 import com.ring.ring.ui.user.login.LoginScreen
 import com.ring.ring.ui.user.mypage.MyPageScreen
 import com.ring.ring.ui.user.signup.SignUpScreen
@@ -31,11 +32,15 @@ fun Router(
 
         Route.SignUp -> SignUpScreen { setRoute(Route.Login) }
         Route.MyPage -> MyPageScreen(
-            toLogoutScreen = { setRoute(Route.EditUser) },
-            toEditUserScreen = { setRoute(Route.Logout) },
+            toLogoutScreen = { setRoute(Route.Logout) },
+            toEditUserScreen = { setRoute(Route.EditUser) },
             toWithdrawalUserScreen = { setRoute(Route.WithdrawalUser) },
             toTodoListScreen = { setRoute(Route.TodoList) },
         )
+
+        Route.EditUser -> EditUserScreen { setRoute(Route.MyPage) }
+        Route.Logout -> TODO()
+        Route.WithdrawalUser -> TODO()
 
         Route.TodoList -> TodoListScreen(
             toCreateTodoScreen = { setRoute(Route.CreateTodo) },
@@ -45,9 +50,6 @@ fun Router(
 
         Route.CreateTodo -> CreateTodoScreen { setRoute(Route.TodoList) }
         is Route.EditTodo -> EditTodoScreen(route.todoId) { setRoute(Route.TodoList) }
-        Route.EditUser -> TODO()
-        Route.Logout -> TODO()
-        Route.WithdrawalUser -> TODO()
     }
 }
 
