@@ -19,9 +19,6 @@ class RemoteUserDataSource(
 
     suspend fun login(user: User): Session {
         val response = httpClient.post("$URL/user/login") {
-            headers {
-                append(HttpHeaders.AccessControlAllowOrigin, URL)
-            }
             contentType(ContentType.Application.Json)
             setBody(user)
         }

@@ -1,10 +1,10 @@
 package com.ring.ring
 
 import androidx.compose.runtime.*
-import com.ring.ring.ui.todo.TodoListScreen
+import com.ring.ring.ui.todo.create.CreateTodoScreen
+import com.ring.ring.ui.todo.list.TodoListScreen
 import com.ring.ring.ui.user.login.LoginScreen
 import com.ring.ring.ui.user.signup.SignUpScreen
-import com.ring.ring.usecase.user.Login.Res
 
 @Composable
 fun Router() {
@@ -24,16 +24,18 @@ fun Router(
     when (route) {
         Route.Login -> LoginScreen(
             toSignUpScreen = { setRoute(Route.SignUp) },
-            toTodoListScreen = { setRoute(Route.TodoList(it)) }
+            toTodoListScreen = { setRoute(Route.TodoList) }
         )
 
         Route.SignUp -> SignUpScreen { setRoute(Route.Login) }
-        is Route.TodoList -> TodoListScreen(route.session)
+        is Route.TodoList -> TodoListScreen() { setRoute(Route.CreateTodo) }
+        Route.CreateTodo -> CreateTodoScreen { setRoute(Route.TodoList) }
     }
 }
 
 sealed class Route {
     data object Login : Route()
     data object SignUp : Route()
-    data class TodoList(val session: Res.Session) : Route()
+    data object TodoList : Route()
+    data object CreateTodo : Route()
 }

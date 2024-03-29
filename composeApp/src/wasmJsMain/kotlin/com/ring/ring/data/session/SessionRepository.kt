@@ -11,6 +11,13 @@ class SessionRepository(
         dataSource.save(SESSION_CREDENTIAL, session.credential)
     }
 
+    fun getSession(): Session? {
+        return Session(
+            userId = dataSource.getLong(SESSION_USER_ID) ?: return null,
+            credential = dataSource.getString(SESSION_CREDENTIAL) ?: return null,
+        )
+    }
+
     companion object {
         const val SESSION_USER_ID: String = "sessionUserId"
         const val SESSION_CREDENTIAL: String = "sessionCredential"

@@ -16,7 +16,7 @@ class LoginViewModel(
     val email = _email.asStateFlow()
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
-    private val _toTodoListScreenEvent = Channel<Login.Res.Session>()
+    private val _toTodoListScreenEvent = Channel<Unit>()
     val toTodoListScreenEvent = _toTodoListScreenEvent.receiveAsFlow()
 
     override fun setEmail(email: String) {
@@ -33,7 +33,7 @@ class LoginViewModel(
         val res = loginUseCase(
             Login.Req(email.value, password.value)
         )
-        _toTodoListScreenEvent.trySend(res.session)
+        _toTodoListScreenEvent.trySend(Unit)
     }
 
     companion object {

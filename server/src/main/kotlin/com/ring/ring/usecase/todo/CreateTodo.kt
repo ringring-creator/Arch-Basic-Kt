@@ -5,6 +5,7 @@ import com.ring.ring.data.TodoRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Serializable
 
 class CreateTodo(
     private val repository: TodoRepository = DataModules.todoRepository,
@@ -16,6 +17,7 @@ class CreateTodo(
         return Res()
     }
 
+    @Serializable
     data class Req(
         val title: String,
         val description: String,

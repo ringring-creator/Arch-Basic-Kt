@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.ring.ring.usecase.user.Login
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -24,7 +23,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     viewModel: LoginViewModel = remember { LoginViewModel() },
     toSignUpScreen: () -> Unit,
-    toTodoListScreen: (Login.Res.Session) -> Unit,
+    toTodoListScreen: () -> Unit,
 ) {
     LoginScreen(
         uiState = LoginViewModel.rememberLoginUiState(viewModel),
@@ -34,7 +33,7 @@ fun LoginScreen(
 
     LaunchedEffect(Unit) {
         viewModel.toTodoListScreenEvent.collect {
-            toTodoListScreen(it)
+            toTodoListScreen()
         }
     }
 }

@@ -1,7 +1,7 @@
 [versions]
 junit = "4.13.2"
 kotlin = "1.9.22"
-kotlinx-datetime = "0.4.1"
+kotlinx-datetime = "0.6.0-RC.2"
 kotlinx-coroutines = "1.7.3"
 # Frontend
 compose = "1.6.2"
@@ -24,7 +24,6 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-ktor-wasm = { group = "io.ktor", name = "ktor", version.ref = "ktor-wasm" }
 ktor-client-core-wasm = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor-wasm" }
 ktor-client-json-wasm = { group = "io.ktor", name = "ktor-client-json", version.ref = "ktor-wasm" }
 ktor-client-logging-wasm = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor-wasm" }
@@ -49,7 +48,6 @@ sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "s
 
 [bundles]
 ktor-wasm = [
-    "ktor-wasm",
     "ktor-client-core-wasm",
     "ktor-client-json-wasm",
     "ktor-client-logging-wasm",

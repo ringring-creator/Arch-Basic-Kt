@@ -2,6 +2,8 @@ package com.ring.ring.di
 
 import com.ring.ring.data.KeyValueSessionDataSource
 import com.ring.ring.data.session.SessionRepository
+import com.ring.ring.data.todo.RemoteTodoDataSource
+import com.ring.ring.data.todo.TodoRepository
 import com.ring.ring.data.user.RemoteUserDataSource
 import com.ring.ring.data.user.UserRepository
 import com.russhwolf.settings.Settings
@@ -15,12 +17,25 @@ import kotlinx.serialization.json.Json
 object DataModules {
     val userRepository = createUserRepository()
     val sessionRepository = createSessionRepository()
+    val todoRepository = createTodoRepository()
 
     private fun createUserRepository(): UserRepository = UserRepository(
         remoteDataSource = createRemoteUserDataSource()
     )
 
     private fun createRemoteUserDataSource(): RemoteUserDataSource = RemoteUserDataSource(
+        httpClient = createHttpClient()
+    )
+
+    private fun createSessionRepository(): SessionRepository = SessionRepository(
+        dataSource = createKeyValueSessionDataSource(),
+    )
+
+    private fun createTodoRepository(): TodoRepository = TodoRepository(
+        remoteDataSource = createRemoteDataSource()
+    )
+
+    private fun createRemoteDataSource(): RemoteTodoDataSource = RemoteTodoDataSource(
         httpClient = createHttpClient()
     )
 
@@ -35,10 +50,6 @@ object DataModules {
             )
         }
     }
-
-    private fun createSessionRepository(): SessionRepository = SessionRepository(
-        dataSource = createKeyValueSessionDataSource(),
-    )
 
     private fun createKeyValueSessionDataSource(): KeyValueSessionDataSource = KeyValueSessionDataSource(
         settings = createSettings(),
