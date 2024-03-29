@@ -6,22 +6,20 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 
 class RemoteTodoDataSource(
     private val httpClient: HttpClient
 ) {
-    suspend fun create(todo: Todo): Unit = withContext(Dispatchers.Default) {
+    suspend fun create(todo: Todo): Unit {
         httpClient.post("${RemoteUserDataSource.URL}/todo/create") {
             contentType(ContentType.Application.Json)
             setBody(todo)
         }
     }
 
-    suspend fun list(session: Session): List<Todo> = withContext(Dispatchers.Default) {
-        return@withContext httpClient.post("${RemoteUserDataSource.URL}/todo/list") {
+    suspend fun list(session: Session): List<Todo> {
+        return httpClient.post("${RemoteUserDataSource.URL}/todo/list") {
             contentType(ContentType.Application.Json)
             setBody(session)
         }.body()
@@ -33,10 +31,23 @@ class RemoteTodoDataSource(
         val session: Session
     )
 
-    suspend fun get(todoId: Long, session: Session): Todo = withContext(Dispatchers.Default) {
-        return@withContext httpClient.post("${RemoteUserDataSource.URL}/todo/get") {
+    suspend fun get(todoId: Long, session: Session): Todo {
+        return httpClient.post("${RemoteUserDataSource.URL}/todo/get") {
             contentType(ContentType.Application.Json)
             setBody(GetRequest(todoId, session))
+        }.body()
+    }
+
+    @Serializable
+    data class EditRequest(
+        val todo: Todo,
+        val session: Session
+    )
+
+    suspend fun edit(todo: Todo, session: Session) {
+        return httpClient.post("${RemoteUserDataSource.URL}/todo/edit") {
+            contentType(ContentType.Application.Json)
+            setBody(EditRequest(todo, session))
         }.body()
     }
 

@@ -76,7 +76,7 @@ data class EditTodoUiState(
 
 interface EditTodoUiUpdater {
     fun onBack()
-    suspend fun saveTodo()
+    suspend fun editTodo()
     suspend fun deleteTodo()
     fun setTitle(title: String)
     fun setDescription(description: String)
@@ -212,7 +212,7 @@ private fun EditButton(
 ) {
     Button(
         onClick = {
-            scope.launch { updater.saveTodo() }
+            scope.launch { updater.editTodo() }
         },
     ) {
         Text("Edit")

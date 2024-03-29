@@ -6,6 +6,7 @@ import com.ring.ring.di.DataModules
 import com.ring.ring.exception.BadRequestException
 import com.ring.ring.usecase.UseCase
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Serializable
 
 class EditTodo(
     private val repository: TodoRepository = DataModules.todoRepository,
@@ -17,21 +18,34 @@ class EditTodo(
         return Res()
     }
 
+    @Serializable
     data class Req(
-        val id: String,
-        val title: String,
-        val description: String,
-        val done: Boolean,
-        val deadline: LocalDate,
-        val userId: Long,
+        val todo: Todo,
+        val session: Session,
     ) : UseCase.Req {
-        fun toTodo(): Todo = Todo(
-            id = id.toLongOrNull() ?: throw BadRequestException(message = "Id is invalid"),
-            title = title,
-            description = description,
-            done = done,
-            deadline = deadline,
-            userId = userId,
+        @Serializable
+        data class Todo(
+            val id: Long?,
+            val title: String,
+            val description: String,
+            val done: Boolean,
+            val deadline: LocalDate,
+            val userId: Long,
+        )
+
+        @Serializable
+        data class Session(
+            val userId: Long,
+            val credential: String,
+        )
+
+        fun toTodo(): com.ring.ring.data.Todo = com.ring.ring.data.Todo(
+            id = todo.id ?: throw BadRequestException(message = "Id is invalid"),
+            title = todo.title,
+            description = todo.description,
+            done = todo.done,
+            deadline = todo.deadline,
+            userId = todo.userId,
         )
     }
 

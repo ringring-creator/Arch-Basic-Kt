@@ -45,11 +45,15 @@ class TodoRepository(
         remoteDataSource.create(todo)
     }
 
-    suspend fun list(session: Session): List<Todo> {
-        return remoteDataSource.list(session)
+    suspend fun list(session: Session): List<Todo> = withContext(Dispatchers.Default) {
+        return@withContext remoteDataSource.list(session)
     }
 
-    suspend fun get(todoId: Long, session: Session): Todo {
-        return remoteDataSource.get(todoId, session)
+    suspend fun get(todoId: Long, session: Session): Todo = withContext(Dispatchers.Default) {
+        return@withContext remoteDataSource.get(todoId, session)
+    }
+
+    suspend fun edit(todo: Todo, session: Session) = withContext(Dispatchers.Default) {
+        remoteDataSource.edit(todo, session)
     }
 }

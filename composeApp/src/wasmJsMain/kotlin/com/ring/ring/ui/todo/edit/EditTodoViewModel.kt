@@ -3,7 +3,7 @@ package com.ring.ring.ui.todo.edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.ring.ring.usecase.todo.CreateTodo
+import com.ring.ring.usecase.todo.EditTodo
 import com.ring.ring.usecase.todo.GetTodo
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,8 +12,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 class EditTodoViewModel(
     private val getTodoUseCase: GetTodo = GetTodo(),
-    private val createTodo: CreateTodo = CreateTodo(),
+    private val editTodoUseCase: EditTodo = EditTodo(),
 ) : EditTodoUiUpdater {
+    private var id: Long? = null
     private val _title = MutableStateFlow("")
     val title = _title.asStateFlow()
     private val _description = MutableStateFlow("")
@@ -31,9 +32,11 @@ class EditTodoViewModel(
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveTodo() {
-        createTodo(
-            CreateTodo.Req(
+    override suspend fun editTodo() {
+        val id = id ?: return
+        editTodoUseCase(
+            EditTodo.Req(
+                id = id,
                 title = title.value,
                 description = description.value,
                 done = done.value,
@@ -78,6 +81,7 @@ class EditTodoViewModel(
 
     suspend fun getTodo(todoId: Long) {
         val res = getTodoUseCase(GetTodo.Req(todoId))
+        id = res.todo.id
         _title.value = res.todo.title
         _description.value = res.todo.description
         _done.value = res.todo.done
