@@ -3,6 +3,7 @@ package com.ring.ring.ui.todo.edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.ring.ring.usecase.todo.DeleteTodo
 import com.ring.ring.usecase.todo.EditTodo
 import com.ring.ring.usecase.todo.GetTodo
 import kotlinx.coroutines.channels.Channel
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 class EditTodoViewModel(
     private val getTodoUseCase: GetTodo = GetTodo(),
     private val editTodoUseCase: EditTodo = EditTodo(),
+    private val deleteTodoUseCase: DeleteTodo = DeleteTodo(),
 ) : EditTodoUiUpdater {
     private var id: Long? = null
     private val _title = MutableStateFlow("")
@@ -47,6 +49,10 @@ class EditTodoViewModel(
     }
 
     override suspend fun deleteTodo() {
+        id?.let {
+            deleteTodoUseCase(DeleteTodo.Req(it))
+            _toTodoListEvent.trySend(Unit)
+        }
     }
 
     override fun setTitle(title: String) {

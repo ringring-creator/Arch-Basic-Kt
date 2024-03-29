@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 class RemoteTodoDataSource(
     private val httpClient: HttpClient
 ) {
-    suspend fun create(todo: Todo): Unit {
+    suspend fun create(todo: Todo) {
         httpClient.post("${RemoteUserDataSource.URL}/todo/create") {
             contentType(ContentType.Application.Json)
             setBody(todo)
@@ -49,6 +49,19 @@ class RemoteTodoDataSource(
             contentType(ContentType.Application.Json)
             setBody(EditRequest(todo, session))
         }.body()
+    }
+
+    @Serializable
+    data class DeleteRequest(
+        val todoId: Long,
+        val session: Session
+    )
+
+    suspend fun delete(todoId: Long, session: Session) {
+        httpClient.post("${RemoteUserDataSource.URL}/todo/delete") {
+            contentType(ContentType.Application.Json)
+            setBody(DeleteRequest(todoId, session))
+        }
     }
 
     companion object {

@@ -56,4 +56,8 @@ class TodoRepository(
     suspend fun edit(todo: Todo, session: Session) = withContext(Dispatchers.Default) {
         remoteDataSource.edit(todo, session)
     }
+
+    suspend fun delete(id: Long, session: Session) = withContext(Dispatchers.Default) {
+        remoteDataSource.delete(id, session)
+    }
 }

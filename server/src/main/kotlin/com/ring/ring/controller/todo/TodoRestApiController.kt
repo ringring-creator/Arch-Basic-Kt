@@ -1,6 +1,5 @@
 package com.ring.ring.controller.todo
 
-import com.ring.ring.exception.BadRequestException
 import com.ring.ring.usecase.todo.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -39,13 +38,8 @@ class TodoRestApiController(
     }
 
     suspend fun delete(call: ApplicationCall) {
-        val parameters = call.receiveParameters()
-        deleteTodo(req = convertDeleteTodoReq(parameters))
-        call.respondRedirect("/todo/list")
+        val req = call.receive<DeleteTodo.Req>()
+        deleteTodo(req = req)
+        call.respond(HttpStatusCode.OK)
     }
-
-    private fun convertDeleteTodoReq(parameters: Parameters): DeleteTodo.Req = DeleteTodo.Req(
-        id = parameters["id"] ?: throw BadRequestException(message = "Id is not found."),
-    )
-
 }
