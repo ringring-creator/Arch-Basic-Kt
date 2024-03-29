@@ -5,6 +5,7 @@ import com.ring.ring.ui.todo.create.CreateTodoScreen
 import com.ring.ring.ui.todo.edit.EditTodoScreen
 import com.ring.ring.ui.todo.list.TodoListScreen
 import com.ring.ring.ui.user.login.LoginScreen
+import com.ring.ring.ui.user.mypage.MyPageScreen
 import com.ring.ring.ui.user.signup.SignUpScreen
 
 @Composable
@@ -25,23 +26,38 @@ fun Router(
     when (route) {
         Route.Login -> LoginScreen(
             toSignUpScreen = { setRoute(Route.SignUp) },
-            toTodoListScreen = { setRoute(Route.TodoList) }
+            toTodoListScreen = { setRoute(Route.TodoList) },
         )
 
         Route.SignUp -> SignUpScreen { setRoute(Route.Login) }
+        Route.MyPage -> MyPageScreen(
+            toLogoutScreen = { setRoute(Route.EditUser) },
+            toEditUserScreen = { setRoute(Route.Logout) },
+            toWithdrawalUserScreen = { setRoute(Route.WithdrawalUser) },
+            toTodoListScreen = { setRoute(Route.TodoList) },
+        )
+
         Route.TodoList -> TodoListScreen(
             toCreateTodoScreen = { setRoute(Route.CreateTodo) },
             toEditTodoScreen = { setRoute(Route.EditTodo(it)) },
+            toMyPageScreen = { setRoute(Route.MyPage) },
         )
 
         Route.CreateTodo -> CreateTodoScreen { setRoute(Route.TodoList) }
         is Route.EditTodo -> EditTodoScreen(route.todoId) { setRoute(Route.TodoList) }
+        Route.EditUser -> TODO()
+        Route.Logout -> TODO()
+        Route.WithdrawalUser -> TODO()
     }
 }
 
 sealed class Route {
     data object Login : Route()
     data object SignUp : Route()
+    data object MyPage : Route()
+    data object Logout : Route()
+    data object EditUser : Route()
+    data object WithdrawalUser : Route()
     data object TodoList : Route()
     data object CreateTodo : Route()
     data class EditTodo(val todoId: Long) : Route()

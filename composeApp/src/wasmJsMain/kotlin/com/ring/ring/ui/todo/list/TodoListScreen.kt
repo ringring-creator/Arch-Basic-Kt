@@ -16,12 +16,14 @@ fun TodoListScreen(
     viewModel: TodoListViewModel = remember { TodoListViewModel() },
     toCreateTodoScreen: () -> Unit,
     toEditTodoScreen: (Long) -> Unit,
+    toMyPageScreen: () -> Unit,
 ) {
     val uiState = TodoListViewModel.rememberTodoListUiState(viewModel)
     TodoListScreen(
         uiState = uiState,
         toCreateTodoScreen = toCreateTodoScreen,
         toEditTodoScreen = toEditTodoScreen,
+        toMyPageScreen = toMyPageScreen,
     )
 
     LaunchedEffect(Unit) {
@@ -45,9 +47,10 @@ fun TodoListScreen(
     uiState: TodoListUiState,
     toCreateTodoScreen: () -> Unit,
     toEditTodoScreen: (Long) -> Unit,
+    toMyPageScreen: () -> Unit,
 ) {
     Scaffold(
-        topBar = { TodoNavBar() },
+        topBar = { TodoNavBar(toMyPageScreen) },
         floatingActionButton = {
             FloatingActionButton(onClick = toCreateTodoScreen) {
                 Icon(Icons.Filled.Add, contentDescription = "Create New Todo")
@@ -85,5 +88,17 @@ fun TodoListScreen(
 }
 
 @Composable
-fun TodoNavBar() {
+private fun TodoNavBar(
+    toMyPageScreen: () -> Unit,
+) {
+    NavigationBar {
+        listOf("Todo", "My Page").forEachIndexed { index, item ->
+            NavigationRailItem(
+                icon = { },
+                label = { Text(item) },
+                selected = index == 0,
+                onClick = toMyPageScreen
+            )
+        }
+    }
 }

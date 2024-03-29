@@ -43,7 +43,7 @@ fun HTML.editUserView(res: GetUser.Res) {
                         label { +"New Password" }
                     }
                     hiddenInput(name = "id") {
-                        value = res.user.id
+                        value = res.user.id.toString()
                     }
                     button(classes = "w-100 btn btn-lg btn-primary", type = ButtonType.submit) {
                         +"Edit"

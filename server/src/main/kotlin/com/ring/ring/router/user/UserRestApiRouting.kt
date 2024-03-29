@@ -8,6 +8,7 @@ fun Route.userRestApiRouting(
     controller: UserRestApiController = UserRestApiController()
 ) {
     route("/user") {
+        post("get") { controller.get(call) }
         post("signup") { controller.signUp(call) }
 //        post("edit") { controller.edit(call) }
 //        post("delete") { controller.delete(call) }

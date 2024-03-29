@@ -29,7 +29,7 @@ fun HTML.withdrawalUserView(res: GetUser.Res) {
                         method = FormMethod.post,
                         classes = "d-inline",
                     ) {
-                        hiddenInput(name = "id") { value = res.user.id }
+                        hiddenInput(name = "id") { value = res.user.id.toString() }
                         button(classes = "btn btn-lg btn-danger me-2", type = ButtonType.submit) {
                             +"Withdrawal"
                         }

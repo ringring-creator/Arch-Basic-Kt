@@ -21,6 +21,7 @@ class SignUp(
         val password: String,
     ) : UseCase.Req {
         fun toUser(): User = User(
+            id = null,
             email = email,
             password = password,
         )

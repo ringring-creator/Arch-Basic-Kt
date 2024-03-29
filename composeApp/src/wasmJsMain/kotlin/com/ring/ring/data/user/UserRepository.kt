@@ -1,5 +1,6 @@
 package com.ring.ring.data.user
 
+import com.ring.ring.usecase.user.GetUser
 import com.ring.ring.usecase.user.Login
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -7,9 +8,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
+    val id: Long?,
     val email: String,
     val password: String,
-)
+) {
+    fun toGetUserElement(): GetUser.Res.User {
+        return GetUser.Res.User(
+            id = id!!,
+            email = email,
+            password = password,
+        )
+    }
+}
 
 @Serializable
 data class Session(
@@ -28,5 +38,9 @@ class UserRepository(
 
     suspend fun login(user: User): Session = withContext(Dispatchers.Default) {
         return@withContext remoteDataSource.login(user)
+    }
+
+    suspend fun get(session: Session): User = withContext(Dispatchers.Default) {
+        return@withContext remoteDataSource.get(session)
     }
 }

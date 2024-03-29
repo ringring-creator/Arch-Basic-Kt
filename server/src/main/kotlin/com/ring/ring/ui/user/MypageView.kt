@@ -44,7 +44,7 @@ fun HTML.mypageView(res: GetUser.Res) {
                         encType = FormEncType.applicationXWwwFormUrlEncoded,
                         method = FormMethod.get
                     ) {
-                        hiddenInput(name = "id") { value = res.user.id }
+                        hiddenInput(name = "id") { value = res.user.id.toString() }
                         button(classes = "btn btn-danger btn-lg w-50", type = ButtonType.submit) {
                             +"Withdrawal"
                         }

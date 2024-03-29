@@ -18,11 +18,17 @@ class RemoteUserDataSource(
     }
 
     suspend fun login(user: User): Session {
-        val response = httpClient.post("$URL/user/login") {
+        return httpClient.post("$URL/user/login") {
             contentType(ContentType.Application.Json)
             setBody(user)
-        }
-        return response.body<Session>()
+        }.body<Session>()
+    }
+
+    suspend fun get(session: Session): User {
+        return httpClient.post("$URL/user/get") {
+            contentType(ContentType.Application.Json)
+            setBody(session)
+        }.body()
     }
 
     companion object {

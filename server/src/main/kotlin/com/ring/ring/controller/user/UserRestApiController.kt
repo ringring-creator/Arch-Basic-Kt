@@ -8,6 +8,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 
 class UserRestApiController(
+    private val getUser: GetUser = GetUser(),
     private val createUser: CreateUser = CreateUser(),
     private val editUser: EditUser = EditUser(),
     private val withdrawalUser: WithdrawalUser = WithdrawalUser(),
@@ -22,6 +23,12 @@ class UserRestApiController(
         } catch (e: Throwable) {
             call.respond(HttpStatusCode.BadRequest)
         }
+    }
+
+    suspend fun get(call: ApplicationCall) {
+        val req = call.receive<GetUser.Req>()
+        val res = getUser(req)
+        call.respond(HttpStatusCode.OK, res.user)
     }
 
     suspend fun edit(call: ApplicationCall) {

@@ -12,7 +12,7 @@ data class User(
     val password: String,
 ) {
     fun toGetUser(): GetUser.Res.User {
-        return GetUser.Res.User(id!!.toString(), email, password)
+        return GetUser.Res.User(id!!, email, password)
     }
 }
 
