@@ -2,6 +2,7 @@ package com.ring.ring
 
 import androidx.compose.runtime.*
 import com.ring.ring.ui.todo.create.CreateTodoScreen
+import com.ring.ring.ui.todo.edit.EditTodoScreen
 import com.ring.ring.ui.todo.list.TodoListScreen
 import com.ring.ring.ui.user.login.LoginScreen
 import com.ring.ring.ui.user.signup.SignUpScreen
@@ -28,8 +29,13 @@ fun Router(
         )
 
         Route.SignUp -> SignUpScreen { setRoute(Route.Login) }
-        is Route.TodoList -> TodoListScreen() { setRoute(Route.CreateTodo) }
+        Route.TodoList -> TodoListScreen(
+            toCreateTodoScreen = { setRoute(Route.CreateTodo) },
+            toEditTodoScreen = { setRoute(Route.EditTodo(it)) },
+        )
+
         Route.CreateTodo -> CreateTodoScreen { setRoute(Route.TodoList) }
+        is Route.EditTodo -> EditTodoScreen(route.todoId) { setRoute(Route.TodoList) }
     }
 }
 
@@ -38,4 +44,5 @@ sealed class Route {
     data object SignUp : Route()
     data object TodoList : Route()
     data object CreateTodo : Route()
+    data class EditTodo(val todoId: Long) : Route()
 }

@@ -30,7 +30,7 @@ class LoginViewModel(
     }
 
     override suspend fun login() {
-        val res = loginUseCase(
+        loginUseCase(
             Login.Req(email.value, password.value)
         )
         _toTodoListScreenEvent.trySend(Unit)

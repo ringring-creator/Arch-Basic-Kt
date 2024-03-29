@@ -8,7 +8,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toLocalDate
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Todo(
     val id: Long?,
     val title: String,
@@ -19,10 +21,12 @@ data class Todo(
 ) {
     fun toGetTodoListItem(): GetTodoList.Res.Todo? = id?.let {
         GetTodoList.Res.Todo(
-            id = it.toString(),
+            id = it,
             title = title,
+            description = description,
             done = done,
             deadline = deadline,
+            userId = userId,
         )
     }
 

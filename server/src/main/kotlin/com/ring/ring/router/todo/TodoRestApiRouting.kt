@@ -9,6 +9,8 @@ fun Route.todoRestApiRouting(
 ) {
     route("/todo") {
         post("create") { controller.create(call) }
+        post("get") { controller.get(call) }
+        post("list") { controller.list(call) }
         post("edit") { controller.edit(call) }
         post("delete") { controller.delete(call) }
     }

@@ -2,9 +2,7 @@ package com.ring.ring.controller.todo
 
 import com.ring.ring.exception.BadRequestException
 import com.ring.ring.exception.NotLoggedInException
-import com.ring.ring.usecase.todo.CreateTodo
-import com.ring.ring.usecase.todo.DeleteTodo
-import com.ring.ring.usecase.todo.EditTodo
+import com.ring.ring.usecase.todo.*
 import com.ring.ring.util.DateUtil
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -14,6 +12,8 @@ import kotlinx.datetime.toLocalDate
 
 class TodoRestApiController(
     private val createTodo: CreateTodo = CreateTodo(),
+    private val getTodo: GetTodo = GetTodo(),
+    private val getTodoList: GetTodoList = GetTodoList(),
     private val editTodo: EditTodo = EditTodo(),
     private val deleteTodo: DeleteTodo = DeleteTodo(),
 ) {
@@ -21,6 +21,18 @@ class TodoRestApiController(
         val req = call.receive<CreateTodo.Req>()
         createTodo(req = req)
         call.respond(HttpStatusCode.OK)
+    }
+
+    suspend fun get(call: ApplicationCall) {
+        val req = call.receive<GetTodo.Req>()
+        val res = getTodo(req = req)
+        call.respond(HttpStatusCode.OK, res.todo)
+    }
+
+    suspend fun list(call: ApplicationCall) {
+        val req = call.receive<GetTodoList.Req>()
+        val res = getTodoList(req = req)
+        call.respond(HttpStatusCode.OK, res.todoList)
     }
 
     suspend fun edit(call: ApplicationCall) {

@@ -28,6 +28,7 @@ class CreateTodo(
         req: Req,
         session: Session
     ) = Todo(
+        id = null,
         title = req.title,
         description = req.description,
         done = req.done,
