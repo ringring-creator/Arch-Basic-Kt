@@ -29,6 +29,15 @@ fun WithdrawalScreen(
         snackBarHostState = snackBarHostState,
     )
 
+    SetupSideEffect(viewModel, toLoginScreen, snackBarHostState)
+}
+
+@Composable
+private fun SetupSideEffect(
+    viewModel: WithdrawalViewModel,
+    toLoginScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState
+) {
     LaunchedEffect(Unit) {
         viewModel.toLoginScreenEvent.collect {
             toLoginScreen()
