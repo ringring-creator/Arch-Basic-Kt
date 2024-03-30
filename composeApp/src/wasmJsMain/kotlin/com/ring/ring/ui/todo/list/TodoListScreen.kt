@@ -103,34 +103,27 @@ fun TodoListScreen(
             }
         }
     ) {
-        Column(
-            modifier = Modifier.padding(it).padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Todo List", style = MaterialTheme.typography.headlineLarge)
-            Spacer(modifier = Modifier.height(16.dp))
-            uiState.todos.forEach { todo ->
-                Card(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
-                    onClick = { toEditTodoScreen(todo.id) }
-                ) {
-                    Row(
-                        modifier = Modifier.padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = todo.done,
-                            onCheckedChange = {
-                                scope.launch { updater.toggleDone(todo.id) }
-                            },
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(todo.title, style = MaterialTheme.typography.bodyMedium)
-                        Spacer(modifier = Modifier.weight(1f))
-                        Text("Deadline: ${todo.deadline}", style = MaterialTheme.typography.bodyMedium)
-                    }
-                }
-            }
+        val modifier = Modifier.padding(it)
+        Content(modifier, uiState, toEditTodoScreen, scope, updater)
+    }
+}
+
+@Composable
+private fun Content(
+    modifier: Modifier,
+    uiState: TodoListUiState,
+    toEditTodoScreen: (Long) -> Unit,
+    scope: CoroutineScope,
+    updater: TodoListUiUpdater
+) {
+    Column(
+        modifier = modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Header()
+        Spacer(modifier = Modifier.height(16.dp))
+        uiState.todos.forEach { todo ->
+            Item(toEditTodoScreen, todo, scope, updater)
         }
     }
 }
@@ -155,4 +148,56 @@ private fun TodoNavBar(
             )
         }
     }
+}
+
+@Composable
+private fun Header() {
+    Text("Todo List", style = MaterialTheme.typography.headlineLarge)
+}
+
+@Composable
+private fun Item(
+    toEditTodoScreen: (Long) -> Unit,
+    todo: TodoListUiState.Todo,
+    scope: CoroutineScope,
+    updater: TodoListUiUpdater
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        onClick = { toEditTodoScreen(todo.id) }
+    ) {
+        Row(
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            DoneCheckBox(todo.done) {
+                scope.launch { updater.toggleDone(todo.id) }
+            }
+            TitleText(todo.title)
+            Spacer(modifier = Modifier.weight(1f))
+            DeadlineText(todo.deadline)
+        }
+    }
+}
+
+@Composable
+private fun DoneCheckBox(
+    done: Boolean,
+    onCheckedChange: () -> Unit,
+) {
+    Checkbox(
+        checked = done,
+        onCheckedChange = { onCheckedChange() },
+        modifier = Modifier.padding(end = 8.dp)
+    )
+}
+
+@Composable
+private fun TitleText(title: String) {
+    Text(title, style = MaterialTheme.typography.bodyMedium)
+}
+
+@Composable
+private fun DeadlineText(deadline: String) {
+    Text("Deadline: $deadline", style = MaterialTheme.typography.bodyMedium)
 }
