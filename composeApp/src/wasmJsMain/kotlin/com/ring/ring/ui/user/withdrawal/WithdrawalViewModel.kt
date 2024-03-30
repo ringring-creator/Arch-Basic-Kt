@@ -9,9 +9,16 @@ class WithdrawalViewModel(
 ) : WithdrawalUiUpdater {
     private val _toLoginScreenEvent = Channel<Unit>()
     val toLoginScreenEvent = _toLoginScreenEvent.receiveAsFlow()
+    private val _withdrawalErrorEvent = Channel<Unit>()
+    val withdrawalErrorEvent = _withdrawalErrorEvent.receiveAsFlow()
 
     override suspend fun withdrawal() {
-        withdrawalUseCase(Withdrawal.Req())
+        try {
+            withdrawalUseCase(Withdrawal.Req())
+        } catch (e: Throwable) {
+            _withdrawalErrorEvent.trySend(Unit)
+            return
+        }
         _toLoginScreenEvent.trySend(Unit)
     }
 }

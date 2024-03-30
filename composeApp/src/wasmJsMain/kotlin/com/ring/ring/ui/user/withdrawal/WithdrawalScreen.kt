@@ -21,14 +21,25 @@ fun WithdrawalScreen(
     toLoginScreen: () -> Unit,
     toMyPageScreen: () -> Unit,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     WithdrawalScreen(
         updater = viewModel,
         toMyPageScreen = toMyPageScreen,
+        snackBarHostState = snackBarHostState,
     )
 
     LaunchedEffect(Unit) {
         viewModel.toLoginScreenEvent.collect {
             toLoginScreen()
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.withdrawalErrorEvent.collect {
+            snackBarHostState.showSnackbar(
+                message = "Failed to withdrawal",
+                withDismissAction = true,
+            )
         }
     }
 }
@@ -42,6 +53,7 @@ interface WithdrawalUiUpdater {
 fun WithdrawalScreen(
     updater: WithdrawalUiUpdater,
     toMyPageScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
     Scaffold(
@@ -54,7 +66,8 @@ fun WithdrawalScreen(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
     ) { paddingValues ->
         Content(
             modifier = Modifier.padding(paddingValues),
