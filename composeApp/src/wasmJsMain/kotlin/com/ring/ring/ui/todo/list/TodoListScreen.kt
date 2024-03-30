@@ -33,10 +33,17 @@ fun TodoListScreen(
         snackBarHostState = snackBarHostState,
     )
 
+    setupSideEffect(viewModel, snackBarHostState)
+}
+
+@Composable
+private fun setupSideEffect(
+    viewModel: TodoListViewModel,
+    snackBarHostState: SnackbarHostState
+) {
     LaunchedEffect(Unit) {
         viewModel.getTodoList()
     }
-
     LaunchedEffect(Unit) {
         viewModel.toggleDoneErrorEvent.collect {
             snackBarHostState.showSnackbar(
@@ -87,7 +94,6 @@ fun TodoListScreen(
     snackBarHostState: SnackbarHostState,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
-
     Scaffold(
         topBar = { TodoNavBar(toMyPageScreen) },
         snackbarHost = { SnackbarHost(snackBarHostState) },

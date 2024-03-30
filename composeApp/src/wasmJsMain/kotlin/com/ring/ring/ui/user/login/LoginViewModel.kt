@@ -18,6 +18,8 @@ class LoginViewModel(
     val password = _password.asStateFlow()
     private val _toTodoListScreenEvent = Channel<Unit>()
     val toTodoListScreenEvent = _toTodoListScreenEvent.receiveAsFlow()
+    private val _loginEvent = Channel<Unit>()
+    val loginEvent = _loginEvent.receiveAsFlow()
 
     override fun setEmail(email: String) {
         if (this.email.value == email) return
@@ -30,10 +32,12 @@ class LoginViewModel(
     }
 
     override suspend fun login() {
-        loginUseCase(
-            Login.Req(email.value, password.value)
-        )
-        _toTodoListScreenEvent.trySend(Unit)
+        try {
+            loginUseCase(Login.Req(email.value, password.value))
+            _toTodoListScreenEvent.trySend(Unit)
+        } catch (e: Throwable) {
+            _loginEvent.trySend(Unit)
+        }
     }
 
     companion object {

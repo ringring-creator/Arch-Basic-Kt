@@ -58,9 +58,7 @@ fun LogoutScreen(
     ) { paddingValues ->
         Content(
             modifier = Modifier.padding(paddingValues),
-            onLogoutConfirmed = {
-                scope.launch { updater.logout() }
-            },
+            onLogoutConfirmed = { scope.launch { updater.logout() } },
             onLogoutCancelled = toMyPageScreen,
         )
     }

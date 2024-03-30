@@ -4,10 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -17,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
@@ -28,17 +26,16 @@ fun LoginScreen(
     toSignUpScreen: () -> Unit,
     toTodoListScreen: () -> Unit,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     LoginScreen(
         uiState = LoginViewModel.rememberLoginUiState(viewModel),
         updater = viewModel,
-        toSignUpScreen = toSignUpScreen
+        toSignUpScreen = toSignUpScreen,
+        snackBarHostState = snackBarHostState,
     )
 
-    LaunchedEffect(Unit) {
-        viewModel.toTodoListScreenEvent.collect {
-            toTodoListScreen()
-        }
-    }
+    setupSideEffect(viewModel, toTodoListScreen, snackBarHostState)
 }
 
 data class LoginUiState(
@@ -53,63 +50,125 @@ interface LoginUiUpdater {
 }
 
 @Composable
+private fun setupSideEffect(
+    viewModel: LoginViewModel,
+    toTodoListScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState
+) {
+    LaunchedEffect(Unit) {
+        viewModel.toTodoListScreenEvent.collect {
+            toTodoListScreen()
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.loginEvent.collect {
+            snackBarHostState.showSnackbar(
+                message = "Failed to login",
+                withDismissAction = true,
+            )
+        }
+    }
+}
+
+@Composable
 fun LoginScreen(
     uiState: LoginUiState,
     updater: LoginUiUpdater,
     toSignUpScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState,
     scope: CoroutineScope = rememberCoroutineScope()
+) {
+    Scaffold(snackbarHost = { SnackbarHost(snackBarHostState) }) { paddingValues ->
+        Content(Modifier.padding(paddingValues), uiState, updater, scope, toSignUpScreen)
+    }
+}
+
+@Composable
+private fun Content(
+    modifier: Modifier,
+    uiState: LoginUiState,
+    updater: LoginUiUpdater,
+    scope: CoroutineScope,
+    toSignUpScreen: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text("Login", style = MaterialTheme.typography.headlineMedium)
-
-        OutlinedTextField(
-            value = uiState.email,
-            onValueChange = updater::setEmail,
-            label = { Text("Email address") },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-        )
-
+        Header()
+        EmailTextField(uiState, updater)
+        PasswordTextField(uiState, updater, scope)
         Spacer(Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = uiState.password,
-            onValueChange = updater::setPassword,
-            label = { Text("Password") },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {
-            })
-        )
-
+        LoginButton(scope, updater)
         Spacer(Modifier.height(16.dp))
+        SignUpText(toSignUpScreen)
+    }
+}
 
-        Button(
-            onClick = {
-                scope.launch { updater.login() }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Login")
-        }
+@Composable
+private fun Header() {
+    Text("Login", style = MaterialTheme.typography.headlineMedium)
+}
 
-        Spacer(Modifier.height(24.dp))
+@Composable
+private fun EmailTextField(
+    uiState: LoginUiState,
+    updater: LoginUiUpdater
+) {
+    OutlinedTextField(
+        value = uiState.email,
+        onValueChange = updater::setEmail,
+        label = { Text("Email address") },
+        singleLine = true,
+        modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+    )
+}
 
-        Row {
-            Text("Don't have an account?")
-            ClickableText(
-                annotatedString("Sign up"),
-                modifier = Modifier,
-                onClick = { toSignUpScreen() }
-            )
-        }
+@Composable
+private fun PasswordTextField(
+    uiState: LoginUiState,
+    updater: LoginUiUpdater,
+    scope: CoroutineScope
+) {
+    OutlinedTextField(
+        value = uiState.password,
+        onValueChange = updater::setPassword,
+        label = { Text("Password") },
+        singleLine = true,
+        modifier = Modifier.fillMaxWidth(),
+        visualTransformation = PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            scope.launch { updater.login() }
+        })
+    )
+}
+
+@Composable
+private fun SignUpText(toSignUpScreen: () -> Unit) {
+    Row {
+        Text("Don't have an account?")
+        ClickableText(
+            annotatedString("Sign up"),
+            modifier = Modifier,
+            onClick = { toSignUpScreen() }
+        )
+    }
+}
+
+@Composable
+private fun LoginButton(scope: CoroutineScope, updater: LoginUiUpdater) {
+    Button(
+        onClick = {
+            scope.launch { updater.login() }
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text("Login")
     }
 }
 
