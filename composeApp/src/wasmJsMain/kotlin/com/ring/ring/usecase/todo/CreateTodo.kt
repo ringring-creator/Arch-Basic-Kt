@@ -18,7 +18,7 @@ class CreateTodo(
     private val sessionRepository: SessionRepository = DataModules.sessionRepository,
 ) : UseCase<CreateTodo.Req, CreateTodo.Res>() {
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
-        val session = sessionRepository.getSession() ?: throw Exception()
+        val session = sessionRepository.get() ?: throw Exception()
         val todo = convertTodo(req, session)
         todoRepository.create(todo)
         return@withContext Res()

@@ -6,6 +6,7 @@ import com.ring.ring.ui.todo.edit.EditTodoScreen
 import com.ring.ring.ui.todo.list.TodoListScreen
 import com.ring.ring.ui.user.edit.EditUserScreen
 import com.ring.ring.ui.user.login.LoginScreen
+import com.ring.ring.ui.user.logout.LogoutScreen
 import com.ring.ring.ui.user.mypage.MyPageScreen
 import com.ring.ring.ui.user.signup.SignUpScreen
 
@@ -39,7 +40,11 @@ fun Router(
         )
 
         Route.EditUser -> EditUserScreen { setRoute(Route.MyPage) }
-        Route.Logout -> TODO()
+        Route.Logout -> LogoutScreen(
+            toLoginScreen = { setRoute(Route.Login) },
+            toMyPageScreen = { setRoute(Route.MyPage) }
+        )
+
         Route.WithdrawalUser -> TODO()
 
         Route.TodoList -> TodoListScreen(

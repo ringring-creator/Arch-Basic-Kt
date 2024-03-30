@@ -14,7 +14,7 @@ class GetTodoList(
     private val sessionRepository: SessionRepository = DataModules.sessionRepository,
 ) : UseCase<GetTodoList.Req, GetTodoList.Res>() {
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
-        val session = sessionRepository.getSession() ?: throw Exception()
+        val session = sessionRepository.get() ?: throw Exception()
         val todoList = todoRepository.list(session)
         return@withContext Res(
             todoList = todoList.map(Todo::toGetTodoListElement)

@@ -22,4 +22,8 @@ class KeyValueSessionDataSource(
     fun save(key: String, value: String) {
         settings[key] = value
     }
+
+    fun remove(key: String) {
+        settings.remove(key)
+    }
 }

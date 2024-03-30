@@ -18,7 +18,7 @@ class EditTodo(
     private val sessionRepository: SessionRepository = DataModules.sessionRepository,
 ) : UseCase<EditTodo.Req, EditTodo.Res>() {
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
-        val session = sessionRepository.getSession() ?: throw Exception()
+        val session = sessionRepository.get() ?: throw Exception()
         val todo = convertTodo(req, session)
         todoRepository.edit(todo, session)
         return@withContext Res()

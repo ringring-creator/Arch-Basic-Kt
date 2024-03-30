@@ -1,25 +1,20 @@
-package com.ring.ring.usecase.todo
+package com.ring.ring.usecase.user
 
 import com.ring.ring.data.session.SessionRepository
-import com.ring.ring.data.todo.TodoRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class DeleteTodo(
-    private val todoRepository: TodoRepository = DataModules.todoRepository,
+class Logout(
     private val sessionRepository: SessionRepository = DataModules.sessionRepository,
-) : UseCase<DeleteTodo.Req, DeleteTodo.Res>() {
+) : UseCase<Logout.Req, Logout.Res>() {
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
-        val session = sessionRepository.get() ?: throw Exception()
-        todoRepository.delete(req.id, session)
+        sessionRepository.delete()
         return@withContext Res()
     }
 
-    data class Req(
-        val id: Long,
-    ) : UseCase.Req
+    class Req : UseCase.Req
 
     class Res : UseCase.Res
 }

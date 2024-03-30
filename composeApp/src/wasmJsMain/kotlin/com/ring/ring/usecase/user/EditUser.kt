@@ -13,7 +13,7 @@ class EditUser(
     private val sessionRepository: SessionRepository = DataModules.sessionRepository,
 ) : UseCase<EditUser.Req, EditUser.Res>() {
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
-        val session = sessionRepository.getSession() ?: throw Exception()
+        val session = sessionRepository.get() ?: throw Exception()
         userRepository.edit(req.toUser(), session)
         return@withContext Res()
     }
