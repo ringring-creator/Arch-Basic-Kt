@@ -18,6 +18,8 @@ class SignUpViewModel(
     val password = _password.asStateFlow()
     private val _toLoginScreenEvent = Channel<Unit>()
     val toLoginScreenEvent = _toLoginScreenEvent.receiveAsFlow()
+    private val _signUpErrorEvent = Channel<Unit>()
+    val signUpErrorEvent = _signUpErrorEvent.receiveAsFlow()
 
     override fun setEmail(email: String) {
         if (this.email.value == email) return
@@ -30,8 +32,12 @@ class SignUpViewModel(
     }
 
     override suspend fun signUp() {
-        signUpUseCase(SignUp.Req(email.value, password.value))
-        _toLoginScreenEvent.trySend(Unit)
+        try {
+            signUpUseCase(SignUp.Req(email.value, password.value))
+            _toLoginScreenEvent.trySend(Unit)
+        } catch (e: Throwable) {
+            _signUpErrorEvent.trySend(Unit)
+        }
     }
 
     companion object {

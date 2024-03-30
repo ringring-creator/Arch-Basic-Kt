@@ -1,7 +1,6 @@
 package com.ring.ring.ui.user.signup
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -22,15 +21,26 @@ fun SignUpScreen(
     viewModel: SignUpViewModel = remember { SignUpViewModel() },
     toLoginScreen: () -> Unit,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     SignUpScreen(
         uiState = SignUpViewModel.rememberSignUpUiState(viewModel),
         updater = viewModel,
         toLoginScreen = toLoginScreen,
+        snackBarHostState = snackBarHostState,
     )
 
     LaunchedEffect(Unit) {
         viewModel.toLoginScreenEvent.collect {
             toLoginScreen()
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.signUpErrorEvent.collect {
+            snackBarHostState.showSnackbar(
+                message = "Failed to sign up",
+                withDismissAction = true,
+            )
         }
     }
 }
@@ -52,6 +62,7 @@ fun SignUpScreen(
     uiState: SignUpUiState,
     updater: SignUpUiUpdater,
     toLoginScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
     Scaffold(
@@ -64,47 +75,75 @@ fun SignUpScreen(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackBarHostState) }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            OutlinedTextField(
-                value = uiState.email,
-                onValueChange = updater::setEmail,
-                label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-            )
+        Content(
+            modifier = Modifier.padding(paddingValues),
+            uiState = uiState,
+            updater = updater,
+            scope = scope
+        )
+    }
+}
 
-            Spacer(Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = uiState.password,
-                onValueChange = updater::setPassword,
-                label = { Text("Password") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                })
-            )
-
-            Spacer(Modifier.height(16.dp))
-
-            Button(
-                onClick = {
-                    scope.launch { updater.signUp() }
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Sign Up")
-            }
+@Composable
+private fun Content(
+    modifier: Modifier,
+    uiState: SignUpUiState,
+    updater: SignUpUiUpdater,
+    scope: CoroutineScope
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        EmailTextField(uiState.email, updater::setEmail)
+        PasswordTextField(uiState.password, updater::setPassword)
+        Spacer(Modifier.height(8.dp))
+        SignUpButton {
+            scope.launch { updater.signUp() }
         }
     }
+}
+
+@Composable
+private fun EmailTextField(
+    email: String,
+    setEmail: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = email,
+        onValueChange = setEmail,
+        label = { Text("Email") },
+        modifier = Modifier.fillMaxWidth(),
+        singleLine = true,
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+    )
+}
+
+@Composable
+private fun PasswordTextField(
+    password: String,
+    setPassword: (String) -> Unit,
+) {
+    OutlinedTextField(
+        value = password,
+        onValueChange = setPassword,
+        label = { Text("Password") },
+        singleLine = true,
+        modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+    )
+}
+
+@Composable
+private fun SignUpButton(signUp: () -> Unit) {
+    Button(
+        onClick = signUp,
+        modifier = Modifier.fillMaxWidth()
+    ) { Text("Sign Up") }
 }
