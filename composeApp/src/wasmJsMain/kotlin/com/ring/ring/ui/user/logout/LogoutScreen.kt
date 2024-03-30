@@ -21,14 +21,25 @@ fun LogoutScreen(
     toLoginScreen: () -> Unit,
     toMyPageScreen: () -> Unit,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     LogoutScreen(
         updater = viewModel,
         toMyPageScreen = toMyPageScreen,
+        snackBarHostState = snackBarHostState,
     )
 
     LaunchedEffect(Unit) {
         viewModel.toLoginScreenEvent.collect {
             toLoginScreen()
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.logoutErrorEvent.collect {
+            snackBarHostState.showSnackbar(
+                message = "Failed to get todo list",
+                withDismissAction = true,
+            )
         }
     }
 }
@@ -42,7 +53,8 @@ interface LogoutUiUpdater {
 fun LogoutScreen(
     updater: LogoutUiUpdater,
     toMyPageScreen: () -> Unit,
-    scope: CoroutineScope = rememberCoroutineScope()
+    snackBarHostState: SnackbarHostState,
+    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
     Scaffold(
         topBar = {
@@ -52,9 +64,10 @@ fun LogoutScreen(
                     IconButton(onClick = toMyPageScreen) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
                     }
-                }
+                },
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
     ) { paddingValues ->
         Content(
             modifier = Modifier.padding(paddingValues),
