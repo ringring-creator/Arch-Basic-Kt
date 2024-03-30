@@ -17,21 +17,50 @@ fun MyPageScreen(
     toWithdrawalUserScreen: () -> Unit,
     toTodoListScreen: () -> Unit,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     MyPageScreen(
         uiState = MyPageViewModel.rememberLoginUiState(viewModel),
         toLogoutScreen = toLogoutScreen,
         toEditUserScreen = toEditUserScreen,
         toWithdrawalUserScreen = toWithdrawalUserScreen,
         toTodoListScreen = toTodoListScreen,
+        snackBarHostState = snackBarHostState,
     )
 
+    SetupSideEffect(viewModel, snackBarHostState)
+}
+
+@Composable
+private fun SetupSideEffect(
+    viewModel: MyPageViewModel,
+    snackBarHostState: SnackbarHostState
+) {
     LaunchedEffect(Unit) {
         viewModel.getUser()
+    }
+    LaunchedEffect(Unit) {
+        viewModel.getUserErrorEvent.collect {
+            val snackBarResult = snackBarHostState.showSnackbar(
+                message = "Failed to get user",
+                actionLabel = "Retry",
+                withDismissAction = true,
+            )
+            when (snackBarResult) {
+                SnackbarResult.Dismissed -> {}
+                SnackbarResult.ActionPerformed -> {
+                    viewModel.getUser()
+                }
+            }
+        }
     }
 }
 
 data class MyPageUiState(
     val email: String,
+    val logoutEnabled: Boolean,
+    val editEnabled: Boolean,
+    val withdrawalEnabled: Boolean,
 )
 
 @Composable
@@ -41,9 +70,11 @@ fun MyPageScreen(
     toEditUserScreen: () -> Unit,
     toWithdrawalUserScreen: () -> Unit,
     toTodoListScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState,
 ) {
     Scaffold(
         topBar = { TodoNavBar(toTodoListScreen = toTodoListScreen) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         content = { paddingValues ->
             Content(
                 modifier = Modifier.padding(paddingValues),
@@ -80,15 +111,18 @@ private fun Content(
         ) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = toLogoutScreen
+                onClick = toLogoutScreen,
+                enabled = uiState.logoutEnabled
             ) { Text("Logout") }
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = toEditUserScreen
+                onClick = toEditUserScreen,
+                enabled = uiState.editEnabled
             ) { Text("Edit") }
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = toWithdrawalUserScreen,
+                enabled = uiState.withdrawalEnabled,
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
             ) { Text("Withdrawal") }
         }
