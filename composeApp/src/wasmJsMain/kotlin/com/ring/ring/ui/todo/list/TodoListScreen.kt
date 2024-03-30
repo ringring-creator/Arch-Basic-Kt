@@ -33,11 +33,11 @@ fun TodoListScreen(
         snackBarHostState = snackBarHostState,
     )
 
-    setupSideEffect(viewModel, snackBarHostState)
+    SetupSideEffect(viewModel, snackBarHostState)
 }
 
 @Composable
-private fun setupSideEffect(
+private fun SetupSideEffect(
     viewModel: TodoListViewModel,
     snackBarHostState: SnackbarHostState
 ) {

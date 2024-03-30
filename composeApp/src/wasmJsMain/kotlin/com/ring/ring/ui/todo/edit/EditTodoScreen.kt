@@ -28,12 +28,25 @@ fun EditTodoScreen(
     viewModel: EditTodoViewModel = remember { EditTodoViewModel() },
     toTodoListScreen: () -> Unit,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     EditTodoScreen(
         uiState = EditTodoViewModel.rememberEditTodoUiState(viewModel),
         updater = viewModel,
         toTodoListScreen = toTodoListScreen,
+        snackBarHostState = snackBarHostState,
     )
 
+    SetupSideEffect(viewModel, toTodoListScreen, todoId, snackBarHostState)
+}
+
+@Composable
+private fun SetupSideEffect(
+    viewModel: EditTodoViewModel,
+    toTodoListScreen: () -> Unit,
+    todoId: Long,
+    snackBarHostState: SnackbarHostState
+) {
     LaunchedEffect(Unit) {
         viewModel.toTodoListEvent.collect {
             toTodoListScreen()
@@ -41,6 +54,37 @@ fun EditTodoScreen(
     }
     LaunchedEffect(Unit) {
         viewModel.getTodo(todoId = todoId)
+    }
+    LaunchedEffect(Unit) {
+        viewModel.editErrorEvent.collect {
+            snackBarHostState.showSnackbar(
+                message = "Failed to edit",
+                withDismissAction = true,
+            )
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.deleteErrorEvent.collect {
+            snackBarHostState.showSnackbar(
+                message = "Failed to delete",
+                withDismissAction = true,
+            )
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.getTodoErrorEvent.collect {
+            val snackBarResult = snackBarHostState.showSnackbar(
+                message = "Failed to get todo list",
+                actionLabel = "Retry",
+                withDismissAction = true,
+            )
+            when (snackBarResult) {
+                SnackbarResult.Dismissed -> {}
+                SnackbarResult.ActionPerformed -> {
+                    viewModel.getTodo(todoId)
+                }
+            }
+        }
     }
 }
 
@@ -76,7 +120,6 @@ data class EditTodoUiState(
 }
 
 interface EditTodoUiUpdater {
-    fun onBack()
     suspend fun editTodo()
     suspend fun deleteTodo()
     fun setTitle(title: String)
@@ -93,6 +136,7 @@ fun EditTodoScreen(
     uiState: EditTodoUiState,
     updater: EditTodoUiUpdater,
     toTodoListScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState,
 ) {
     Scaffold(
         topBar = {
@@ -104,7 +148,8 @@ fun EditTodoScreen(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
     ) { padding ->
         Content(
             Modifier
@@ -114,11 +159,14 @@ fun EditTodoScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Content(
     modifier: Modifier,
     uiState: EditTodoUiState,
-    updater: EditTodoUiUpdater
+    updater: EditTodoUiUpdater,
+    datePickerState: DatePickerState = rememberDatePickerState(),
+    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
     Box(
         modifier = modifier,
@@ -129,29 +177,34 @@ private fun Content(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            TitleTextField(uiState, updater)
-            DescriptionTextField(uiState, updater)
-            DoneCheckBox(uiState, updater)
-            DeadlineField(updater, uiState)
+            TitleTextField(uiState.title, updater::setTitle)
+            DescriptionTextField(uiState.description, updater::setDescription)
+            DoneCheckBox(uiState.done, updater::setDone)
+            DeadlineField(uiState.deadline.formatString(), updater::showDatePicker)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.align(Alignment.End)) {
-                EditButton(updater)
+                EditButton { scope.launch { updater.editTodo() } }
                 Spacer(Modifier.width(8.dp))
-                DeleteButton(updater)
+                DeleteButton { scope.launch { updater.deleteTodo() } }
             }
         }
-        DeadlineDatePicker(uiState, updater)
+        DeadlineDatePicker(
+            uiState.isShowDatePicker,
+            datePickerState,
+            updater::dismissDatePicker,
+            updater::setDeadline,
+        )
     }
 }
 
 @Composable
 private fun TitleTextField(
-    uiState: EditTodoUiState,
-    updater: EditTodoUiUpdater
+    title: String,
+    setTitle: (String) -> Unit
 ) {
     OutlinedTextField(
-        value = uiState.title,
-        onValueChange = updater::setTitle,
+        value = title,
+        onValueChange = setTitle,
         label = { Text("Title") },
         modifier = Modifier.fillMaxWidth()
     )
@@ -159,12 +212,12 @@ private fun TitleTextField(
 
 @Composable
 private fun DescriptionTextField(
-    uiState: EditTodoUiState,
-    updater: EditTodoUiUpdater
+    description: String,
+    setDescription: (String) -> Unit
 ) {
     OutlinedTextField(
-        value = uiState.description,
-        onValueChange = updater::setDescription,
+        value = description,
+        onValueChange = setDescription,
         label = { Text("Description") },
         modifier = Modifier.fillMaxWidth()
     )
@@ -172,13 +225,13 @@ private fun DescriptionTextField(
 
 @Composable
 private fun DoneCheckBox(
-    uiState: EditTodoUiState,
-    updater: EditTodoUiUpdater
+    done: Boolean,
+    setDone: (Boolean) -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
-            checked = uiState.done,
-            onCheckedChange = updater::setDone,
+            checked = done,
+            onCheckedChange = setDone,
         )
         Text("Done")
     }
@@ -186,31 +239,28 @@ private fun DoneCheckBox(
 
 @Composable
 private fun DeadlineField(
-    updater: EditTodoUiUpdater,
-    uiState: EditTodoUiState
+    deadline: String,
+    showDatePicker: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable(onClick = updater::showDatePicker),
+        modifier = Modifier.clickable(onClick = showDatePicker),
     ) {
         Icon(
             Icons.Filled.DateRange,
             contentDescription = null,
         )
-        Text(uiState.deadline.formatString())
+        Text(deadline)
     }
 }
 
 @Composable
 private fun EditButton(
-    updater: EditTodoUiUpdater,
-    scope: CoroutineScope = rememberCoroutineScope()
+    edit: () -> Unit,
 ) {
     Button(
-        onClick = {
-            scope.launch { updater.editTodo() }
-        },
+        onClick = edit,
     ) {
         Text("Edit")
     }
@@ -218,13 +268,10 @@ private fun EditButton(
 
 @Composable
 private fun DeleteButton(
-    updater: EditTodoUiUpdater,
-    scope: CoroutineScope = rememberCoroutineScope()
+    delete: () -> Unit,
 ) {
     Button(
-        onClick = {
-            scope.launch { updater.deleteTodo() }
-        },
+        onClick = delete,
     ) {
         Text("Delete")
     }
@@ -233,21 +280,22 @@ private fun DeleteButton(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DeadlineDatePicker(
-    uiState: EditTodoUiState,
-    updater: EditTodoUiUpdater,
+    isShowDatePicker: Boolean,
+    datePickerState: DatePickerState,
+    dismissDatePicker: () -> Unit,
+    setDeadline: (Long) -> Unit,
 ) {
-    val state = rememberDatePickerState()
-    if (uiState.isShowDatePicker) {
+    if (isShowDatePicker) {
         DatePickerDialog(
-            onDismissRequest = updater::dismissDatePicker,
+            onDismissRequest = dismissDatePicker,
             confirmButton = {
                 Text("Set", modifier = Modifier.padding(16.dp).clickable {
-                    state.selectedDateMillis?.let { updater.setDeadline(it) }
-                    updater.dismissDatePicker()
+                    datePickerState.selectedDateMillis?.let { setDeadline(it) }
+                    dismissDatePicker()
                 })
             }
         ) {
-            DatePicker(state)
+            DatePicker(datePickerState)
         }
     }
 }

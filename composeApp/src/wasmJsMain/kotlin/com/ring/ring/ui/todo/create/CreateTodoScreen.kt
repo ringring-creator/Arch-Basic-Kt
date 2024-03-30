@@ -26,15 +26,35 @@ fun CreateTodoScreen(
     viewModel: CreateTodoViewModel = remember { CreateTodoViewModel() },
     toTodoListScreen: () -> Unit,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     CreateTodoScreen(
         uiState = CreateTodoViewModel.rememberCreateTodoUiState(viewModel),
         updater = viewModel,
         toTodoListScreen = toTodoListScreen,
+        snackBarHostState = snackBarHostState,
     )
 
+    setupSideEffect(viewModel, toTodoListScreen, snackBarHostState)
+}
+
+@Composable
+private fun setupSideEffect(
+    viewModel: CreateTodoViewModel,
+    toTodoListScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState
+) {
     LaunchedEffect(Unit) {
         viewModel.toTodoListEvent.collect {
             toTodoListScreen()
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.saveTodoErrorEvent.collect {
+            snackBarHostState.showSnackbar(
+                message = "Failed to create",
+                withDismissAction = true,
+            )
         }
     }
 }
@@ -71,7 +91,6 @@ data class CreateTodoUiState(
 }
 
 interface CreateTodoUiUpdater {
-    fun onBack()
     suspend fun saveTodo()
     fun setTitle(title: String)
     fun setDescription(description: String)
@@ -87,6 +106,7 @@ fun CreateTodoScreen(
     uiState: CreateTodoUiState,
     updater: CreateTodoUiUpdater,
     toTodoListScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState,
 ) {
     Scaffold(
         topBar = {
@@ -98,7 +118,8 @@ fun CreateTodoScreen(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
     ) { padding ->
         Content(
             modifier = Modifier

@@ -24,21 +24,23 @@ class CreateTodoViewModel(
     val isShowDatePicker = _isShowDatePicker.asStateFlow()
     private val _toTodoListEvent = Channel<Unit>()
     val toTodoListEvent = _toTodoListEvent.receiveAsFlow()
-
-    override fun onBack() {
-        TODO("Not yet implemented")
-    }
+    private val _saveTodoErrorEvent = Channel<Unit>()
+    val saveTodoErrorEvent = _saveTodoErrorEvent.receiveAsFlow()
 
     override suspend fun saveTodo() {
-        createTodo(
-            CreateTodo.Req(
-                title = title.value,
-                description = description.value,
-                done = done.value,
-                deadline = deadline.value.dateMillis,
+        try {
+            createTodo(
+                CreateTodo.Req(
+                    title = title.value,
+                    description = description.value,
+                    done = done.value,
+                    deadline = deadline.value.dateMillis,
+                )
             )
-        )
-        _toTodoListEvent.trySend(Unit)
+            _toTodoListEvent.trySend(Unit)
+        } catch (e: Throwable) {
+            _saveTodoErrorEvent.trySend(Unit)
+        }
     }
 
     override fun setTitle(title: String) {

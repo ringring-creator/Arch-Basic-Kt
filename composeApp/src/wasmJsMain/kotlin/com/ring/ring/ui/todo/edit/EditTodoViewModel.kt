@@ -29,29 +29,52 @@ class EditTodoViewModel(
     val isShowDatePicker = _isShowDatePicker.asStateFlow()
     private val _toTodoListEvent = Channel<Unit>()
     val toTodoListEvent = _toTodoListEvent.receiveAsFlow()
+    private val _editErrorEvent = Channel<Unit>()
+    val editErrorEvent = _editErrorEvent.receiveAsFlow()
+    private val _deleteErrorEvent = Channel<Unit>()
+    val deleteErrorEvent = _deleteErrorEvent.receiveAsFlow()
+    private val _getTodoErrorEvent = Channel<Unit>()
+    val getTodoErrorEvent = _getTodoErrorEvent.receiveAsFlow()
 
-    override fun onBack() {
-        TODO("Not yet implemented")
+    suspend fun getTodo(todoId: Long) {
+        val res = try {
+            getTodoUseCase(GetTodo.Req(todoId))
+        } catch (e: Throwable) {
+            _getTodoErrorEvent.trySend(Unit)
+            return
+        }
+        id = res.todo.id
+        _title.value = res.todo.title
+        _description.value = res.todo.description
+        _done.value = res.todo.done
+        _deadline.value = res.todo.deadline
     }
 
     override suspend fun editTodo() {
-        val id = id ?: return
-        editTodoUseCase(
-            EditTodo.Req(
-                id = id,
-                title = title.value,
-                description = description.value,
-                done = done.value,
-                deadline = deadline.value.dateMillis,
+        try {
+            val id = unwrapId()
+            editTodoUseCase(
+                EditTodo.Req(
+                    id = id,
+                    title = title.value,
+                    description = description.value,
+                    done = done.value,
+                    deadline = deadline.value.dateMillis,
+                )
             )
-        )
-        _toTodoListEvent.trySend(Unit)
+            _toTodoListEvent.trySend(Unit)
+        } catch (e: Throwable) {
+            _editErrorEvent.trySend(Unit)
+        }
     }
 
     override suspend fun deleteTodo() {
-        id?.let {
-            deleteTodoUseCase(DeleteTodo.Req(it))
+        try {
+            val id = unwrapId()
+            deleteTodoUseCase(DeleteTodo.Req(id))
             _toTodoListEvent.trySend(Unit)
+        } catch (e: Throwable) {
+            _deleteErrorEvent.trySend(Unit)
         }
     }
 
@@ -85,13 +108,9 @@ class EditTodoViewModel(
         _isShowDatePicker.value = false
     }
 
-    suspend fun getTodo(todoId: Long) {
-        val res = getTodoUseCase(GetTodo.Req(todoId))
-        id = res.todo.id
-        _title.value = res.todo.title
-        _description.value = res.todo.description
-        _done.value = res.todo.done
-        _deadline.value = res.todo.deadline
+    private fun unwrapId() = id ?: run {
+        _editErrorEvent.trySend(Unit)
+        throw IllegalStateException()
     }
 
     companion object {
