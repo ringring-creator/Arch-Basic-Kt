@@ -137,23 +137,6 @@ private fun Content(
 }
 
 @Composable
-private fun DeadlineField(
-    updater: CreateTodoUiUpdater,
-    uiState: CreateTodoUiState
-) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.clickable(onClick = updater::showDatePicker),
-    ) {
-        Icon(
-            Icons.Filled.DateRange,
-            contentDescription = null,
-        )
-        Text(uiState.deadline.formatString())
-    }
-}
-
-@Composable
 private fun TitleTextField(
     uiState: CreateTodoUiState,
     updater: CreateTodoUiUpdater
@@ -190,6 +173,24 @@ private fun DoneCheckBox(
             onCheckedChange = updater::setDone,
         )
         Text("Done")
+    }
+}
+
+@Composable
+private fun DeadlineField(
+    updater: CreateTodoUiUpdater,
+    uiState: CreateTodoUiState
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable(onClick = updater::showDatePicker),
+    ) {
+        Icon(
+            Icons.Filled.DateRange,
+            contentDescription = null,
+        )
+        Text(uiState.deadline.formatString())
     }
 }
 
