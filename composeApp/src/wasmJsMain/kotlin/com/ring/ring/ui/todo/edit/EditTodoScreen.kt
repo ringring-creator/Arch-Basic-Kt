@@ -14,12 +14,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ring.ring.util.DateUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 
 @Composable
@@ -99,21 +96,12 @@ data class EditTodoUiState(
         val dateMillis: Long
     ) {
         fun formatString(): String {
-            return convertLongToDateString(dateMillis)
-        }
-
-        private fun convertLongToDateString(timestamp: Long): String {
-            val instant = Instant.fromEpochMilliseconds(timestamp)
-            val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-
-            return "${localDateTime.year}-${
-                localDateTime.monthNumber.toString().padStart(2, '0')
-            }-${localDateTime.dayOfMonth.toString().padStart(2, '0')}"
+            return DateUtil.format(dateMillis)
         }
 
         companion object {
             fun currentTime(): Deadline {
-                return Deadline(Clock.System.now().toEpochMilliseconds())
+                return Deadline(DateUtil.currentEpochMilliseconds())
             }
         }
     }

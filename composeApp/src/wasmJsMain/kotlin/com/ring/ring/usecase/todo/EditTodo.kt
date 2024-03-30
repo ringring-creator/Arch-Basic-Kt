@@ -6,12 +6,10 @@ import com.ring.ring.data.todo.TodoRepository
 import com.ring.ring.data.user.Session
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
+import com.ring.ring.util.DateUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 class EditTodo(
     private val todoRepository: TodoRepository = DataModules.todoRepository,
@@ -43,11 +41,7 @@ class EditTodo(
         val done: Boolean,
         val deadline: Long,
     ) : UseCase.Req {
-        fun localDateDeadline(): LocalDate {
-            val instant = Instant.fromEpochMilliseconds(deadline)
-            val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-            return localDateTime.date
-        }
+        fun localDateDeadline(): LocalDate = DateUtil.toLocalDate(deadline)
     }
 
     class Res : UseCase.Res
