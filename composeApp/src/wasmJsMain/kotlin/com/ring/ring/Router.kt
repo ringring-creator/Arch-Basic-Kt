@@ -9,6 +9,7 @@ import com.ring.ring.ui.user.login.LoginScreen
 import com.ring.ring.ui.user.logout.LogoutScreen
 import com.ring.ring.ui.user.mypage.MyPageScreen
 import com.ring.ring.ui.user.signup.SignUpScreen
+import com.ring.ring.ui.user.withdrawal.WithdrawalScreen
 
 @Composable
 fun Router() {
@@ -45,7 +46,10 @@ fun Router(
             toMyPageScreen = { setRoute(Route.MyPage) }
         )
 
-        Route.WithdrawalUser -> TODO()
+        Route.WithdrawalUser -> WithdrawalScreen(
+            toLoginScreen = { setRoute(Route.Login) },
+            toMyPageScreen = { setRoute(Route.MyPage) }
+        )
 
         Route.TodoList -> TodoListScreen(
             toCreateTodoScreen = { setRoute(Route.CreateTodo) },

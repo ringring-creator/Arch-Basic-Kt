@@ -1,6 +1,5 @@
 package com.ring.ring.controller.user
 
-import com.ring.ring.exception.BadRequestException
 import com.ring.ring.usecase.user.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -13,7 +12,6 @@ class UserRestApiController(
     private val editUser: EditUser = EditUser(),
     private val withdrawalUser: WithdrawalUser = WithdrawalUser(),
     private val login: Login = Login(),
-    private val logout: Logout = Logout(),
 ) {
     suspend fun signUp(call: ApplicationCall) {
         try {
@@ -37,11 +35,10 @@ class UserRestApiController(
         call.respond(HttpStatusCode.OK)
     }
 
-    suspend fun delete(call: ApplicationCall) {
-        val parameters = call.receiveParameters()
-        val req = convertWithdrawalUserReq(parameters)
+    suspend fun withdrawal(call: ApplicationCall) {
+        val req = call.receive<WithdrawalUser.Req>()
         withdrawalUser(req)
-        call.respondRedirect("/user/login")
+        call.respond(HttpStatusCode.OK)
     }
 
     suspend fun login(call: ApplicationCall) {
@@ -49,24 +46,4 @@ class UserRestApiController(
         val res = login(req)
         call.respond(HttpStatusCode.OK, res)
     }
-
-//    suspend fun logout(call: ApplicationCall) {
-//        val session = call.sessions.get<Login.Res.Session>()
-//        session?.let {
-//            logout(Logout.Req(it.userId, it.credential))
-//            call.sessions.clear<Login.Res.Session>()
-//        }
-//        call.respondRedirect("/user/login")
-//    }
-
-    private fun convertWithdrawalUserReq(parameters: Parameters): WithdrawalUser.Req =
-        WithdrawalUser.Req(
-            id = parameters["id"]?.toLong()
-                ?: throw BadRequestException(message = "Id is not found.")
-        )
-
-    private fun convertLoginReq(parameters: Parameters): Login.Req = Login.Req(
-        email = parameters["email"] ?: throw BadRequestException(message = "Id is not found."),
-        password = parameters["password"] ?: throw BadRequestException(message = "Id is not found."),
-    )
 }

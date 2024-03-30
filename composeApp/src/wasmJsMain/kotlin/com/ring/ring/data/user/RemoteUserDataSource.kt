@@ -45,6 +45,18 @@ class RemoteUserDataSource(
         }
     }
 
+    @Serializable
+    data class WithdrawalRequest(
+        val id: Long
+    )
+
+    suspend fun withdrawal(userId: Long) {
+        httpClient.post("$URL/user/withdrawal") {
+            contentType(ContentType.Application.Json)
+            setBody(WithdrawalRequest(userId))
+        }
+    }
+
     companion object {
         const val URL = "http://localhost:8081"
     }
