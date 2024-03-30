@@ -7,9 +7,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun TodoListScreen(
@@ -21,6 +24,7 @@ fun TodoListScreen(
     val uiState = TodoListViewModel.rememberTodoListUiState(viewModel)
     TodoListScreen(
         uiState = uiState,
+        updater = viewModel,
         toCreateTodoScreen = toCreateTodoScreen,
         toEditTodoScreen = toEditTodoScreen,
         toMyPageScreen = toMyPageScreen,
@@ -35,19 +39,25 @@ data class TodoListUiState(
     val todos: List<Todo>
 ) {
     data class Todo(
-        val id: String,
+        val id: Long,
         val title: String,
         val done: Boolean,
         val deadline: String,
     )
 }
 
+interface TodoListUiUpdater {
+    suspend fun toggleDone(todoId: Long)
+}
+
 @Composable
 fun TodoListScreen(
     uiState: TodoListUiState,
+    updater: TodoListUiUpdater,
     toCreateTodoScreen: () -> Unit,
     toEditTodoScreen: (Long) -> Unit,
     toMyPageScreen: () -> Unit,
+    scope: CoroutineScope = rememberCoroutineScope()
 ) {
     Scaffold(
         topBar = { TodoNavBar(toMyPageScreen) },
@@ -66,7 +76,7 @@ fun TodoListScreen(
             uiState.todos.forEach { todo ->
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(8.dp),
-                    onClick = { toEditTodoScreen(todo.id.toLong()) }
+                    onClick = { toEditTodoScreen(todo.id) }
                 ) {
                     Row(
                         modifier = Modifier.padding(8.dp),
@@ -74,7 +84,9 @@ fun TodoListScreen(
                     ) {
                         Checkbox(
                             checked = todo.done,
-                            onCheckedChange = { /* Handle check change */ },
+                            onCheckedChange = {
+                                scope.launch { updater.toggleDone(todo.id) }
+                            },
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         Text(todo.title, style = MaterialTheme.typography.bodyMedium)

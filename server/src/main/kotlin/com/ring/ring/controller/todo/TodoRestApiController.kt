@@ -12,6 +12,7 @@ class TodoRestApiController(
     private val getTodoList: GetTodoList = GetTodoList(),
     private val editTodo: EditTodo = EditTodo(),
     private val deleteTodo: DeleteTodo = DeleteTodo(),
+    private val editTodoDone: EditTodoDone = EditTodoDone(),
 ) {
     suspend fun create(call: ApplicationCall) {
         val req = call.receive<CreateTodo.Req>()
@@ -40,6 +41,12 @@ class TodoRestApiController(
     suspend fun delete(call: ApplicationCall) {
         val req = call.receive<DeleteTodo.Req>()
         deleteTodo(req = req)
+        call.respond(HttpStatusCode.OK)
+    }
+
+    suspend fun editDone(call: ApplicationCall) {
+        val req = call.receive<EditTodoDone.Req>()
+        editTodoDone(req = req)
         call.respond(HttpStatusCode.OK)
     }
 }

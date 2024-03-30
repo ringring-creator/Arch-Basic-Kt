@@ -31,7 +31,7 @@ class GetTodoList(
             val deadline: String,
         ) {
             fun toTodoListUiStateTodo() = TodoListUiState.Todo(
-                id = id.toString(),
+                id = id,
                 title = title,
                 done = done,
                 deadline = deadline,

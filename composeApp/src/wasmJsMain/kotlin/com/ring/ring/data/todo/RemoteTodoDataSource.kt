@@ -64,6 +64,20 @@ class RemoteTodoDataSource(
         }
     }
 
+    @Serializable
+    data class EditDoneRequest(
+        val todoId: Long,
+        val done: Boolean,
+        val session: Session
+    )
+
+    suspend fun editDone(id: Long, done: Boolean, session: Session) {
+        httpClient.post("${RemoteUserDataSource.URL}/todo/editDone") {
+            contentType(ContentType.Application.Json)
+            setBody(EditDoneRequest(id, done, session))
+        }
+    }
+
     companion object {
         const val URL = "http://localhost:8081"
     }
