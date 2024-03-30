@@ -22,16 +22,43 @@ fun TodoListScreen(
     toMyPageScreen: () -> Unit,
 ) {
     val uiState = TodoListViewModel.rememberTodoListUiState(viewModel)
+    val snackBarHostState = remember { SnackbarHostState() }
+
     TodoListScreen(
         uiState = uiState,
         updater = viewModel,
         toCreateTodoScreen = toCreateTodoScreen,
         toEditTodoScreen = toEditTodoScreen,
         toMyPageScreen = toMyPageScreen,
+        snackBarHostState = snackBarHostState,
     )
 
     LaunchedEffect(Unit) {
         viewModel.getTodoList()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.toggleDoneErrorEvent.collect {
+            snackBarHostState.showSnackbar(
+                "Failed to update done",
+                withDismissAction = true
+            )
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.getTodoListErrorEvent.collect {
+            val snackBarResult = snackBarHostState.showSnackbar(
+                message = "Failed to get todo list",
+                actionLabel = "Retry",
+                withDismissAction = true,
+            )
+            when (snackBarResult) {
+                SnackbarResult.Dismissed -> {}
+                SnackbarResult.ActionPerformed -> {
+                    viewModel.getTodoList()
+                }
+            }
+        }
     }
 }
 
@@ -57,10 +84,13 @@ fun TodoListScreen(
     toCreateTodoScreen: () -> Unit,
     toEditTodoScreen: (Long) -> Unit,
     toMyPageScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
+
     Scaffold(
         topBar = { TodoNavBar(toMyPageScreen) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         floatingActionButton = {
             FloatingActionButton(onClick = toCreateTodoScreen) {
                 Icon(Icons.Filled.Add, contentDescription = null)

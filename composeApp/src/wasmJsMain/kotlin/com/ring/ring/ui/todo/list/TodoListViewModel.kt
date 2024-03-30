@@ -5,8 +5,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.ring.ring.usecase.todo.EditTodoDone
 import com.ring.ring.usecase.todo.GetTodoList
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 
 class TodoListViewModel(
     private val getTodoListUseCase: GetTodoList = GetTodoList(),
@@ -24,18 +26,31 @@ class TodoListViewModel(
 
     private val _todoList: MutableStateFlow<List<TodoListUiState.Todo>> = MutableStateFlow(emptyList())
     val todoList = _todoList.asStateFlow()
+    private val _getTodoListErrorEvent = Channel<Unit>()
+    val getTodoListErrorEvent = _getTodoListErrorEvent.receiveAsFlow()
+    private val _toggleDoneErrorEvent = Channel<Unit>()
+    val toggleDoneErrorEvent = _toggleDoneErrorEvent.receiveAsFlow()
 
     suspend fun getTodoList() {
-        val res = getTodoListUseCase(GetTodoList.Req())
-        _todoList.value = res.todoList.map(
-            GetTodoList.Res.Todo::toTodoListUiStateTodo
-        )
+        try {
+            val res = getTodoListUseCase(GetTodoList.Req())
+            _todoList.value = res.todoList.map(
+                GetTodoList.Res.Todo::toTodoListUiStateTodo
+            )
+        } catch (e: Throwable) {
+            _getTodoListErrorEvent.trySend(Unit)
+        }
     }
 
     override suspend fun toggleDone(todoId: Long) {
         val index = findTargetIndex(todoId)
         val newTodo = getTodoWithToggleDone(index)
-        editTodoDone(EditTodoDone.Req(newTodo.id, newTodo.done))
+        try {
+            editTodoDone(EditTodoDone.Req(newTodo.id, newTodo.done))
+        } catch (e: Throwable) {
+            _toggleDoneErrorEvent.trySend(Unit)
+            return
+        }
         updateTodoList(index, newTodo)
     }
 
