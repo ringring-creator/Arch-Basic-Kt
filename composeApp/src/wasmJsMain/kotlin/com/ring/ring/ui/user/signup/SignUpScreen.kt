@@ -3,10 +3,9 @@ package com.ring.ring.ui.user.signup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -25,7 +24,8 @@ fun SignUpScreen(
 ) {
     SignUpScreen(
         uiState = SignUpViewModel.rememberSignUpUiState(viewModel),
-        updater = viewModel
+        updater = viewModel,
+        toLoginScreen = toLoginScreen,
     )
 
     LaunchedEffect(Unit) {
@@ -46,54 +46,65 @@ interface SignUpUiUpdater {
     suspend fun signUp()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
     uiState: SignUpUiState,
     updater: SignUpUiUpdater,
+    toLoginScreen: () -> Unit,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Sign Up", style = MaterialTheme.typography.headlineMedium)
-
-        // Email input field
-        OutlinedTextField(
-            value = uiState.email,
-            onValueChange = updater::setEmail,
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = uiState.password,
-            onValueChange = updater::setPassword,
-            label = { Text("Password") },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {
-                // Implement action on keyboard done, e.g., sign up
-            })
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        // Sign Up button
-        Button(
-            onClick = {
-                scope.launch { updater.signUp() }
-            },
-            modifier = Modifier.fillMaxWidth()
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Sign Up") },
+                navigationIcon = {
+                    IconButton(onClick = toLoginScreen) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Sign Up")
+            OutlinedTextField(
+                value = uiState.email,
+                onValueChange = updater::setEmail,
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = uiState.password,
+                onValueChange = updater::setPassword,
+                label = { Text("Password") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = {
+                })
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    scope.launch { updater.signUp() }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Sign Up")
+            }
         }
     }
 }
