@@ -19,14 +19,37 @@ class EditUserViewModel(
     val email = _email.asStateFlow()
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
+    private val _editEnabled = MutableStateFlow(false)
+    val editEnabled = _editEnabled.asStateFlow()
     private val _toMyPageScreenEvent = Channel<Unit>()
     val toMyPageScreenEvent = _toMyPageScreenEvent.receiveAsFlow()
+    private val _getUserErrorEvent = Channel<Unit>()
+    val getUserErrorEvent = _getUserErrorEvent.receiveAsFlow()
+    private val _editErrorEvent = Channel<Unit>()
+    val editErrorEvent = _editErrorEvent.receiveAsFlow()
 
     suspend fun getUser() {
-        val res = getUserUseCase(GetUser.Req())
+        val res = try {
+            getUserUseCase(GetUser.Req())
+        } catch (e: Throwable) {
+            _getUserErrorEvent.trySend(Unit)
+            return
+        }
         id = res.user.id
         _email.value = res.user.email
         _password.value = res.user.password
+        _editEnabled.value = true
+    }
+
+    override suspend fun edit() {
+        try {
+            val id = unwrapId()
+            editUserUseCase(EditUser.Req(id, email.value, password.value))
+        } catch (e: Throwable) {
+            _editErrorEvent.trySend(Unit)
+            return
+        }
+        _toMyPageScreenEvent.trySend(Unit)
     }
 
     override fun setEmail(email: String) {
@@ -39,11 +62,8 @@ class EditUserViewModel(
         _password.value = password
     }
 
-    override suspend fun edit() {
-        id?.let {
-            editUserUseCase(EditUser.Req(it, email.value, password.value))
-        }
-        _toMyPageScreenEvent.trySend(Unit)
+    private fun unwrapId() = id ?: run {
+        throw IllegalStateException()
     }
 
     companion object {
@@ -51,9 +71,11 @@ class EditUserViewModel(
         fun rememberEditUserUiState(viewModel: EditUserViewModel): EditUserUiState {
             val email by viewModel.email.collectAsState()
             val password by viewModel.password.collectAsState()
+            val editEnabled by viewModel.editEnabled.collectAsState()
             return EditUserUiState(
                 email = email,
                 password = password,
+                editEnabled = editEnabled,
             )
         }
     }

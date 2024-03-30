@@ -22,19 +22,53 @@ fun EditUserScreen(
     viewModel: EditUserViewModel = remember { EditUserViewModel() },
     toMyPageScreen: () -> Unit,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     EditUserScreen(
         uiState = EditUserViewModel.rememberEditUserUiState(viewModel),
         updater = viewModel,
+        snackBarHostState = snackBarHostState,
         toMyPageScreen = toMyPageScreen,
     )
 
+    SetupSideEffect(viewModel, toMyPageScreen, snackBarHostState)
+}
+
+@Composable
+private fun SetupSideEffect(
+    viewModel: EditUserViewModel,
+    toMyPageScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState
+) {
     LaunchedEffect(Unit) {
         viewModel.getUser()
     }
-
     LaunchedEffect(Unit) {
         viewModel.toMyPageScreenEvent.collect {
             toMyPageScreen()
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.getUserErrorEvent.collect {
+            snackBarHostState.showSnackbar(
+                message = "Failed to get user",
+                withDismissAction = true,
+            )
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.editErrorEvent.collect {
+            val snackBarResult = snackBarHostState.showSnackbar(
+                message = "Failed to edit",
+                actionLabel = "Retry",
+                withDismissAction = true,
+            )
+            when (snackBarResult) {
+                SnackbarResult.Dismissed -> {}
+                SnackbarResult.ActionPerformed -> {
+                    viewModel.getUser()
+                }
+            }
         }
     }
 }
@@ -42,6 +76,7 @@ fun EditUserScreen(
 data class EditUserUiState(
     val email: String,
     val password: String,
+    val editEnabled: Boolean,
 )
 
 interface EditUserUiUpdater {
@@ -55,6 +90,7 @@ interface EditUserUiUpdater {
 fun EditUserScreen(
     uiState: EditUserUiState,
     updater: EditUserUiUpdater,
+    snackBarHostState: SnackbarHostState,
     toMyPageScreen: () -> Unit,
 ) {
     Scaffold(
@@ -68,6 +104,7 @@ fun EditUserScreen(
                 }
             )
         },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
     ) { paddingValues ->
         Content(
             modifier = Modifier.padding(paddingValues),
@@ -107,10 +144,10 @@ private fun Content(
             onClick = {
                 scope.launch { updater.edit() }
             },
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+            enabled = uiState.editEnabled
         ) {
             Text("Edit")
         }
-
     }
 }

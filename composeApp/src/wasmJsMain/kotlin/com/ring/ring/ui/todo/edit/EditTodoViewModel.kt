@@ -109,7 +109,6 @@ class EditTodoViewModel(
     }
 
     private fun unwrapId() = id ?: run {
-        _editErrorEvent.trySend(Unit)
         throw IllegalStateException()
     }
 

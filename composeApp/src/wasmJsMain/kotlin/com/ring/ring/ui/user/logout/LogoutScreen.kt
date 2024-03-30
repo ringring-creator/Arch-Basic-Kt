@@ -29,6 +29,15 @@ fun LogoutScreen(
         snackBarHostState = snackBarHostState,
     )
 
+    SetupSideEffect(viewModel, toLoginScreen, snackBarHostState)
+}
+
+@Composable
+private fun SetupSideEffect(
+    viewModel: LogoutViewModel,
+    toLoginScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState
+) {
     LaunchedEffect(Unit) {
         viewModel.toLoginScreenEvent.collect {
             toLoginScreen()
