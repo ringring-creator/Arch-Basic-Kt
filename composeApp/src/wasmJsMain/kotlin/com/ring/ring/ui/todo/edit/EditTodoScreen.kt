@@ -182,9 +182,11 @@ private fun Content(
             DoneCheckBox(uiState.done, updater::setDone)
             DeadlineField(uiState.deadline.formatString(), updater::showDatePicker)
             Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier.align(Alignment.End)) {
+            Row(
+                modifier = Modifier.align(Alignment.End),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 EditButton { scope.launch { updater.editTodo() } }
-                Spacer(Modifier.width(8.dp))
                 DeleteButton { scope.launch { updater.deleteTodo() } }
             }
         }
@@ -261,9 +263,7 @@ private fun EditButton(
 ) {
     Button(
         onClick = edit,
-    ) {
-        Text("Edit")
-    }
+    ) { Text("Edit") }
 }
 
 @Composable
@@ -272,9 +272,7 @@ private fun DeleteButton(
 ) {
     Button(
         onClick = delete,
-    ) {
-        Text("Delete")
-    }
+    ) { Text("Delete") }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

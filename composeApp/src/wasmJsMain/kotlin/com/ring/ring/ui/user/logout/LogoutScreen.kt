@@ -96,23 +96,38 @@ private fun Content(
         modifier = modifier.fillMaxSize().padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Do you want to logout?", style = MaterialTheme.typography.headlineMedium)
+        Header()
         Spacer(modifier = Modifier.height(32.dp))
         Row {
-            Button(
-                onClick = onLogoutConfirmed,
-                modifier = Modifier.weight(1f)
-            ) {
-                Text("Yes")
-            }
+            ConfirmedButton(onLogoutConfirmed)
             Spacer(modifier = Modifier.width(16.dp))
-            Button(
-                onClick = onLogoutCancelled,
-                colors = ButtonDefaults.buttonColors().copy(containerColor = MaterialTheme.colorScheme.secondary),
-                modifier = Modifier.weight(1f)
-            ) {
-                Text("No")
-            }
+            CancelledButton(onLogoutCancelled)
         }
+    }
+}
+
+@Composable
+private fun Header() {
+    Text("Do you want to logout?", style = MaterialTheme.typography.headlineMedium)
+}
+
+@Composable
+private fun RowScope.ConfirmedButton(onLogoutConfirmed: () -> Unit) {
+    Button(
+        onClick = onLogoutConfirmed,
+        modifier = Modifier.weight(1f)
+    ) {
+        Text("Yes")
+    }
+}
+
+@Composable
+private fun RowScope.CancelledButton(onLogoutCancelled: () -> Unit) {
+    Button(
+        onClick = onLogoutCancelled,
+        colors = ButtonDefaults.buttonColors().copy(containerColor = MaterialTheme.colorScheme.secondary),
+        modifier = Modifier.weight(1f)
+    ) {
+        Text("No")
     }
 }

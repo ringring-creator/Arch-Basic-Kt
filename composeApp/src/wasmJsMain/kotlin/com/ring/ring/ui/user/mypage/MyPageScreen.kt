@@ -99,34 +99,62 @@ private fun Content(
         modifier = modifier
             .fillMaxSize()
             .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("My Page", style = MaterialTheme.typography.headlineMedium)
+        Header()
+        EmailText(uiState)
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Email: ${uiState.email}")
-        Spacer(modifier = Modifier.height(32.dp))
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = toLogoutScreen,
-                enabled = uiState.logoutEnabled
-            ) { Text("Logout") }
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = toEditUserScreen,
-                enabled = uiState.editEnabled
-            ) { Text("Edit") }
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = toWithdrawalUserScreen,
-                enabled = uiState.withdrawalEnabled,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-            ) { Text("Withdrawal") }
+            LogoutButton(toLogoutScreen, uiState.logoutEnabled)
+            EditButton(toEditUserScreen, uiState.editEnabled)
+            WithdrawalButton(toWithdrawalUserScreen, uiState.withdrawalEnabled)
         }
     }
+}
+
+@Composable
+private fun Header() {
+    Text("My Page", style = MaterialTheme.typography.headlineMedium)
+}
+
+@Composable
+private fun EmailText(uiState: MyPageUiState) {
+    Text("Email: ${uiState.email}")
+}
+
+@Composable
+private fun LogoutButton(toLogoutScreen: () -> Unit, enabled: Boolean) {
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = toLogoutScreen,
+        enabled = enabled
+    ) { Text("Logout") }
+}
+
+@Composable
+private fun EditButton(toEditUserScreen: () -> Unit, enabled: Boolean) {
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = toEditUserScreen,
+        enabled = enabled
+    ) { Text("Edit") }
+}
+
+@Composable
+private fun WithdrawalButton(
+    toWithdrawalUserScreen: () -> Unit,
+    enabled: Boolean,
+) {
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = toWithdrawalUserScreen,
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+    ) { Text("Withdrawal") }
 }
 
 @Composable

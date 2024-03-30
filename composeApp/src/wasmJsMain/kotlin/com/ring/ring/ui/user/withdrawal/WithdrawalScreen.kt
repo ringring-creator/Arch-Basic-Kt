@@ -98,23 +98,38 @@ private fun Content(
         modifier = modifier.fillMaxSize().padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Do you want to withdrawal?", style = MaterialTheme.typography.headlineMedium)
+        Header()
         Spacer(modifier = Modifier.height(32.dp))
         Row {
-            Button(
-                onClick = onWithdrawalConfirmed,
-                modifier = Modifier.weight(1f)
-            ) {
-                Text("Yes")
-            }
+            WithdrawalButton(onWithdrawalConfirmed)
             Spacer(modifier = Modifier.width(16.dp))
-            Button(
-                onClick = onWithdrawalCancelled,
-                colors = ButtonDefaults.buttonColors().copy(containerColor = MaterialTheme.colorScheme.secondary),
-                modifier = Modifier.weight(1f)
-            ) {
-                Text("No")
-            }
+            CancelledButton(onWithdrawalCancelled)
         }
+    }
+}
+
+@Composable
+private fun Header() {
+    Text("Do you want to withdrawal?", style = MaterialTheme.typography.headlineMedium)
+}
+
+@Composable
+private fun RowScope.WithdrawalButton(onWithdrawalConfirmed: () -> Unit) {
+    Button(
+        onClick = onWithdrawalConfirmed,
+        modifier = Modifier.Companion.weight(1f)
+    ) {
+        Text("Yes")
+    }
+}
+
+@Composable
+private fun RowScope.CancelledButton(onWithdrawalCancelled: () -> Unit) {
+    Button(
+        onClick = onWithdrawalCancelled,
+        colors = ButtonDefaults.buttonColors().copy(containerColor = MaterialTheme.colorScheme.secondary),
+        modifier = Modifier.Companion.weight(1f)
+    ) {
+        Text("No")
     }
 }

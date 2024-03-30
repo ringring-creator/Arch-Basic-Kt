@@ -35,11 +35,11 @@ fun CreateTodoScreen(
         snackBarHostState = snackBarHostState,
     )
 
-    setupSideEffect(viewModel, toTodoListScreen, snackBarHostState)
+    SetupSideEffect(viewModel, toTodoListScreen, snackBarHostState)
 }
 
 @Composable
-private fun setupSideEffect(
+private fun SetupSideEffect(
     viewModel: CreateTodoViewModel,
     toTodoListScreen: () -> Unit,
     snackBarHostState: SnackbarHostState

@@ -30,6 +30,15 @@ fun SignUpScreen(
         snackBarHostState = snackBarHostState,
     )
 
+    SetupSideEffect(viewModel, toLoginScreen, snackBarHostState)
+}
+
+@Composable
+private fun SetupSideEffect(
+    viewModel: SignUpViewModel,
+    toLoginScreen: () -> Unit,
+    snackBarHostState: SnackbarHostState
+) {
     LaunchedEffect(Unit) {
         viewModel.toLoginScreenEvent.collect {
             toLoginScreen()

@@ -100,7 +100,6 @@ class EditTodoViewModel(
     override fun showDatePicker() {
         if (this.isShowDatePicker.value) return
         _isShowDatePicker.value = true
-
     }
 
     override fun dismissDatePicker() {

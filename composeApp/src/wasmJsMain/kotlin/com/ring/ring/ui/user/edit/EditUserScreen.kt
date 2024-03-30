@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.reflect.KFunction1
 
 @Composable
 fun EditUserScreen(
@@ -127,27 +128,45 @@ private fun Content(
             .fillMaxWidth()
             .padding(20.dp)
     ) {
-        OutlinedTextField(
-            value = uiState.email,
-            onValueChange = updater::setEmail,
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        OutlinedTextField(
-            value = uiState.password,
-            onValueChange = updater::setPassword,
-            label = { Text("New Password") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
-        )
-        Button(
-            onClick = {
-                scope.launch { updater.edit() }
-            },
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-            enabled = uiState.editEnabled
-        ) {
-            Text("Edit")
+        EmailTextField(uiState.email, updater::setEmail)
+        PasswordTextField(uiState.password, updater::setPassword)
+        EditButton(uiState.editEnabled) {
+            scope.launch { updater.edit() }
         }
+    }
+}
+
+@Composable
+private fun EmailTextField(email: String, setEmail: KFunction1<String, Unit>) {
+    OutlinedTextField(
+        value = email,
+        onValueChange = setEmail,
+        label = { Text("Email") },
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+private fun PasswordTextField(password: String, setPassword: KFunction1<String, Unit>) {
+    OutlinedTextField(
+        value = password,
+        onValueChange = setPassword,
+        label = { Text("New Password") },
+        modifier = Modifier.fillMaxWidth(),
+        visualTransformation = PasswordVisualTransformation()
+    )
+}
+
+@Composable
+private fun EditButton(
+    enabled: Boolean,
+    edit: () -> Unit
+) {
+    Button(
+        onClick = edit,
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+        enabled = enabled
+    ) {
+        Text("Edit")
     }
 }
