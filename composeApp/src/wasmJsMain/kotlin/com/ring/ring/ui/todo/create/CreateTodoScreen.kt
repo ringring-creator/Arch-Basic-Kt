@@ -3,7 +3,7 @@ package com.ring.ring.ui.todo.create
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -28,7 +28,8 @@ fun CreateTodoScreen(
 ) {
     CreateTodoScreen(
         uiState = CreateTodoViewModel.rememberCreateTodoUiState(viewModel),
-        updater = viewModel
+        updater = viewModel,
+        toTodoListScreen = toTodoListScreen,
     )
 
     LaunchedEffect(Unit) {
@@ -85,23 +86,26 @@ interface CreateTodoUiUpdater {
 fun CreateTodoScreen(
     uiState: CreateTodoUiState,
     updater: CreateTodoUiUpdater,
+    toTodoListScreen: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Create Todo") },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Filled.ArrowBack, "Back")
+                    IconButton(onClick = toTodoListScreen) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
                     }
                 }
             )
         }
     ) { padding ->
         Content(
-            Modifier
+            modifier = Modifier
                 .padding(padding)
-                .padding(16.dp), uiState, updater
+                .padding(16.dp),
+            uiState = uiState,
+            updater = updater,
         )
     }
 }
@@ -120,7 +124,6 @@ private fun Content(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Header()
             Spacer(modifier = Modifier.height(8.dp))
             TitleTextField(uiState, updater)
             DescriptionTextField(uiState, updater)
@@ -131,11 +134,6 @@ private fun Content(
         }
         DeadlineDatePicker(uiState, updater)
     }
-}
-
-@Composable
-private fun Header() {
-    Text("Create Todo", style = MaterialTheme.typography.headlineLarge)
 }
 
 @Composable

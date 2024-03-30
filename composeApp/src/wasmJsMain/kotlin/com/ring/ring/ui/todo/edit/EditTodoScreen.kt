@@ -4,7 +4,7 @@ package com.ring.ring.ui.todo.edit
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -30,7 +30,8 @@ fun EditTodoScreen(
 ) {
     EditTodoScreen(
         uiState = EditTodoViewModel.rememberEditTodoUiState(viewModel),
-        updater = viewModel
+        updater = viewModel,
+        toTodoListScreen = toTodoListScreen,
     )
 
     LaunchedEffect(Unit) {
@@ -91,14 +92,15 @@ interface EditTodoUiUpdater {
 fun EditTodoScreen(
     uiState: EditTodoUiState,
     updater: EditTodoUiUpdater,
+    toTodoListScreen: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Create Todo") },
+                title = { Text("Edit Todo") },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Filled.ArrowBack, "Back")
+                    IconButton(onClick = toTodoListScreen) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
                     }
                 }
             )
@@ -126,7 +128,6 @@ private fun Content(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Header()
             Spacer(modifier = Modifier.height(8.dp))
             TitleTextField(uiState, updater)
             DescriptionTextField(uiState, updater)
@@ -141,11 +142,6 @@ private fun Content(
         }
         DeadlineDatePicker(uiState, updater)
     }
-}
-
-@Composable
-private fun Header() {
-    Text("Edit Todo", style = MaterialTheme.typography.headlineLarge)
 }
 
 @Composable

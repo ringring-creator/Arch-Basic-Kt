@@ -2,6 +2,8 @@ package com.ring.ring.ui.user.withdrawal
 
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,7 +45,16 @@ fun WithdrawalScreen(
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Withdrawal") }) }
+        topBar = {
+            TopAppBar(
+                title = { Text("Withdrawal") },
+                navigationIcon = {
+                    IconButton(onClick = toMyPageScreen) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                    }
+                }
+            )
+        }
     ) { paddingValues ->
         Content(
             modifier = Modifier.padding(paddingValues),

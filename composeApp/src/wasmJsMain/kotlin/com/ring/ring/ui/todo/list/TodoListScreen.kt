@@ -63,7 +63,7 @@ fun TodoListScreen(
         topBar = { TodoNavBar(toMyPageScreen) },
         floatingActionButton = {
             FloatingActionButton(onClick = toCreateTodoScreen) {
-                Icon(Icons.Filled.Add, contentDescription = "Create New Todo")
+                Icon(Icons.Filled.Add, contentDescription = null)
             }
         }
     ) {
@@ -104,11 +104,17 @@ private fun TodoNavBar(
     toMyPageScreen: () -> Unit,
 ) {
     NavigationBar {
-        listOf("Todo", "My Page").forEachIndexed { index, item ->
+        NavigationBar {
             NavigationRailItem(
                 icon = { },
-                label = { Text(item) },
-                selected = index == 0,
+                label = { Text("Todo") },
+                selected = true,
+                onClick = {}
+            )
+            NavigationRailItem(
+                icon = { },
+                label = { Text("My Page") },
+                selected = false,
                 onClick = toMyPageScreen
             )
         }

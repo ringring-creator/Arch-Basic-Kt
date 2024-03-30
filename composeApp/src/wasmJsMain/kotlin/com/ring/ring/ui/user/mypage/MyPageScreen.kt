@@ -100,13 +100,17 @@ private fun TodoNavBar(
     toTodoListScreen: () -> Unit,
 ) {
     NavigationBar {
-        listOf("Todo", "My Page").forEachIndexed { index, item ->
-            NavigationRailItem(
-                icon = { },
-                label = { Text(item) },
-                selected = index == 1,
-                onClick = toTodoListScreen
-            )
-        }
+        NavigationRailItem(
+            icon = { },
+            label = { Text("Todo") },
+            selected = false,
+            onClick = toTodoListScreen
+        )
+        NavigationRailItem(
+            icon = { },
+            label = { Text("My Page") },
+            selected = true,
+            onClick = {}
+        )
     }
 }
