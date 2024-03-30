@@ -136,7 +136,6 @@ private fun PasswordTextField(
         label = { Text("Password") },
         singleLine = true,
         modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
     )
 }
 

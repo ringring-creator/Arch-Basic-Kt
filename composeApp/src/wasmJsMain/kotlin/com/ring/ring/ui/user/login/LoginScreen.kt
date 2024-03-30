@@ -2,7 +2,6 @@ package com.ring.ring.ui.user.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -99,10 +98,10 @@ private fun Content(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Header()
-        EmailTextField(uiState, updater)
-        PasswordTextField(uiState, updater, scope)
+        EmailTextField(uiState.email, updater::setEmail)
+        PasswordTextField(uiState.password, updater::setPassword)
         Spacer(Modifier.height(8.dp))
-        LoginButton(scope, updater)
+        LoginButton { scope.launch { updater.login() } }
         Spacer(Modifier.height(16.dp))
         SignUpText(toSignUpScreen)
     }
@@ -115,12 +114,12 @@ private fun Header() {
 
 @Composable
 private fun EmailTextField(
-    uiState: LoginUiState,
-    updater: LoginUiUpdater
+    email: String,
+    setEmail: (String) -> Unit,
 ) {
     OutlinedTextField(
-        value = uiState.email,
-        onValueChange = updater::setEmail,
+        value = email,
+        onValueChange = setEmail,
         label = { Text("Email address") },
         singleLine = true,
         modifier = Modifier.fillMaxWidth(),
@@ -130,21 +129,16 @@ private fun EmailTextField(
 
 @Composable
 private fun PasswordTextField(
-    uiState: LoginUiState,
-    updater: LoginUiUpdater,
-    scope: CoroutineScope
+    password: String,
+    setPassword: (String) -> Unit
 ) {
     OutlinedTextField(
-        value = uiState.password,
-        onValueChange = updater::setPassword,
+        value = password,
+        onValueChange = setPassword,
         label = { Text("Password") },
         singleLine = true,
         modifier = Modifier.fillMaxWidth(),
         visualTransformation = PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = {
-            scope.launch { updater.login() }
-        })
     )
 }
 
@@ -155,17 +149,15 @@ private fun SignUpText(toSignUpScreen: () -> Unit) {
         ClickableText(
             annotatedString("Sign up"),
             modifier = Modifier,
-            onClick = { toSignUpScreen() }
+            onClick = { toSignUpScreen() },
         )
     }
 }
 
 @Composable
-private fun LoginButton(scope: CoroutineScope, updater: LoginUiUpdater) {
+private fun LoginButton(login: () -> Unit) {
     Button(
-        onClick = {
-            scope.launch { updater.login() }
-        },
+        onClick = login,
         modifier = Modifier.fillMaxWidth()
     ) {
         Text("Login")
