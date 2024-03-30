@@ -131,11 +131,14 @@ fun CreateTodoScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Content(
     modifier: Modifier,
     uiState: CreateTodoUiState,
-    updater: CreateTodoUiUpdater
+    updater: CreateTodoUiUpdater,
+    datePickerState: DatePickerState = rememberDatePickerState(),
+    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
     Box(
         modifier = modifier,
@@ -146,25 +149,32 @@ private fun Content(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            TitleTextField(uiState, updater)
-            DescriptionTextField(uiState, updater)
-            DoneCheckBox(uiState, updater)
-            DeadlineField(updater, uiState)
+            TitleTextField(uiState.title, updater::setTitle)
+            DescriptionTextField(uiState.description, updater::setDescription)
+            DoneCheckBox(uiState.done, updater::setDone)
+            DeadlineField(uiState.deadline, updater::showDatePicker)
             Spacer(modifier = Modifier.height(8.dp))
-            CreateButton(updater)
+            CreateButton {
+                scope.launch { updater.saveTodo() }
+            }
         }
-        DeadlineDatePicker(uiState, updater)
+        DeadlineDatePicker(
+            uiState.isShowDatePicker,
+            datePickerState,
+            updater::dismissDatePicker,
+            updater::setDeadline,
+        )
     }
 }
 
 @Composable
 private fun TitleTextField(
-    uiState: CreateTodoUiState,
-    updater: CreateTodoUiUpdater
+    title: String,
+    setTitle: (String) -> Unit
 ) {
     OutlinedTextField(
-        value = uiState.title,
-        onValueChange = updater::setTitle,
+        value = title,
+        onValueChange = setTitle,
         label = { Text("Title") },
         modifier = Modifier.fillMaxWidth()
     )
@@ -172,12 +182,12 @@ private fun TitleTextField(
 
 @Composable
 private fun DescriptionTextField(
-    uiState: CreateTodoUiState,
-    updater: CreateTodoUiUpdater
+    description: String,
+    setDescription: (String) -> Unit
 ) {
     OutlinedTextField(
-        value = uiState.description,
-        onValueChange = updater::setDescription,
+        value = description,
+        onValueChange = setDescription,
         label = { Text("Description") },
         modifier = Modifier.fillMaxWidth()
     )
@@ -185,13 +195,13 @@ private fun DescriptionTextField(
 
 @Composable
 private fun DoneCheckBox(
-    uiState: CreateTodoUiState,
-    updater: CreateTodoUiUpdater
+    done: Boolean,
+    setDone: (Boolean) -> Unit,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
-            checked = uiState.done,
-            onCheckedChange = updater::setDone,
+            checked = done,
+            onCheckedChange = setDone,
         )
         Text("Done")
     }
@@ -199,31 +209,26 @@ private fun DoneCheckBox(
 
 @Composable
 private fun DeadlineField(
-    updater: CreateTodoUiUpdater,
-    uiState: CreateTodoUiState
+    deadline: CreateTodoUiState.Deadline,
+    showDatePicker: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable(onClick = updater::showDatePicker),
+        modifier = Modifier.clickable(onClick = showDatePicker),
     ) {
         Icon(
             Icons.Filled.DateRange,
             contentDescription = null,
         )
-        Text(uiState.deadline.formatString())
+        Text(deadline.formatString())
     }
 }
 
 @Composable
-private fun ColumnScope.CreateButton(
-    updater: CreateTodoUiUpdater,
-    scope: CoroutineScope = rememberCoroutineScope()
-) {
+private fun ColumnScope.CreateButton(create: () -> Unit) {
     Button(
-        onClick = {
-            scope.launch { updater.saveTodo() }
-        },
+        onClick = create,
         modifier = Modifier.align(Alignment.End)
     ) {
         Text("Create")
@@ -233,21 +238,22 @@ private fun ColumnScope.CreateButton(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DeadlineDatePicker(
-    uiState: CreateTodoUiState,
-    updater: CreateTodoUiUpdater,
+    isShowDatePicker: Boolean,
+    datePickerState: DatePickerState,
+    dismissDatePicker: () -> Unit,
+    setDeadline: (Long) -> Unit,
 ) {
-    val state = rememberDatePickerState()
-    if (uiState.isShowDatePicker) {
+    if (isShowDatePicker) {
         DatePickerDialog(
-            onDismissRequest = updater::dismissDatePicker,
+            onDismissRequest = dismissDatePicker,
             confirmButton = {
                 Text("Set", modifier = Modifier.padding(16.dp).clickable {
-                    state.selectedDateMillis?.let { updater.setDeadline(it) }
-                    updater.dismissDatePicker()
+                    datePickerState.selectedDateMillis?.let { setDeadline(it) }
+                    dismissDatePicker()
                 })
             }
         ) {
-            DatePicker(state)
+            DatePicker(datePickerState)
         }
     }
 }

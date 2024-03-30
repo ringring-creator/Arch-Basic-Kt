@@ -32,7 +32,11 @@ fun Router(
             toTodoListScreen = { setRoute(Route.TodoList) },
         )
 
-        Route.SignUp -> SignUpScreen { setRoute(Route.Login) }
+        Route.Logout -> LogoutScreen(
+            toLoginScreen = { setRoute(Route.Login) },
+            toMyPageScreen = { setRoute(Route.MyPage) }
+        )
+
         Route.MyPage -> MyPageScreen(
             toLogoutScreen = { setRoute(Route.Logout) },
             toEditUserScreen = { setRoute(Route.EditUser) },
@@ -40,12 +44,8 @@ fun Router(
             toTodoListScreen = { setRoute(Route.TodoList) },
         )
 
+        Route.SignUp -> SignUpScreen { setRoute(Route.Login) }
         Route.EditUser -> EditUserScreen { setRoute(Route.MyPage) }
-        Route.Logout -> LogoutScreen(
-            toLoginScreen = { setRoute(Route.Login) },
-            toMyPageScreen = { setRoute(Route.MyPage) }
-        )
-
         Route.WithdrawalUser -> WithdrawalScreen(
             toLoginScreen = { setRoute(Route.Login) },
             toMyPageScreen = { setRoute(Route.MyPage) }
