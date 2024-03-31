@@ -1,4 +1,4 @@
-package com.ring.ring.controller.todo
+package com.ring.ring.controller
 
 import com.ring.ring.usecase.todo.*
 import io.ktor.http.*

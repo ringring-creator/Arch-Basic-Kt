@@ -1,6 +1,6 @@
-package com.ring.ring.router.todo
+package com.ring.ring.router
 
-import com.ring.ring.controller.todo.TodoRestApiController
+import com.ring.ring.controller.TodoRestApiController
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 

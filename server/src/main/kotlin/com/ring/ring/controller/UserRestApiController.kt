@@ -1,4 +1,4 @@
-package com.ring.ring.controller.user
+package com.ring.ring.controller
 
 import com.ring.ring.usecase.user.*
 import io.ktor.http.*

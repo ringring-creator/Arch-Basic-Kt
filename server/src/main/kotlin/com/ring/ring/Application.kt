@@ -2,7 +2,6 @@ package com.ring.ring
 
 import com.ring.ring.plugin.configureCors
 import com.ring.ring.plugin.configureSerialization
-import com.ring.ring.plugin.configureSession
 import com.ring.ring.plugin.configureStatusPages
 import com.ring.ring.router.configureRouting
 import io.ktor.server.application.*
@@ -16,7 +15,6 @@ fun main() {
 
 fun Application.module() {
     configureSerialization()
-    configureSession()
     configureCors()
     configureStatusPages()
     configureRouting()
