@@ -1,7 +1,7 @@
 package com.ring.ring.usecase.todo
 
-import com.ring.ring.data.session.SessionRepository
-import com.ring.ring.data.todo.TodoRepository
+import com.ring.ring.data.SessionRepository
+import com.ring.ring.data.TodoRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
 import kotlinx.coroutines.Dispatchers

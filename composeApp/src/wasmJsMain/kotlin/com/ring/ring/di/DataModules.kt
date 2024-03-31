@@ -1,11 +1,11 @@
 package com.ring.ring.di
 
-import com.ring.ring.data.KeyValueSessionDataSource
-import com.ring.ring.data.session.SessionRepository
-import com.ring.ring.data.todo.RemoteTodoDataSource
-import com.ring.ring.data.todo.TodoRepository
-import com.ring.ring.data.user.RemoteUserDataSource
-import com.ring.ring.data.user.UserRepository
+import com.ring.ring.data.SessionRepository
+import com.ring.ring.data.TodoRepository
+import com.ring.ring.data.UserRepository
+import com.ring.ring.data.local.KeyValueSessionDataSource
+import com.ring.ring.data.remote.RemoteTodoDataSource
+import com.ring.ring.data.remote.RemoteUserDataSource
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.StorageSettings
 import io.ktor.client.*

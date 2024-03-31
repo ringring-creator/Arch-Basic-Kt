@@ -1,7 +1,6 @@
-package com.ring.ring.data.session
+package com.ring.ring.data
 
-import com.ring.ring.data.KeyValueSessionDataSource
-import com.ring.ring.data.user.Session
+import com.ring.ring.data.local.KeyValueSessionDataSource
 
 class SessionRepository(
     private val dataSource: KeyValueSessionDataSource,

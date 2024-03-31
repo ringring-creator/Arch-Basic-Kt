@@ -1,9 +1,9 @@
 package com.ring.ring.usecase.todo
 
-import com.ring.ring.data.session.SessionRepository
-import com.ring.ring.data.todo.Todo
-import com.ring.ring.data.todo.TodoRepository
-import com.ring.ring.data.user.Session
+import com.ring.ring.data.Session
+import com.ring.ring.data.SessionRepository
+import com.ring.ring.data.Todo
+import com.ring.ring.data.TodoRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
 import com.ring.ring.util.DateUtil

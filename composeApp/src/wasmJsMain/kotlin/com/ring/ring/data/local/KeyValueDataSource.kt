@@ -1,4 +1,4 @@
-package com.ring.ring.data
+package com.ring.ring.data.local
 
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get

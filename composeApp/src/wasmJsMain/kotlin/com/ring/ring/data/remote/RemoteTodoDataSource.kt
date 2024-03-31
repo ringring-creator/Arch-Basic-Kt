@@ -1,7 +1,7 @@
-package com.ring.ring.data.todo
+package com.ring.ring.data.remote
 
-import com.ring.ring.data.user.RemoteUserDataSource
-import com.ring.ring.data.user.Session
+import com.ring.ring.data.Session
+import com.ring.ring.data.Todo
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*

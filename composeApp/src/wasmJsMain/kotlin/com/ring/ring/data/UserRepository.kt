@@ -1,5 +1,6 @@
-package com.ring.ring.data.user
+package com.ring.ring.data
 
+import com.ring.ring.data.remote.RemoteUserDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
