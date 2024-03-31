@@ -1,6 +1,7 @@
 package com.ring.ring.usecase.user
 
 import com.ring.ring.data.session.SessionRepository
+import com.ring.ring.data.user.User
 import com.ring.ring.data.user.UserRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
@@ -14,18 +15,22 @@ class GetUser(
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
         val session = sessionRepository.get() ?: throw Exception()
         val user = userRepository.get(session)
-        return@withContext Res(user.toGetUserElement())
+        return@withContext user.toGetUserElement()
     }
 
     class Req : UseCase.Req
 
     data class Res(
-        val user: User
-    ) : UseCase.Res {
-        data class User(
-            val id: Long,
-            val email: String,
-            val password: String,
+        val id: Long,
+        val email: String,
+        val password: String,
+    ) : UseCase.Res
+
+    private fun User.toGetUserElement(): Res {
+        return Res(
+            id = id!!,
+            email = email,
+            password = password,
         )
     }
 }

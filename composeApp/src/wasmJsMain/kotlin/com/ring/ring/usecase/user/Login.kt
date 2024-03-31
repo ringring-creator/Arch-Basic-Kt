@@ -17,7 +17,7 @@ class Login(
         val user = req.toUser()
         val session = userRepository.login(user = user)
         sessionRepository.save(session)
-        return@withContext Res(session.toLogin())
+        return@withContext session.toRes()
     }
 
     data class Req(
@@ -32,11 +32,9 @@ class Login(
     }
 
     data class Res(
-        val session: Session,
-    ) : UseCase.Res {
-        data class Session(
-            val userId: Long,
-            val credential: String,
-        )
-    }
+        val userId: Long,
+        val credential: String,
+    ) : UseCase.Res
+
+    private fun Session.toRes(): Res = Res(userId, credential)
 }

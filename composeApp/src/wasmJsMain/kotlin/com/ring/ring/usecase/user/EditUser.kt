@@ -23,13 +23,11 @@ class EditUser(
         val email: String,
         val password: String,
     ) : UseCase.Req {
-        fun toUser(): User {
-            return User(
-                id = id,
-                email = email,
-                password = password,
-            )
-        }
+        fun toUser(): User = User(
+            id = id,
+            email = email,
+            password = password,
+        )
     }
 
     class Res : UseCase.Res

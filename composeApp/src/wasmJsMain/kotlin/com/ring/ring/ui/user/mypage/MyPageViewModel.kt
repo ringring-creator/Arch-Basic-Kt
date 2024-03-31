@@ -19,8 +19,7 @@ class MyPageViewModel(
 
     suspend fun getUser() {
         try {
-            val res = getUserUseCase(GetUser.Req())
-            uiState.set(res.user)
+            uiState.set(getUserUseCase(GetUser.Req()))
         } catch (e: Throwable) {
             _getUserErrorEvent.trySend(Unit)
         }
@@ -46,7 +45,7 @@ class MyPageViewModel(
         val _editEnabled: MutableStateFlow<Boolean>,
         val _withdrawalEnabled: MutableStateFlow<Boolean>,
     ) {
-        fun set(user: GetUser.Res.User) {
+        fun set(user: GetUser.Res) {
             _email.value = user.email
             _logoutEnabled.value = true
             _editEnabled.value = true

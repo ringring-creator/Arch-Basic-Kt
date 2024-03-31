@@ -31,7 +31,7 @@ class EditUserViewModel(
             _getUserErrorEvent.trySend(Unit)
             return
         }
-        uiState.set(res.user)
+        uiState.set(res)
     }
 
     override suspend fun edit() {
@@ -74,7 +74,7 @@ class EditUserViewModel(
         val password = _password.asStateFlow()
         val editEnabled = _editEnabled.asStateFlow()
 
-        fun set(user: GetUser.Res.User) {
+        fun set(user: GetUser.Res) {
             id = user.id
             _email.value = user.email
             _password.value = user.password
