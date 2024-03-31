@@ -12,31 +12,17 @@ import kotlinx.coroutines.flow.receiveAsFlow
 class CreateTodoViewModel(
     private val createTodo: CreateTodo = CreateTodo()
 ) : CreateTodoUiUpdater {
-    private val _title = MutableStateFlow("")
-    val title = _title.asStateFlow()
-    private val _description = MutableStateFlow("")
-    val description = _description.asStateFlow()
-    private val _done = MutableStateFlow(false)
-    val done = _done.asStateFlow()
-    private val _deadline = MutableStateFlow(CreateTodoUiState.Deadline.currentTime())
-    val deadline = _deadline.asStateFlow()
-    private val _isShowDatePicker = MutableStateFlow(false)
-    val isShowDatePicker = _isShowDatePicker.asStateFlow()
+    private val uiState: UiState = UiState.init()
+
     private val _toTodoListEvent = Channel<Unit>()
     val toTodoListEvent = _toTodoListEvent.receiveAsFlow()
+
     private val _saveTodoErrorEvent = Channel<Unit>()
     val saveTodoErrorEvent = _saveTodoErrorEvent.receiveAsFlow()
 
     override suspend fun saveTodo() {
         try {
-            createTodo(
-                CreateTodo.Req(
-                    title = title.value,
-                    description = description.value,
-                    done = done.value,
-                    deadline = deadline.value.dateMillis,
-                )
-            )
+            createTodo(uiState.toCreateTodoReq())
             _toTodoListEvent.trySend(Unit)
         } catch (e: Throwable) {
             _saveTodoErrorEvent.trySend(Unit)
@@ -44,49 +30,95 @@ class CreateTodoViewModel(
     }
 
     override fun setTitle(title: String) {
-        if (this.title.value == title) return
-        _title.value = title
+        uiState.setTitle(title)
     }
 
     override fun setDescription(description: String) {
-        if (this.description.value == description) return
-        _description.value = description
+        uiState.setDescription(description)
     }
 
     override fun setDone(done: Boolean) {
-        if (this.done.value == done) return
-        _done.value = done
+        uiState.setDone(done)
     }
 
     override fun setDeadline(dateMillis: Long) {
-        _deadline.value = CreateTodoUiState.Deadline(dateMillis)
+        uiState._deadline.value = CreateTodoUiState.Deadline(dateMillis)
     }
 
     override fun showDatePicker() {
-        if (this.isShowDatePicker.value) return
-        _isShowDatePicker.value = true
+        uiState.setIsShowDatePicker(true)
     }
 
     override fun dismissDatePicker() {
-        if (this.isShowDatePicker.value.not()) return
-        _isShowDatePicker.value = false
+        uiState.setIsShowDatePicker(false)
     }
 
-    companion object {
-        @Composable
-        fun rememberCreateTodoUiState(viewModel: CreateTodoViewModel): CreateTodoUiState {
-            val title by viewModel.title.collectAsState()
-            val description by viewModel.description.collectAsState()
-            val done by viewModel.done.collectAsState()
-            val deadline by viewModel.deadline.collectAsState()
-            val showDatePicker by viewModel.isShowDatePicker.collectAsState()
-            return CreateTodoUiState(
-                title = title,
-                description = description,
-                done = done,
-                deadline = deadline,
-                isShowDatePicker = showDatePicker,
-            )
+    @Composable
+    fun rememberCreateTodoUiState(): CreateTodoUiState {
+        val title by uiState.title.collectAsState()
+        val description by uiState.description.collectAsState()
+        val done by uiState.done.collectAsState()
+        val deadline by uiState.deadline.collectAsState()
+        val showDatePicker by uiState.isShowDatePicker.collectAsState()
+        return CreateTodoUiState(
+            title = title,
+            description = description,
+            done = done,
+            deadline = deadline,
+            isShowDatePicker = showDatePicker,
+        )
+    }
+
+    private class UiState(
+        val _title: MutableStateFlow<String>,
+        val _description: MutableStateFlow<String>,
+        val _done: MutableStateFlow<Boolean>,
+        val _deadline: MutableStateFlow<CreateTodoUiState.Deadline>,
+        val _isShowDatePicker: MutableStateFlow<Boolean>,
+    ) {
+        val title = _title.asStateFlow()
+        val description = _description.asStateFlow()
+        val done = _done.asStateFlow()
+        val deadline = _deadline.asStateFlow()
+        val isShowDatePicker = _isShowDatePicker.asStateFlow()
+
+        fun toCreateTodoReq() = CreateTodo.Req(
+            title = title.value,
+            description = description.value,
+            done = done.value,
+            deadline = deadline.value.dateMillis,
+        )
+
+        fun setTitle(title: String) {
+            if (this.title.value == title) return
+            _title.value = title
+        }
+
+        fun setDescription(description: String) {
+            if (this.description.value == description) return
+            _description.value = description
+        }
+
+        fun setDone(done: Boolean) {
+            if (this.done.value == done) return
+            _done.value = done
+        }
+
+        fun setIsShowDatePicker(isShowDatePicker: Boolean) {
+            if (this.isShowDatePicker.value == isShowDatePicker) return
+            _isShowDatePicker.value = isShowDatePicker
+        }
+
+        companion object {
+            fun init(): UiState {
+                return UiState(
+                    _title = MutableStateFlow(""),
+                    _description = MutableStateFlow(""),
+                    _done = MutableStateFlow(false),
+                    _deadline = MutableStateFlow(CreateTodoUiState.Deadline.currentTime()),
+                    _isShowDatePicker = MutableStateFlow(false),
+                )
+            }
         }
     }
 }

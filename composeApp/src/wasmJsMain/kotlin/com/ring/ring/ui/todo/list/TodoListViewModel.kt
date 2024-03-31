@@ -14,18 +14,9 @@ class TodoListViewModel(
     private val getTodoListUseCase: GetTodoList = GetTodoList(),
     private val editTodoDone: EditTodoDone = EditTodoDone(),
 ) : TodoListUiUpdater {
-    companion object {
-        @Composable
-        fun rememberTodoListUiState(viewModel: TodoListViewModel): TodoListUiState {
-            val todos by viewModel.todoList.collectAsState()
-            return TodoListUiState(
-                todos = todos
-            )
-        }
-    }
-
     private val _todoList: MutableStateFlow<List<TodoListUiState.Todo>> = MutableStateFlow(emptyList())
     val todoList = _todoList.asStateFlow()
+
     private val _getTodoListErrorEvent = Channel<Unit>()
     val getTodoListErrorEvent = _getTodoListErrorEvent.receiveAsFlow()
     private val _toggleDoneErrorEvent = Channel<Unit>()
@@ -52,6 +43,14 @@ class TodoListViewModel(
             return
         }
         updateTodoList(index, newTodo)
+    }
+
+    @Composable
+    fun rememberTodoListUiState(): TodoListUiState {
+        val todos by todoList.collectAsState()
+        return TodoListUiState(
+            todos = todos
+        )
     }
 
     private fun findTargetIndex(todoId: Long) = todoList.value.indexOfFirst { it.id == todoId }

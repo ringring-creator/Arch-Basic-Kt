@@ -16,19 +16,11 @@ class EditTodoViewModel(
     private val editTodoUseCase: EditTodo = EditTodo(),
     private val deleteTodoUseCase: DeleteTodo = DeleteTodo(),
 ) : EditTodoUiUpdater {
-    private var id: Long? = null
-    private val _title = MutableStateFlow("")
-    val title = _title.asStateFlow()
-    private val _description = MutableStateFlow("")
-    val description = _description.asStateFlow()
-    private val _done = MutableStateFlow(false)
-    val done = _done.asStateFlow()
-    private val _deadline = MutableStateFlow(EditTodoUiState.Deadline.currentTime())
-    val deadline = _deadline.asStateFlow()
-    private val _isShowDatePicker = MutableStateFlow(false)
-    val isShowDatePicker = _isShowDatePicker.asStateFlow()
+    private val uiState: UiState = UiState.init()
+
     private val _toTodoListEvent = Channel<Unit>()
     val toTodoListEvent = _toTodoListEvent.receiveAsFlow()
+
     private val _editErrorEvent = Channel<Unit>()
     val editErrorEvent = _editErrorEvent.receiveAsFlow()
     private val _deleteErrorEvent = Channel<Unit>()
@@ -43,25 +35,12 @@ class EditTodoViewModel(
             _getTodoErrorEvent.trySend(Unit)
             return
         }
-        id = res.todo.id
-        _title.value = res.todo.title
-        _description.value = res.todo.description
-        _done.value = res.todo.done
-        _deadline.value = res.todo.deadline
+        uiState.set(res.todo)
     }
 
     override suspend fun editTodo() {
         try {
-            val id = unwrapId()
-            editTodoUseCase(
-                EditTodo.Req(
-                    id = id,
-                    title = title.value,
-                    description = description.value,
-                    done = done.value,
-                    deadline = deadline.value.dateMillis,
-                )
-            )
+            editTodoUseCase(uiState.toEditTodoReq())
             _toTodoListEvent.trySend(Unit)
         } catch (e: Throwable) {
             _editErrorEvent.trySend(Unit)
@@ -70,7 +49,7 @@ class EditTodoViewModel(
 
     override suspend fun deleteTodo() {
         try {
-            val id = unwrapId()
+            val id = uiState.unwrapId()
             deleteTodoUseCase(DeleteTodo.Req(id))
             _toTodoListEvent.trySend(Unit)
         } catch (e: Throwable) {
@@ -79,53 +58,112 @@ class EditTodoViewModel(
     }
 
     override fun setTitle(title: String) {
-        if (this.title.value == title) return
-        _title.value = title
+        uiState.setTitle(title)
     }
 
     override fun setDescription(description: String) {
-        if (this.description.value == description) return
-        _description.value = description
+        uiState.setDescription(description)
     }
 
     override fun setDone(done: Boolean) {
-        if (this.done.value == done) return
-        _done.value = done
+        uiState.setDone(done)
     }
 
     override fun setDeadline(dateMillis: Long) {
-        _deadline.value = EditTodoUiState.Deadline(dateMillis)
+        uiState._deadline.value = EditTodoUiState.Deadline(dateMillis)
     }
 
     override fun showDatePicker() {
-        if (this.isShowDatePicker.value) return
-        _isShowDatePicker.value = true
+        uiState.setIsShowDatePicker(true)
     }
 
     override fun dismissDatePicker() {
-        if (this.isShowDatePicker.value.not()) return
-        _isShowDatePicker.value = false
+        uiState.setIsShowDatePicker(false)
     }
 
-    private fun unwrapId() = id ?: run {
-        throw IllegalStateException()
+    @Composable
+    fun rememberEditTodoUiState(): EditTodoUiState {
+        val title by uiState.title.collectAsState()
+        val description by uiState.description.collectAsState()
+        val done by uiState.done.collectAsState()
+        val deadline by uiState.deadline.collectAsState()
+        val showDatePicker by uiState.isShowDatePicker.collectAsState()
+        return EditTodoUiState(
+            title = title,
+            description = description,
+            done = done,
+            deadline = deadline,
+            isShowDatePicker = showDatePicker,
+        )
     }
 
-    companion object {
-        @Composable
-        fun rememberEditTodoUiState(viewModel: EditTodoViewModel): EditTodoUiState {
-            val title by viewModel.title.collectAsState()
-            val description by viewModel.description.collectAsState()
-            val done by viewModel.done.collectAsState()
-            val deadline by viewModel.deadline.collectAsState()
-            val showDatePicker by viewModel.isShowDatePicker.collectAsState()
-            return EditTodoUiState(
-                title = title,
-                description = description,
-                done = done,
-                deadline = deadline,
-                isShowDatePicker = showDatePicker,
+    private data class UiState(
+        var id: Long? = null,
+        val _title: MutableStateFlow<String> = MutableStateFlow(""),
+        val _description: MutableStateFlow<String> = MutableStateFlow(""),
+        val _done: MutableStateFlow<Boolean> = MutableStateFlow(false),
+        val _deadline: MutableStateFlow<EditTodoUiState.Deadline> = MutableStateFlow(EditTodoUiState.Deadline.currentTime()),
+        val _isShowDatePicker: MutableStateFlow<Boolean> = MutableStateFlow(false),
+    ) {
+        val title = _title.asStateFlow()
+        val description = _description.asStateFlow()
+        val done = _done.asStateFlow()
+        val deadline = _deadline.asStateFlow()
+        val isShowDatePicker = _isShowDatePicker.asStateFlow()
+
+        fun set(todo: GetTodo.Res.Todo) {
+            id = todo.id
+            setTitle(todo.title)
+            setDescription(todo.description)
+            setDone(todo.done)
+            _deadline.value = todo.deadline
+        }
+
+        fun setTitle(title: String) {
+            if (this.title.value == title) return
+            _title.value = title
+        }
+
+        fun setDescription(description: String) {
+            if (this.description.value == description) return
+            _description.value = description
+        }
+
+        fun setDone(done: Boolean) {
+            if (this.done.value == done) return
+            _done.value = done
+        }
+
+        fun setIsShowDatePicker(isShowDatePicker: Boolean) {
+            if (this.isShowDatePicker.value == isShowDatePicker) return
+            _isShowDatePicker.value = isShowDatePicker
+        }
+
+        fun toEditTodoReq(): EditTodo.Req {
+            return EditTodo.Req(
+                id = unwrapId(),
+                title = title.value,
+                description = description.value,
+                done = done.value,
+                deadline = deadline.value.dateMillis,
             )
+        }
+
+        fun unwrapId() = id ?: run {
+            throw IllegalStateException()
+        }
+
+        companion object {
+            fun init(): UiState {
+                return UiState(
+                    id = null,
+                    _title = MutableStateFlow(""),
+                    _description = MutableStateFlow(""),
+                    _done = MutableStateFlow(false),
+                    _deadline = MutableStateFlow(EditTodoUiState.Deadline.currentTime()),
+                    _isShowDatePicker = MutableStateFlow(false),
+                )
+            }
         }
     }
 }

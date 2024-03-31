@@ -28,7 +28,7 @@ fun EditTodoScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     EditTodoScreen(
-        uiState = EditTodoViewModel.rememberEditTodoUiState(viewModel),
+        uiState = viewModel.rememberEditTodoUiState(),
         updater = viewModel,
         toTodoListScreen = toTodoListScreen,
         snackBarHostState = snackBarHostState,

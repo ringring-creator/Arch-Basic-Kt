@@ -21,7 +21,7 @@ fun TodoListScreen(
     toEditTodoScreen: (Long) -> Unit,
     toMyPageScreen: () -> Unit,
 ) {
-    val uiState = TodoListViewModel.rememberTodoListUiState(viewModel)
+    val uiState = viewModel.rememberTodoListUiState()
     val snackBarHostState = remember { SnackbarHostState() }
 
     TodoListScreen(

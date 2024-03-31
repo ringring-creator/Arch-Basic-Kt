@@ -27,7 +27,7 @@ fun CreateTodoScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     CreateTodoScreen(
-        uiState = CreateTodoViewModel.rememberCreateTodoUiState(viewModel),
+        uiState = viewModel.rememberCreateTodoUiState(),
         updater = viewModel,
         toTodoListScreen = toTodoListScreen,
         snackBarHostState = snackBarHostState,
