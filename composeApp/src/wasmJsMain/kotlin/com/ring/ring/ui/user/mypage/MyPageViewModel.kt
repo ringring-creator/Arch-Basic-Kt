@@ -12,42 +12,61 @@ import kotlinx.coroutines.flow.receiveAsFlow
 class MyPageViewModel(
     private val getUserUseCase: GetUser = GetUser()
 ) {
-    private val _email = MutableStateFlow("")
-    val email = _email.asStateFlow()
-    private val _logoutEnabled = MutableStateFlow(false)
-    val logoutEnabled = _logoutEnabled.asStateFlow()
-    private val _editEnabled = MutableStateFlow(false)
-    val editEnabled = _editEnabled.asStateFlow()
-    private val _withdrawalEnabled = MutableStateFlow(false)
-    val withdrawalEnabled = _withdrawalEnabled.asStateFlow()
+    private val uiState: UiState = UiState.init()
+
     private val _getUserErrorEvent = Channel<Unit>()
     val getUserErrorEvent = _getUserErrorEvent.receiveAsFlow()
 
     suspend fun getUser() {
         try {
             val res = getUserUseCase(GetUser.Req())
-            _email.value = res.user.email
-            _logoutEnabled.value = true
-            _editEnabled.value = true
-            _withdrawalEnabled.value = true
+            uiState.set(res.user)
         } catch (e: Throwable) {
             _getUserErrorEvent.trySend(Unit)
         }
     }
 
-    companion object {
-        @Composable
-        fun rememberLoginUiState(viewModel: MyPageViewModel): MyPageUiState {
-            val email by viewModel.email.collectAsState()
-            val logoutEnabled by viewModel.logoutEnabled.collectAsState()
-            val editEnabled by viewModel.editEnabled.collectAsState()
-            val withdrawalEnabled by viewModel.withdrawalEnabled.collectAsState()
-            return MyPageUiState(
-                email = email,
-                logoutEnabled = logoutEnabled,
-                editEnabled = editEnabled,
-                withdrawalEnabled = withdrawalEnabled,
-            )
+    @Composable
+    fun rememberLoginUiState(): MyPageUiState {
+        val email by uiState.email.collectAsState()
+        val logoutEnabled by uiState.logoutEnabled.collectAsState()
+        val editEnabled by uiState.editEnabled.collectAsState()
+        val withdrawalEnabled by uiState.withdrawalEnabled.collectAsState()
+        return MyPageUiState(
+            email = email,
+            logoutEnabled = logoutEnabled,
+            editEnabled = editEnabled,
+            withdrawalEnabled = withdrawalEnabled,
+        )
+    }
+
+    private data class UiState(
+        val _email: MutableStateFlow<String>,
+        val _logoutEnabled: MutableStateFlow<Boolean>,
+        val _editEnabled: MutableStateFlow<Boolean>,
+        val _withdrawalEnabled: MutableStateFlow<Boolean>,
+    ) {
+        fun set(user: GetUser.Res.User) {
+            _email.value = user.email
+            _logoutEnabled.value = true
+            _editEnabled.value = true
+            _withdrawalEnabled.value = true
+        }
+
+        val email = _email.asStateFlow()
+        val logoutEnabled = _logoutEnabled.asStateFlow()
+        val editEnabled = _editEnabled.asStateFlow()
+        val withdrawalEnabled = _withdrawalEnabled.asStateFlow()
+
+        companion object {
+            fun init(): UiState {
+                return UiState(
+                    _email = MutableStateFlow(""),
+                    _logoutEnabled = MutableStateFlow(false),
+                    _editEnabled = MutableStateFlow(false),
+                    _withdrawalEnabled = MutableStateFlow(false),
+                )
+            }
         }
     }
 }

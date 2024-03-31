@@ -26,7 +26,7 @@ fun EditUserScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     EditUserScreen(
-        uiState = EditUserViewModel.rememberEditUserUiState(viewModel),
+        uiState = viewModel.rememberEditUserUiState(),
         updater = viewModel,
         snackBarHostState = snackBarHostState,
         toMyPageScreen = toMyPageScreen,

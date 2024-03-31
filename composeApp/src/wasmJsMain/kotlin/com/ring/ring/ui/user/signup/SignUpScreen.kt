@@ -24,7 +24,7 @@ fun SignUpScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     SignUpScreen(
-        uiState = SignUpViewModel.rememberSignUpUiState(viewModel),
+        uiState = viewModel.rememberSignUpUiState(),
         updater = viewModel,
         toLoginScreen = toLoginScreen,
         snackBarHostState = snackBarHostState,

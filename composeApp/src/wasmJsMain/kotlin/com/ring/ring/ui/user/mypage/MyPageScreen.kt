@@ -20,7 +20,7 @@ fun MyPageScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     MyPageScreen(
-        uiState = MyPageViewModel.rememberLoginUiState(viewModel),
+        uiState = viewModel.rememberLoginUiState(),
         toLogoutScreen = toLogoutScreen,
         toEditUserScreen = toEditUserScreen,
         toWithdrawalUserScreen = toWithdrawalUserScreen,

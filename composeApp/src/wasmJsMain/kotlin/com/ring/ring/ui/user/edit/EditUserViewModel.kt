@@ -14,15 +14,11 @@ class EditUserViewModel(
     private val getUserUseCase: GetUser = GetUser(),
     private val editUserUseCase: EditUser = EditUser(),
 ) : EditUserUiUpdater {
-    private var id: Long? = null
-    private val _email = MutableStateFlow("")
-    val email = _email.asStateFlow()
-    private val _password = MutableStateFlow("")
-    val password = _password.asStateFlow()
-    private val _editEnabled = MutableStateFlow(false)
-    val editEnabled = _editEnabled.asStateFlow()
+    private val uiState = UiState.init()
+
     private val _toMyPageScreenEvent = Channel<Unit>()
     val toMyPageScreenEvent = _toMyPageScreenEvent.receiveAsFlow()
+
     private val _getUserErrorEvent = Channel<Unit>()
     val getUserErrorEvent = _getUserErrorEvent.receiveAsFlow()
     private val _editErrorEvent = Channel<Unit>()
@@ -35,16 +31,12 @@ class EditUserViewModel(
             _getUserErrorEvent.trySend(Unit)
             return
         }
-        id = res.user.id
-        _email.value = res.user.email
-        _password.value = res.user.password
-        _editEnabled.value = true
+        uiState.set(res.user)
     }
 
     override suspend fun edit() {
         try {
-            val id = unwrapId()
-            editUserUseCase(EditUser.Req(id, email.value, password.value))
+            editUserUseCase(uiState.toEditUserReq())
         } catch (e: Throwable) {
             _editErrorEvent.trySend(Unit)
             return
@@ -53,29 +45,66 @@ class EditUserViewModel(
     }
 
     override fun setEmail(email: String) {
-        if (this.email.value == email) return
-        _email.value = email
+        uiState.setEmail(email)
     }
 
     override fun setPassword(password: String) {
-        if (this.password.value == password) return
-        _password.value = password
+        uiState.setPassword(password)
     }
 
-    private fun unwrapId() = id ?: run {
-        throw IllegalStateException()
+    @Composable
+    fun rememberEditUserUiState(): EditUserUiState {
+        val email by uiState.email.collectAsState()
+        val password by uiState.password.collectAsState()
+        val editEnabled by uiState.editEnabled.collectAsState()
+        return EditUserUiState(
+            email = email,
+            password = password,
+            editEnabled = editEnabled,
+        )
     }
 
-    companion object {
-        @Composable
-        fun rememberEditUserUiState(viewModel: EditUserViewModel): EditUserUiState {
-            val email by viewModel.email.collectAsState()
-            val password by viewModel.password.collectAsState()
-            val editEnabled by viewModel.editEnabled.collectAsState()
-            return EditUserUiState(
-                email = email,
-                password = password,
-                editEnabled = editEnabled,
+    private data class UiState(
+        var id: Long?,
+        val _email: MutableStateFlow<String>,
+        val _password: MutableStateFlow<String>,
+        val _editEnabled: MutableStateFlow<Boolean>,
+    ) {
+        val email = _email.asStateFlow()
+        val password = _password.asStateFlow()
+        val editEnabled = _editEnabled.asStateFlow()
+
+        fun set(user: GetUser.Res.User) {
+            id = user.id
+            _email.value = user.email
+            _password.value = user.password
+            _editEnabled.value = true
+        }
+
+        fun unwrapId() = id ?: run {
+            throw IllegalStateException()
+        }
+
+        fun toEditUserReq(): EditUser.Req {
+            return EditUser.Req(unwrapId(), email.value, password.value)
+        }
+
+        fun setEmail(email: String) {
+            if (this.email.value == email) return
+            _email.value = email
+        }
+
+        fun setPassword(password: String) {
+            if (this.password.value == password) return
+            _password.value = password
+        }
+
+        companion object {
+            fun init(): UiState = UiState(
+                id = null,
+                _email = MutableStateFlow(""),
+                _password = MutableStateFlow(""),
+                _editEnabled = MutableStateFlow(false),
             )
         }
     }

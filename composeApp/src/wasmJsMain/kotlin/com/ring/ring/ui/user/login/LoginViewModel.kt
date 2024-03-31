@@ -12,43 +12,67 @@ import kotlinx.coroutines.flow.receiveAsFlow
 class LoginViewModel(
     private val loginUseCase: Login = Login()
 ) : LoginUiUpdater {
-    private val _email = MutableStateFlow("")
-    val email = _email.asStateFlow()
-    private val _password = MutableStateFlow("")
-    val password = _password.asStateFlow()
+    private val uiState: UiState = UiState.init()
+
     private val _toTodoListScreenEvent = Channel<Unit>()
     val toTodoListScreenEvent = _toTodoListScreenEvent.receiveAsFlow()
+
     private val _loginEvent = Channel<Unit>()
     val loginEvent = _loginEvent.receiveAsFlow()
 
     override fun setEmail(email: String) {
-        if (this.email.value == email) return
-        _email.value = email
+        uiState.setEmail(email)
     }
 
     override fun setPassword(password: String) {
-        if (this.password.value == password) return
-        _password.value = password
+        uiState.setPassword(password)
     }
 
     override suspend fun login() {
         try {
-            loginUseCase(Login.Req(email.value, password.value))
+            loginUseCase(uiState.toLoginRes())
             _toTodoListScreenEvent.trySend(Unit)
         } catch (e: Throwable) {
             _loginEvent.trySend(Unit)
         }
     }
 
-    companion object {
-        @Composable
-        fun rememberLoginUiState(viewModel: LoginViewModel): LoginUiState {
-            val email by viewModel.email.collectAsState()
-            val password by viewModel.password.collectAsState()
-            return LoginUiState(
-                email = email,
-                password = password,
-            )
+    @Composable
+    fun rememberLoginUiState(): LoginUiState {
+        val email by uiState.email.collectAsState()
+        val password by uiState.password.collectAsState()
+        return LoginUiState(
+            email = email,
+            password = password,
+        )
+    }
+
+    private data class UiState(
+        val _email: MutableStateFlow<String>,
+        val _password: MutableStateFlow<String>,
+    ) {
+        val email = _email.asStateFlow()
+        val password = _password.asStateFlow()
+
+        fun setEmail(email: String) {
+            if (this.email.value == email) return
+            _email.value = email
+        }
+
+        fun setPassword(password: String) {
+            if (this.password.value == password) return
+            _password.value = password
+        }
+
+        fun toLoginRes(): Login.Req = Login.Req(email.value, password.value)
+
+        companion object {
+            fun init(): UiState {
+                return UiState(
+                    _email = MutableStateFlow(""),
+                    _password = MutableStateFlow(""),
+                )
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ class WithdrawalViewModel(
 ) : WithdrawalUiUpdater {
     private val _toLoginScreenEvent = Channel<Unit>()
     val toLoginScreenEvent = _toLoginScreenEvent.receiveAsFlow()
+
     private val _withdrawalErrorEvent = Channel<Unit>()
     val withdrawalErrorEvent = _withdrawalErrorEvent.receiveAsFlow()
 

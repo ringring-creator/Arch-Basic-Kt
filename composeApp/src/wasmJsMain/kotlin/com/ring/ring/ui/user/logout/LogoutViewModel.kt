@@ -9,6 +9,7 @@ class LogoutViewModel(
 ) : LogoutUiUpdater {
     private val _toLoginScreenEvent = Channel<Unit>()
     val toLoginScreenEvent = _toLoginScreenEvent.receiveAsFlow()
+
     private val _logoutErrorEvent = Channel<Unit>()
     val logoutErrorEvent = _logoutErrorEvent.receiveAsFlow()
 
