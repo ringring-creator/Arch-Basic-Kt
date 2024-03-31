@@ -19,8 +19,8 @@ data class Todo(
 class TodoRepository(
     private val remoteDataSource: RemoteTodoDataSource
 ) {
-    suspend fun create(todo: Todo) = withContext(Dispatchers.Default) {
-        remoteDataSource.create(todo)
+    suspend fun create(todo: Todo, session: Session) = withContext(Dispatchers.Default) {
+        remoteDataSource.create(todo, session)
     }
 
     suspend fun list(session: Session): List<Todo> = withContext(Dispatchers.Default) {

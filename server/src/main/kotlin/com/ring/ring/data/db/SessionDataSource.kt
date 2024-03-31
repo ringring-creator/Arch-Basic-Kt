@@ -3,7 +3,6 @@ package com.ring.ring.data.db
 import com.ring.ring.data.Session
 import com.ring.ring.di.DataModules
 import data.db.SessionQueries
-import data.db.SessionTable
 
 class SessionDataSource(
     private val queries: SessionQueries = DataModules.db.sessionQueries
@@ -18,9 +17,8 @@ class SessionDataSource(
         credential = session.credential
     )
 
-
-    private fun convert(table: SessionTable) = Session(
-        userId = table.userId,
-        credential = table.credential,
-    )
+    fun validate(session: Session) = queries.valid(
+        userId = session.userId,
+        credential = session.credential
+    ).executeAsOne()
 }

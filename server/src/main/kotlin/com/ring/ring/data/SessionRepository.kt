@@ -8,12 +8,7 @@ import java.util.*
 data class Session(
     val userId: Long,
     val credential: String,
-) {
-//    fun toLoginSession(): Login.Res.Session = Login.Res.Session(
-//        userId = userId,
-//        credential = credential,
-//    )
-}
+)
 
 class SessionRepository(
     private val dataSource: SessionDataSource = DataModules.sessionDataSource
@@ -28,6 +23,8 @@ class SessionRepository(
     }
 
     fun delete(session: Session) = dataSource.delete(session)
+
+    fun validate(session: Session): Boolean = dataSource.validate(session)
 
     private fun generateSecureRandomString(): String {
         val secureRandom = SecureRandom()

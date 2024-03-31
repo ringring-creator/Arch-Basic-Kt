@@ -1,15 +1,18 @@
 package com.ring.ring.usecase.todo
 
-import com.ring.ring.data.Session
+import com.ring.ring.data.Todo
 import com.ring.ring.data.TodoRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
+import com.ring.ring.usecase.session.ValidateSession
 import kotlinx.serialization.Serializable
 
 class GetTodo(
+    private val validateSession: ValidateSession = ValidateSession(),
     private val repository: TodoRepository = DataModules.todoRepository,
 ) : UseCase<GetTodo.Req, GetTodo.Res>() {
     override suspend fun execute(req: Req): Res {
+        validateSession(req.session)
         val todo = repository.get(req.todoId)
         return Res(todo = todo.toGetTodo())
     }
@@ -17,21 +20,15 @@ class GetTodo(
     @Serializable
     data class Req(
         val todoId: Long,
-        val session: Session,
-    ) : UseCase.Req {
-        @Serializable
-        data class Session(
-            val userId: Long,
-            val credential: String,
-        )
-    }
+        val session: ValidateSession.ReqSession,
+    ) : UseCase.Req
 
     @Serializable
     data class Res(
-        val todo: Todo,
+        val todo: ResTodo,
     ) : UseCase.Res {
         @Serializable
-        data class Todo(
+        data class ResTodo(
             val id: String,
             val title: String,
             val description: String,
@@ -40,4 +37,14 @@ class GetTodo(
             val userId: String,
         )
     }
+
+    private fun Todo.toGetTodo(): Res.ResTodo = Res.ResTodo(
+        id = id?.toString() ?: throw IllegalStateException(),
+        title = title,
+        description = description,
+        done = done.toString(),
+        deadline = deadline.toString(),
+        userId = userId.toString(),
+    )
+
 }

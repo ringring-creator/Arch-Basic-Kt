@@ -11,17 +11,28 @@ import kotlinx.serialization.Serializable
 class RemoteTodoDataSource(
     private val httpClient: HttpClient
 ) {
-    suspend fun create(todo: Todo) {
+    @Serializable
+    data class CreateRequest(
+        val todo: Todo,
+        val session: Session
+    )
+
+    suspend fun create(todo: Todo, session: Session) {
         httpClient.post("${RemoteUserDataSource.URL}/todo/create") {
             contentType(ContentType.Application.Json)
-            setBody(todo)
+            setBody(CreateRequest(todo, session))
         }
     }
+
+    @Serializable
+    data class ListRequest(
+        val session: Session
+    )
 
     suspend fun list(session: Session): List<Todo> {
         return httpClient.post("${RemoteUserDataSource.URL}/todo/list") {
             contentType(ContentType.Application.Json)
-            setBody(session)
+            setBody(ListRequest(session))
         }.body()
     }
 

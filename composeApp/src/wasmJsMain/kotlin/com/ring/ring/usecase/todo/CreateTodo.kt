@@ -18,7 +18,7 @@ class CreateTodo(
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
         val session = sessionRepository.get() ?: throw Exception()
         val todo = convertTodo(req, session)
-        todoRepository.create(todo)
+        todoRepository.create(todo, session)
         return@withContext Res()
     }
 

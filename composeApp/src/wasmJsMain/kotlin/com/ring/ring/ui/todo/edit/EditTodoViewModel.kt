@@ -35,7 +35,7 @@ class EditTodoViewModel(
             _getTodoErrorEvent.trySend(Unit)
             return
         }
-        uiState.set(res.todo)
+        uiState.set(res)
     }
 
     override suspend fun editTodo() {
@@ -111,7 +111,7 @@ class EditTodoViewModel(
         val deadline = _deadline.asStateFlow()
         val isShowDatePicker = _isShowDatePicker.asStateFlow()
 
-        fun set(todo: GetTodo.Res.Todo) {
+        fun set(todo: GetTodo.Res) {
             id = todo.id
             setTitle(todo.title)
             setDescription(todo.description)

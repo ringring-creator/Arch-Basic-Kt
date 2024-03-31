@@ -9,6 +9,10 @@ insert:
 INSERT INTO SessionTable(userId, credential)
 VALUES(?,?);
 
+valid:
+SELECT Count(userId) == 1 FROM SessionTable
+WHERE userId = :userId AND credential = :credential;
+
 delete:
 DELETE FROM SessionTable
 WHERE userId = :userId AND credential = :credential;

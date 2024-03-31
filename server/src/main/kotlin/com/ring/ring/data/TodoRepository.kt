@@ -2,8 +2,6 @@ package com.ring.ring.data
 
 import app.cash.sqldelight.ColumnAdapter
 import com.ring.ring.data.db.TodoDataSource
-import com.ring.ring.usecase.todo.GetTodo
-import com.ring.ring.usecase.todo.GetTodoList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
@@ -18,27 +16,7 @@ data class Todo(
     val done: Boolean,
     val deadline: LocalDate,
     val userId: Long,
-) {
-    fun toGetTodoListItem(): GetTodoList.Res.Todo? = id?.let {
-        GetTodoList.Res.Todo(
-            id = it,
-            title = title,
-            description = description,
-            done = done,
-            deadline = deadline,
-            userId = userId,
-        )
-    }
-
-    fun toGetTodo(): GetTodo.Res.Todo = GetTodo.Res.Todo(
-        id = id!!.toString(),
-        title = title,
-        description = description,
-        done = done.toString(),
-        deadline = deadline.toString(),
-        userId = userId.toString(),
-    )
-}
+)
 
 class DeadlineAdapter : ColumnAdapter<LocalDate, String> {
     override fun decode(databaseValue: String): LocalDate {
