@@ -1,14 +1,9 @@
 package com.ring.ring.data.todo
 
 import com.ring.ring.data.user.Session
-import com.ring.ring.ui.todo.edit.EditTodoUiState
-import com.ring.ring.usecase.todo.GetTodo
-import com.ring.ring.usecase.todo.GetTodoList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -19,24 +14,7 @@ data class Todo(
     val done: Boolean,
     val deadline: LocalDate,
     val userId: Long,
-) {
-    fun toGetTodoListElement() = GetTodoList.Res.Todo(
-        id = id ?: throw IllegalArgumentException(),
-        title = title,
-        done = done,
-        deadline = deadline.toString(),
-    )
-
-    fun toGetTodoElement() = GetTodo.Res.Todo(
-        id = id ?: throw IllegalArgumentException(),
-        title = title,
-        description = description,
-        done = done,
-        deadline = EditTodoUiState.Deadline(
-            deadline.atStartOfDayIn(TimeZone.UTC).toEpochMilliseconds()
-        ),
-    )
-}
+)
 
 class TodoRepository(
     private val remoteDataSource: RemoteTodoDataSource

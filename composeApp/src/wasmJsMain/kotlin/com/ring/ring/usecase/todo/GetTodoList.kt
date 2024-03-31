@@ -17,7 +17,7 @@ class GetTodoList(
         val session = sessionRepository.get() ?: throw Exception()
         val todoList = todoRepository.list(session)
         return@withContext Res(
-            todoList = todoList.map(Todo::toGetTodoListElement)
+            todoList = todoList.map { it.toResTodo() }
         )
     }
 
@@ -38,4 +38,11 @@ class GetTodoList(
             )
         }
     }
+
+    private fun Todo.toResTodo() = Res.Todo(
+        id = id ?: throw IllegalArgumentException(),
+        title = title,
+        done = done,
+        deadline = deadline.toString(),
+    )
 }
