@@ -14,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ring.ring.ui.common.ArchBasicDatePicker
 import com.ring.ring.util.DateUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -178,7 +179,7 @@ private fun Content(
                 DeleteButton { scope.launch { updater.deleteTodo() } }
             }
         }
-        DeadlineDatePicker(
+        ArchBasicDatePicker(
             uiState.isShowDatePicker,
             datePickerState,
             updater::dismissDatePicker,
@@ -261,27 +262,4 @@ private fun DeleteButton(
     Button(
         onClick = delete,
     ) { Text("Delete") }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun DeadlineDatePicker(
-    isShowDatePicker: Boolean,
-    datePickerState: DatePickerState,
-    dismissDatePicker: () -> Unit,
-    setDeadline: (Long) -> Unit,
-) {
-    if (isShowDatePicker) {
-        DatePickerDialog(
-            onDismissRequest = dismissDatePicker,
-            confirmButton = {
-                Text("Set", modifier = Modifier.padding(16.dp).clickable {
-                    datePickerState.selectedDateMillis?.let { setDeadline(it) }
-                    dismissDatePicker()
-                })
-            }
-        ) {
-            DatePicker(datePickerState)
-        }
-    }
 }
