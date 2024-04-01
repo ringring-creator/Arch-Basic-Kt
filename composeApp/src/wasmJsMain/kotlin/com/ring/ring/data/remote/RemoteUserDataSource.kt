@@ -27,10 +27,16 @@ class RemoteUserDataSource(
         }.body<Session>()
     }
 
+
+    @Serializable
+    data class GetRequest(
+        val session: Session,
+    )
+
     suspend fun get(session: Session): User {
         return httpClient.post("$URL/user/get") {
             contentType(ContentType.Application.Json)
-            setBody(session)
+            setBody(GetRequest(session))
         }.body()
     }
 
@@ -49,13 +55,13 @@ class RemoteUserDataSource(
 
     @Serializable
     data class WithdrawalRequest(
-        val id: Long
+        val session: Session
     )
 
-    suspend fun withdrawal(userId: Long) {
+    suspend fun withdrawal(session: Session) {
         httpClient.post("$URL/user/withdrawal") {
             contentType(ContentType.Application.Json)
-            setBody(WithdrawalRequest(userId))
+            setBody(WithdrawalRequest(session))
         }
     }
 

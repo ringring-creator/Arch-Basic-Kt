@@ -14,7 +14,7 @@ class Withdrawal(
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
         val session = sessionRepository.get()
         session?.let {
-            userRepository.withdrawal(session.userId)
+            userRepository.withdrawal(session)
         }
         return@withContext Res()
     }

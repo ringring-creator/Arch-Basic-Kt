@@ -4,21 +4,25 @@ import com.ring.ring.data.User
 import com.ring.ring.data.UserRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
+import com.ring.ring.usecase.session.ValidateSession
 import kotlinx.serialization.Serializable
 
 class EditUser(
+    private val validateSession: ValidateSession = ValidateSession(),
     private val userRepository: UserRepository = DataModules.userRepository,
 ) : UseCase<EditUser.Req, EditUser.Res>() {
     override suspend fun execute(req: Req): Res {
-        val user = req.user.toUser()
-        userRepository.save(user = user)
+        validateSession(req.session)
+        userRepository.save(
+            user = req.user.toUser()
+        )
         return Res()
     }
 
     @Serializable
     data class Req(
         val user: ReqUser,
-        val session: Session,
+        val session: ValidateSession.ReqSession,
     ) : UseCase.Req {
         @Serializable
         data class ReqUser(
@@ -32,12 +36,6 @@ class EditUser(
                 password = password,
             )
         }
-
-        @Serializable
-        data class Session(
-            val userId: Long,
-            val credential: String,
-        )
     }
 
     class Res : UseCase.Res

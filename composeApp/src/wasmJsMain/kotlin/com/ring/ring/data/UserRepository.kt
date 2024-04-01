@@ -37,7 +37,7 @@ class UserRepository(
         remoteDataSource.edit(user, session)
     }
 
-    suspend fun withdrawal(userId: Long) {
-        remoteDataSource.withdrawal(userId)
+    suspend fun withdrawal(session: Session) {
+        remoteDataSource.withdrawal(session)
     }
 }
