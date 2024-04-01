@@ -1,7 +1,6 @@
-package com.ring.ring.usecase.user
+package com.ring.ring.user.get
 
 import com.ring.ring.data.User
-import com.ring.ring.data.repository.UserRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
 import com.ring.ring.usecase.session.ValidateSession
@@ -9,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 class GetUser(
     private val validateSession: ValidateSession = ValidateSession(),
-    private val repository: UserRepository = DataModules.userRepository,
+    private val repository: GetUserRepository = DataModules.getUserRepository,
 ) : UseCase<GetUser.Req, GetUser.Res>() {
     override suspend fun execute(req: Req): Res {
         validateSession(req.session)

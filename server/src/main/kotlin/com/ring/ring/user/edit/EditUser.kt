@@ -1,31 +1,36 @@
-package com.ring.ring.usecase.user
+package com.ring.ring.user.edit
 
 import com.ring.ring.data.User
-import com.ring.ring.data.repository.UserRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
+import com.ring.ring.usecase.session.ValidateSession
 import kotlinx.serialization.Serializable
 
-class SignUp(
-    private val repository: UserRepository = DataModules.userRepository,
-) : UseCase<SignUp.Req, SignUp.Res>() {
+class EditUser(
+    private val validateSession: ValidateSession = ValidateSession(),
+    private val userRepository: EditUserRepository = DataModules.editUserRepository,
+) : UseCase<EditUser.Req, EditUser.Res>() {
     override suspend fun execute(req: Req): Res {
-        val user = req.user.toUser()
-        repository.save(user = user)
+        validateSession(req.session)
+        userRepository.save(
+            user = req.user.toUser()
+        )
         return Res()
     }
 
     @Serializable
     data class Req(
         val user: ReqUser,
+        val session: ValidateSession.ReqSession,
     ) : UseCase.Req {
         @Serializable
         data class ReqUser(
+            val id: Long,
             val email: String,
             val password: String,
         ) {
             fun toUser(): User = User(
-                id = null,
+                id = id,
                 email = email,
                 password = password,
             )

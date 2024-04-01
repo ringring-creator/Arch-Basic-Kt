@@ -4,9 +4,7 @@ import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import com.ring.ring.data.db.DeadlineAdapter
 import com.ring.ring.data.db.SessionDataSource
-import com.ring.ring.data.db.UserDataSource
 import com.ring.ring.data.repository.SessionRepository
-import com.ring.ring.data.repository.UserRepository
 import com.ring.ring.todo.create.CreateTodoDataSource
 import com.ring.ring.todo.create.CreateTodoRepository
 import com.ring.ring.todo.delete.DeleteTodoDataSource
@@ -17,6 +15,14 @@ import com.ring.ring.todo.get.GetTodoDataSource
 import com.ring.ring.todo.get.GetTodoRepository
 import com.ring.ring.todo.list.ListTodoDataSource
 import com.ring.ring.todo.list.ListTodoRepository
+import com.ring.ring.user.edit.EditUserDataSource
+import com.ring.ring.user.edit.EditUserRepository
+import com.ring.ring.user.get.GetUserDataSource
+import com.ring.ring.user.get.GetUserRepository
+import com.ring.ring.user.signup.SignUpUserDataSource
+import com.ring.ring.user.signup.SignUpUserRepository
+import com.ring.ring.user.withdrawal.WithdrawalUserDataSource
+import com.ring.ring.user.withdrawal.WithdrawalUserRepository
 import data.db.LocalDb
 import data.db.TodoTable
 import java.util.*
@@ -28,8 +34,14 @@ object DataModules {
     val editTodoRepository = createEditTodoRepository()
     val getTodoRepository = createGetTodoRepository()
     val listTodoRepository = createListTodoRepository()
-    val userRepository = createUserRepository()
-    val userDataSource = createUserDataSource()
+    val editUserRepository = createEditUserRepository()
+    val editUserDataSource = createEditUserDataSource()
+    val getUserRepository = createGetUserRepository()
+    val getUserDataSource = createGetUserDataSource()
+    val signUpUserRepository = createSignUpUserRepository()
+    val signUpUserDataSource = createSignUpUserDataSource()
+    val withdrawalUserRepository = createWithdrawalUserRepository()
+    val withdrawalUserDataSource = createWithdrawalUserDataSource()
     val sessionRepository = createSessionRepository()
     val sessionDataSource = createSessionDataSource()
 
@@ -73,11 +85,35 @@ object DataModules {
         queries = db.todoQueries
     )
 
-    private fun createUserRepository(): UserRepository = UserRepository(
-        dataSource = createUserDataSource()
+    private fun createEditUserRepository(): EditUserRepository = EditUserRepository(
+        dataSource = createEditUserDataSource()
     )
 
-    private fun createUserDataSource(): UserDataSource = UserDataSource(
+    private fun createEditUserDataSource(): EditUserDataSource = EditUserDataSource(
+        queries = db.userQueries
+    )
+
+    private fun createGetUserRepository(): GetUserRepository = GetUserRepository(
+        dataSource = createGetUserDataSource()
+    )
+
+    private fun createGetUserDataSource(): GetUserDataSource = GetUserDataSource(
+        queries = db.userQueries
+    )
+
+    private fun createSignUpUserRepository(): SignUpUserRepository = SignUpUserRepository(
+        dataSource = createSignUpUserDataSource()
+    )
+
+    private fun createSignUpUserDataSource(): SignUpUserDataSource = SignUpUserDataSource(
+        queries = db.userQueries
+    )
+
+    private fun createWithdrawalUserRepository(): WithdrawalUserRepository = WithdrawalUserRepository(
+        dataSource = createWithdrawalUserDataSource()
+    )
+
+    private fun createWithdrawalUserDataSource(): WithdrawalUserDataSource = WithdrawalUserDataSource(
         queries = db.userQueries
     )
 

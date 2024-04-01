@@ -2,14 +2,14 @@ package com.ring.ring.usecase.session
 
 import com.ring.ring.data.User
 import com.ring.ring.data.repository.SessionRepository
-import com.ring.ring.data.repository.UserRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.exception.LoginFailureException
 import com.ring.ring.usecase.UseCase
+import com.ring.ring.user.get.GetUserRepository
 import kotlinx.serialization.Serializable
 
 class Login(
-    private val userRepository: UserRepository = DataModules.userRepository,
+    private val userRepository: GetUserRepository = DataModules.getUserRepository,
     private val sessionRepository: SessionRepository = DataModules.sessionRepository,
 ) : UseCase<Login.Req, Login.Res>() {
     override suspend fun execute(req: Req): Res {
