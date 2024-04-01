@@ -33,7 +33,7 @@ class UserDataSource(
     )
 
     private fun update(user: User) {
-        val id = user.id ?: return
+        val id = user.id ?: throw IllegalStateException()
         queries.update(
             email = user.email,
             password = user.password,

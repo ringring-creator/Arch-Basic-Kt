@@ -5,7 +5,6 @@ import com.ring.ring.data.db.TodoDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toLocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -20,7 +19,7 @@ data class Todo(
 
 class DeadlineAdapter : ColumnAdapter<LocalDate, String> {
     override fun decode(databaseValue: String): LocalDate {
-        return databaseValue.toLocalDate()
+        return LocalDate.parse(databaseValue)
     }
 
     override fun encode(value: LocalDate): String {
@@ -40,11 +39,7 @@ class TodoRepository(
     }
 
     suspend fun save(todo: Todo) = withContext(Dispatchers.IO) {
-        try {
-            dataSource.upsert(todo)
-        } catch (e: Exception) {
-            println(e)
-        }
+        dataSource.upsert(todo)
     }
 
     suspend fun updateDone(id: Long, done: Boolean) = withContext(Dispatchers.IO) {

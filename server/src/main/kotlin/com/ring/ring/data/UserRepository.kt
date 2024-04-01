@@ -12,7 +12,11 @@ data class User(
     val password: String,
 ) {
     fun toGetUser(): GetUser.Res.User {
-        return GetUser.Res.User(id!!, email, password)
+        return GetUser.Res.User(
+            id = id ?: throw IllegalStateException(),
+            email = email,
+            password = password
+        )
     }
 }
 

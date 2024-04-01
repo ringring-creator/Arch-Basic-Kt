@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
 class ValidateSession(
     private val sessionRepository: SessionRepository = DataModules.sessionRepository,
 ) : UseCase<ValidateSession.ReqSession, ValidateSession.Res>() {
-    override suspend fun execute(session: ReqSession): Res {
-        val isInvalid = sessionRepository.validate(session = session.toSession()).not()
+    override suspend fun execute(req: ReqSession): Res {
+        val isInvalid = sessionRepository.validate(session = req.toSession()).not()
         if (isInvalid) throw NotLoggedInException("session is invalid")
         return Res()
     }
