@@ -1,5 +1,6 @@
 package com.ring.ring.usecase.user
 
+import com.ring.ring.data.User
 import com.ring.ring.data.repository.UserRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
@@ -13,7 +14,7 @@ class GetUser(
     override suspend fun execute(req: Req): Res {
         validateSession(req.session)
         val user = repository.get(req.session.userId)
-        return Res(user = user.toGetUser())
+        return Res(user = user.toReqUser())
     }
 
     @Serializable
@@ -23,13 +24,21 @@ class GetUser(
 
     @Serializable
     data class Res(
-        val user: User
+        val user: ReqUser
     ) : UseCase.Res {
         @Serializable
-        data class User(
+        data class ReqUser(
             val id: Long,
             val email: String,
             val password: String,
+        )
+    }
+
+    private fun User.toReqUser(): Res.ReqUser {
+        return Res.ReqUser(
+            id = id ?: throw IllegalStateException(),
+            email = email,
+            password = password
         )
     }
 }
