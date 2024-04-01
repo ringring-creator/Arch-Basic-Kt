@@ -1,7 +1,7 @@
 package com.ring.ring.usecase.todo
 
 import com.ring.ring.data.Todo
-import com.ring.ring.data.TodoRepository
+import com.ring.ring.data.repository.TodoRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.exception.BadRequestException
 import com.ring.ring.usecase.UseCase

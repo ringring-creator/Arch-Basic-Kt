@@ -1,14 +1,10 @@
-package com.ring.ring.data
+package com.ring.ring.data.repository
 
+import com.ring.ring.data.Session
 import com.ring.ring.data.db.SessionDataSource
 import com.ring.ring.di.DataModules
 import java.security.SecureRandom
 import java.util.*
-
-data class Session(
-    val userId: Long,
-    val credential: String,
-)
 
 class SessionRepository(
     private val dataSource: SessionDataSource = DataModules.sessionDataSource

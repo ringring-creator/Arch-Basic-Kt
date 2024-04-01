@@ -2,13 +2,13 @@ package com.ring.ring.di
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import com.ring.ring.data.DeadlineAdapter
-import com.ring.ring.data.SessionRepository
-import com.ring.ring.data.TodoRepository
-import com.ring.ring.data.UserRepository
+import com.ring.ring.data.db.DeadlineAdapter
 import com.ring.ring.data.db.SessionDataSource
 import com.ring.ring.data.db.TodoDataSource
 import com.ring.ring.data.db.UserDataSource
+import com.ring.ring.data.repository.SessionRepository
+import com.ring.ring.data.repository.TodoRepository
+import com.ring.ring.data.repository.UserRepository
 import data.db.LocalDb
 import data.db.TodoTable
 import java.util.*
