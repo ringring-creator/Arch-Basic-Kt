@@ -12,7 +12,7 @@ class RemoteTodoDataSource(
     private val httpClient: HttpClient
 ) {
     @Serializable
-    data class CreateRequest(
+    private data class CreateRequest(
         val todo: Todo,
         val session: Session
     )
@@ -25,7 +25,7 @@ class RemoteTodoDataSource(
     }
 
     @Serializable
-    data class ListRequest(
+    private data class ListRequest(
         val session: Session
     )
 
@@ -37,7 +37,7 @@ class RemoteTodoDataSource(
     }
 
     @Serializable
-    data class GetRequest(
+    private data class GetRequest(
         val todoId: Long,
         val session: Session
     )
@@ -50,7 +50,7 @@ class RemoteTodoDataSource(
     }
 
     @Serializable
-    data class EditRequest(
+    private data class EditRequest(
         val todo: Todo,
         val session: Session
     )
@@ -63,7 +63,7 @@ class RemoteTodoDataSource(
     }
 
     @Serializable
-    data class DeleteRequest(
+    private data class DeleteRequest(
         val todoId: Long,
         val session: Session
     )
@@ -76,7 +76,7 @@ class RemoteTodoDataSource(
     }
 
     @Serializable
-    data class EditDoneRequest(
+    private data class EditDoneRequest(
         val todoId: Long,
         val done: Boolean,
         val session: Session

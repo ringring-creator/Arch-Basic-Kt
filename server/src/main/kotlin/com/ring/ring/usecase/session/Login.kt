@@ -13,7 +13,7 @@ class Login(
     private val sessionRepository: SessionRepository = DataModules.sessionRepository,
 ) : UseCase<Login.Req, Login.Res>() {
     override suspend fun execute(req: Req): Res {
-        val userId = userRepository.loadId(req.toUser())
+        val userId = userRepository.loadId(req.user.toUser())
             ?: throw LoginFailureException(message = "Id is not found.")
         val session = sessionRepository.save(userId)
         return Res(session.userId, session.credential)
@@ -21,14 +21,19 @@ class Login(
 
     @Serializable
     data class Req(
-        val email: String,
-        val password: String,
+        val user: ReqUser,
     ) : UseCase.Req {
-        fun toUser(): User = User(
-            id = null,
-            email = email,
-            password = password,
-        )
+        @Serializable
+        data class ReqUser(
+            val email: String,
+            val password: String,
+        ) {
+            fun toUser(): User = User(
+                id = null,
+                email = email,
+                password = password,
+            )
+        }
     }
 
     @Serializable

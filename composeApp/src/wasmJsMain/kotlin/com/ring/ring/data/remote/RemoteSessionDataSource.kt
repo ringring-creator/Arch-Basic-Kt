@@ -11,15 +11,20 @@ import kotlinx.serialization.Serializable
 class RemoteSessionDataSource(
     private val httpClient: HttpClient
 ) {
+    @Serializable
+    private data class LoginRequest(
+        val user: User
+    )
+
     suspend fun login(user: User): Session {
         return httpClient.post("$URL/session/login") {
             contentType(ContentType.Application.Json)
-            setBody(user)
+            setBody(LoginRequest(user))
         }.body<Session>()
     }
 
     @Serializable
-    data class LogoutRequest(
+    private data class LogoutRequest(
         val session: Session
     )
 

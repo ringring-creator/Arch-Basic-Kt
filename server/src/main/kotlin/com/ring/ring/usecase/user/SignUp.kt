@@ -6,25 +6,30 @@ import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
 import kotlinx.serialization.Serializable
 
-class CreateUser(
+class SignUp(
     private val repository: UserRepository = DataModules.userRepository,
-) : UseCase<CreateUser.Req, CreateUser.Res>() {
+) : UseCase<SignUp.Req, SignUp.Res>() {
     override suspend fun execute(req: Req): Res {
-        val user = req.toUser()
+        val user = req.user.toUser()
         repository.save(user = user)
         return Res()
     }
 
     @Serializable
     data class Req(
-        val email: String,
-        val password: String,
+        val user: ReqUser,
     ) : UseCase.Req {
-        fun toUser(): User = User(
-            id = null,
-            email = email,
-            password = password,
-        )
+        @Serializable
+        data class ReqUser(
+            val email: String,
+            val password: String,
+        ) {
+            fun toUser(): User = User(
+                id = null,
+                email = email,
+                password = password,
+            )
+        }
     }
 
     class Res : UseCase.Res

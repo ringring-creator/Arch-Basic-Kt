@@ -13,15 +13,20 @@ import kotlinx.serialization.Serializable
 class RemoteUserDataSource(
     private val httpClient: HttpClient
 ) {
+    @Serializable
+    private data class SignUpRequest(
+        val user: User,
+    )
+
     suspend fun signUp(user: User) = withContext(Dispatchers.Default) {
         httpClient.post("$URL/user/signup") {
             contentType(ContentType.Application.Json)
-            setBody(user)
+            setBody(SignUpRequest(user))
         }
     }
 
     @Serializable
-    data class GetRequest(
+    private data class GetRequest(
         val session: Session,
     )
 
@@ -33,7 +38,7 @@ class RemoteUserDataSource(
     }
 
     @Serializable
-    data class EditRequest(
+    private data class EditRequest(
         val user: User,
         val session: Session,
     )
@@ -46,7 +51,7 @@ class RemoteUserDataSource(
     }
 
     @Serializable
-    data class WithdrawalRequest(
+    private data class WithdrawalRequest(
         val session: Session
     )
 
