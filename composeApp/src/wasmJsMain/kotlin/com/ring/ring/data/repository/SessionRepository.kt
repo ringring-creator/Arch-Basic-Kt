@@ -1,5 +1,7 @@
-package com.ring.ring.data
+package com.ring.ring.data.repository
 
+import com.ring.ring.data.Session
+import com.ring.ring.data.User
 import com.ring.ring.data.local.KeyValueSessionDataSource
 import com.ring.ring.data.remote.RemoteSessionDataSource
 

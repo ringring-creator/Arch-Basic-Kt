@@ -1,20 +1,10 @@
-package com.ring.ring.data
+package com.ring.ring.data.repository
 
+import com.ring.ring.data.Session
+import com.ring.ring.data.Todo
 import com.ring.ring.data.remote.RemoteTodoDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.LocalDate
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class Todo(
-    val id: Long?,
-    val title: String,
-    val description: String,
-    val done: Boolean,
-    val deadline: LocalDate,
-    val userId: Long,
-)
 
 class TodoRepository(
     private val remoteDataSource: RemoteTodoDataSource

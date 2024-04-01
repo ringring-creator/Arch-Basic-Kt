@@ -1,22 +1,10 @@
-package com.ring.ring.data
+package com.ring.ring.data.repository
 
+import com.ring.ring.data.Session
+import com.ring.ring.data.User
 import com.ring.ring.data.remote.RemoteUserDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class User(
-    val id: Long?,
-    val email: String,
-    val password: String,
-)
-
-@Serializable
-data class Session(
-    val userId: Long,
-    val credential: String,
-)
 
 class UserRepository(
     private val remoteDataSource: RemoteUserDataSource
