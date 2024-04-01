@@ -1,15 +1,14 @@
-package com.ring.ring.usecase.todo
+package com.ring.ring.todo.get
 
-import com.ring.ring.data.Todo
-import com.ring.ring.data.repository.TodoRepository
 import com.ring.ring.di.DataModules
+import com.ring.ring.todo.Todo
 import com.ring.ring.usecase.UseCase
 import com.ring.ring.usecase.session.ValidateSession
 import kotlinx.serialization.Serializable
 
 class GetTodo(
     private val validateSession: ValidateSession = ValidateSession(),
-    private val repository: TodoRepository = DataModules.todoRepository,
+    private val repository: GetTodoRepository = DataModules.getTodoRepository,
 ) : UseCase<GetTodo.Req, GetTodo.Res>() {
     override suspend fun execute(req: Req): Res {
         validateSession(req.session)

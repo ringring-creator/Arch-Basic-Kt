@@ -1,28 +1,23 @@
-package com.ring.ring.usecase.todo
+package com.ring.ring.todo.delete
 
-import com.ring.ring.data.repository.TodoRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
 import com.ring.ring.usecase.session.ValidateSession
 import kotlinx.serialization.Serializable
 
-class EditTodoDone(
+class DeleteTodo(
     private val validateSession: ValidateSession = ValidateSession(),
-    private val repository: TodoRepository = DataModules.todoRepository,
-) : UseCase<EditTodoDone.Req, EditTodoDone.Res>() {
+    private val repository: DeleteTodoRepository = DataModules.deleteTodoRepository,
+) : UseCase<DeleteTodo.Req, DeleteTodo.Res>() {
     override suspend fun execute(req: Req): Res {
         validateSession(req.session)
-        repository.updateDone(
-            id = req.todoId,
-            done = req.done,
-        )
+        repository.delete(req.todoId)
         return Res()
     }
 
     @Serializable
     data class Req(
         val todoId: Long,
-        val done: Boolean,
         val session: ValidateSession.ReqSession,
     ) : UseCase.Req
 

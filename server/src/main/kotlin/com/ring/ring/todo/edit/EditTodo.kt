@@ -1,9 +1,8 @@
-package com.ring.ring.usecase.todo
+package com.ring.ring.todo.edit
 
-import com.ring.ring.data.Todo
-import com.ring.ring.data.repository.TodoRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.exception.BadRequestException
+import com.ring.ring.todo.Todo
 import com.ring.ring.usecase.UseCase
 import com.ring.ring.usecase.session.ValidateSession
 import kotlinx.datetime.LocalDate
@@ -11,7 +10,7 @@ import kotlinx.serialization.Serializable
 
 class EditTodo(
     private val validateSession: ValidateSession = ValidateSession(),
-    private val repository: TodoRepository = DataModules.todoRepository,
+    private val repository: EditTodoRepository = DataModules.editTodoRepository,
 ) : UseCase<EditTodo.Req, EditTodo.Res>() {
     override suspend fun execute(req: Req): Res {
         validateSession(req.session)
