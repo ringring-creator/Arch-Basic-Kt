@@ -25,10 +25,6 @@ class UserRepository(
         remoteDataSource.signUp(user)
     }
 
-    suspend fun login(user: User): Session = withContext(Dispatchers.Default) {
-        return@withContext remoteDataSource.login(user)
-    }
-
     suspend fun get(session: Session): User = withContext(Dispatchers.Default) {
         return@withContext remoteDataSource.get(session)
     }

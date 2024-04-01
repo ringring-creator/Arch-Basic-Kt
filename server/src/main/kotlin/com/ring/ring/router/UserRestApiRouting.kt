@@ -12,6 +12,5 @@ fun Route.userRestApiRouting(
         post("signup") { controller.signUp(call) }
         post("edit") { controller.edit(call) }
         post("withdrawal") { controller.withdrawal(call) }
-        post("login") { controller.login(call) }
     }
 }

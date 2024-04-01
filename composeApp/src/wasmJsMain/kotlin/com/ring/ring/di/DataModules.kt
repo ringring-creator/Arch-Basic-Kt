@@ -4,6 +4,7 @@ import com.ring.ring.data.SessionRepository
 import com.ring.ring.data.TodoRepository
 import com.ring.ring.data.UserRepository
 import com.ring.ring.data.local.KeyValueSessionDataSource
+import com.ring.ring.data.remote.RemoteSessionDataSource
 import com.ring.ring.data.remote.RemoteTodoDataSource
 import com.ring.ring.data.remote.RemoteUserDataSource
 import com.russhwolf.settings.Settings
@@ -28,7 +29,12 @@ object DataModules {
     )
 
     private fun createSessionRepository(): SessionRepository = SessionRepository(
-        dataSource = createKeyValueSessionDataSource(),
+        remoteDataSource = createRemoteSessionDataSource(),
+        localDataSource = createKeyValueSessionDataSource(),
+    )
+
+    private fun createRemoteSessionDataSource(): RemoteSessionDataSource = RemoteSessionDataSource(
+        httpClient = createHttpClient(),
     )
 
     private fun createTodoRepository(): TodoRepository = TodoRepository(

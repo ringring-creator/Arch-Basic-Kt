@@ -1,7 +1,9 @@
 CREATE TABLE SessionTable(
     userId INTEGER NOT NULL,
     credential TEXT NOT NULL,
-    FOREIGN KEY (userId) REFERENCES UserTable(id),
+    FOREIGN KEY (userId)
+    REFERENCES UserTable(id)
+    ON DELETE CASCADE,
     UNIQUE(userId, credential)
 );
 

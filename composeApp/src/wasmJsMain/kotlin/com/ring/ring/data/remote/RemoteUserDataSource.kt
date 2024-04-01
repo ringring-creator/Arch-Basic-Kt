@@ -20,14 +20,6 @@ class RemoteUserDataSource(
         }
     }
 
-    suspend fun login(user: User): Session {
-        return httpClient.post("$URL/user/login") {
-            contentType(ContentType.Application.Json)
-            setBody(user)
-        }.body<Session>()
-    }
-
-
     @Serializable
     data class GetRequest(
         val session: Session,

@@ -11,6 +11,7 @@ import com.ring.ring.data.db.TodoDataSource
 import com.ring.ring.data.db.UserDataSource
 import data.db.LocalDb
 import data.db.TodoTable
+import java.util.*
 
 object DataModules {
     val db = createDb()
@@ -58,6 +59,7 @@ object DataModules {
     private fun createSqliteDriver(): SqlDriver = JdbcSqliteDriver(
         url = "jdbc:sqlite:db/database.db",
         schema = LocalDb.Schema,
+        properties = Properties().apply { put("foreign_keys", "true") }
     )
 
     private fun createInMemorySqliteDriver(): SqlDriver {

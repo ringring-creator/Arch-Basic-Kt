@@ -10,6 +10,7 @@ class Logout(
     private val sessionRepository: SessionRepository = DataModules.sessionRepository,
 ) : UseCase<Logout.Req, Logout.Res>() {
     override suspend fun execute(req: Req): Res = withContext(Dispatchers.Default) {
+        sessionRepository.logout()
         sessionRepository.delete()
         return@withContext Res()
     }

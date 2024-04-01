@@ -1,4 +1,4 @@
-package com.ring.ring.usecase.user
+package com.ring.ring.usecase.session
 
 import com.ring.ring.data.SessionRepository
 import com.ring.ring.data.User

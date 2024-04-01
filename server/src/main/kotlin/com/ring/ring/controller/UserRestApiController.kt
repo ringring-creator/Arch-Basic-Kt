@@ -1,6 +1,9 @@
 package com.ring.ring.controller
 
-import com.ring.ring.usecase.user.*
+import com.ring.ring.usecase.user.CreateUser
+import com.ring.ring.usecase.user.EditUser
+import com.ring.ring.usecase.user.GetUser
+import com.ring.ring.usecase.user.WithdrawalUser
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -11,7 +14,6 @@ class UserRestApiController(
     private val createUser: CreateUser = CreateUser(),
     private val editUser: EditUser = EditUser(),
     private val withdrawalUser: WithdrawalUser = WithdrawalUser(),
-    private val login: Login = Login(),
 ) {
     suspend fun signUp(call: ApplicationCall) {
         try {
@@ -39,11 +41,5 @@ class UserRestApiController(
         val req = call.receive<WithdrawalUser.Req>()
         withdrawalUser(req)
         call.respond(HttpStatusCode.OK)
-    }
-
-    suspend fun login(call: ApplicationCall) {
-        val req = call.receive<Login.Req>()
-        val res = login(req)
-        call.respond(HttpStatusCode.OK, res)
     }
 }

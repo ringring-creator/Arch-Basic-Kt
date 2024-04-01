@@ -1,25 +1,35 @@
 package com.ring.ring.data
 
 import com.ring.ring.data.local.KeyValueSessionDataSource
+import com.ring.ring.data.remote.RemoteSessionDataSource
 
 class SessionRepository(
-    private val dataSource: KeyValueSessionDataSource,
+    private val remoteDataSource: RemoteSessionDataSource,
+    private val localDataSource: KeyValueSessionDataSource,
 ) {
     fun get(): Session? {
         return Session(
-            userId = dataSource.getLong(SESSION_USER_ID) ?: return null,
-            credential = dataSource.getString(SESSION_CREDENTIAL) ?: return null,
+            userId = localDataSource.getLong(SESSION_USER_ID) ?: return null,
+            credential = localDataSource.getString(SESSION_CREDENTIAL) ?: return null,
         )
     }
 
     fun delete() {
-        dataSource.remove(SESSION_USER_ID)
-        dataSource.remove(SESSION_CREDENTIAL)
+        localDataSource.remove(SESSION_USER_ID)
+        localDataSource.remove(SESSION_CREDENTIAL)
     }
 
     fun save(session: Session) {
-        dataSource.save(SESSION_USER_ID, session.userId)
-        dataSource.save(SESSION_CREDENTIAL, session.credential)
+        localDataSource.save(SESSION_USER_ID, session.userId)
+        localDataSource.save(SESSION_CREDENTIAL, session.credential)
+    }
+
+    suspend fun login(user: User): Session = remoteDataSource.login(user)
+
+    suspend fun logout() {
+        remoteDataSource.logout(
+            session = get() ?: throw IllegalStateException()
+        )
     }
 
     companion object {
