@@ -1,5 +1,8 @@
 package com.ring.ring.router
 
+import com.ring.ring.session.login.loginSessionRouting
+import com.ring.ring.session.logout.logoutSessionRouting
+import com.ring.ring.session.validate.validateSessionRouting
 import com.ring.ring.todo.create.createTodoRouting
 import com.ring.ring.todo.delete.deleteTodoRouting
 import com.ring.ring.todo.edit.editTodoRouting
@@ -18,7 +21,9 @@ fun Application.configureRouting() {
         getUserRouting()
         signUpUserRestApiRouting()
         withdrawalUserRouting()
-        sessionRestApiRouting()
+        loginSessionRouting()
+        logoutSessionRouting()
+        validateSessionRouting()
         createTodoRouting()
         deleteTodoRouting()
         editTodoRouting()

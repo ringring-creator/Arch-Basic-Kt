@@ -1,10 +1,10 @@
 package com.ring.ring.todo.edit
 
-import com.ring.ring.data.Todo
 import com.ring.ring.di.DataModules
 import com.ring.ring.exception.BadRequestException
+import com.ring.ring.session.validate.ValidateSession
+import com.ring.ring.todo.Todo
 import com.ring.ring.usecase.UseCase
-import com.ring.ring.usecase.session.ValidateSession
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 

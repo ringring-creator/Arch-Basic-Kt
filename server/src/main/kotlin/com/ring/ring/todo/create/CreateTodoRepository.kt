@@ -1,6 +1,6 @@
 package com.ring.ring.todo.create
 
-import com.ring.ring.data.Todo
+import com.ring.ring.todo.Todo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

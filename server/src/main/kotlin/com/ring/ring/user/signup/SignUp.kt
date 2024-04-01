@@ -1,8 +1,8 @@
 package com.ring.ring.user.signup
 
-import com.ring.ring.data.User
 import com.ring.ring.di.DataModules
 import com.ring.ring.usecase.UseCase
+import com.ring.ring.user.User
 import kotlinx.serialization.Serializable
 
 class SignUp(

@@ -3,8 +3,12 @@ package com.ring.ring.di
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import com.ring.ring.data.db.DeadlineAdapter
-import com.ring.ring.data.db.SessionDataSource
-import com.ring.ring.data.repository.SessionRepository
+import com.ring.ring.session.login.InsertSessionDataSource
+import com.ring.ring.session.login.SaveSessionRepository
+import com.ring.ring.session.logout.DeleteSessionDataSource
+import com.ring.ring.session.logout.DeleteSessionRepository
+import com.ring.ring.session.validate.ValidateSessionDataSource
+import com.ring.ring.session.validate.ValidateSessionRepository
 import com.ring.ring.todo.create.CreateTodoDataSource
 import com.ring.ring.todo.create.CreateTodoRepository
 import com.ring.ring.todo.delete.DeleteTodoDataSource
@@ -42,8 +46,12 @@ object DataModules {
     val signUpUserDataSource = createSignUpUserDataSource()
     val withdrawalUserRepository = createWithdrawalUserRepository()
     val withdrawalUserDataSource = createWithdrawalUserDataSource()
-    val sessionRepository = createSessionRepository()
-    val sessionDataSource = createSessionDataSource()
+    val saveSessionRepository = createSaveSessionRepository()
+    val insertSessionDataSource = createInsertSessionDataSource()
+    val deleteSessionRepository = createDeleteSessionRepository()
+    val deleteSessionDataSource = createDeleteSessionDataSource()
+    val validateSessionRepository = createValidateSessionRepository()
+    val validateSessionDataSource = createValidateSessionDataSource()
 
     private fun createCreateTodoRepository(): CreateTodoRepository = CreateTodoRepository(
         dataSource = createCreateTodoDataSource()
@@ -117,11 +125,27 @@ object DataModules {
         queries = db.userQueries
     )
 
-    private fun createSessionRepository(): SessionRepository = SessionRepository(
-        dataSource = createSessionDataSource()
+    private fun createSaveSessionRepository(): SaveSessionRepository = SaveSessionRepository(
+        dataSource = createInsertSessionDataSource()
     )
 
-    private fun createSessionDataSource(): SessionDataSource = SessionDataSource(
+    private fun createInsertSessionDataSource(): InsertSessionDataSource = InsertSessionDataSource(
+        queries = db.sessionQueries
+    )
+
+    private fun createDeleteSessionRepository(): DeleteSessionRepository = DeleteSessionRepository(
+        dataSource = createDeleteSessionDataSource()
+    )
+
+    private fun createDeleteSessionDataSource(): DeleteSessionDataSource = DeleteSessionDataSource(
+        queries = db.sessionQueries
+    )
+
+    private fun createValidateSessionRepository(): ValidateSessionRepository = ValidateSessionRepository(
+        dataSource = createValidateSessionDataSource()
+    )
+
+    private fun createValidateSessionDataSource(): ValidateSessionDataSource = ValidateSessionDataSource(
         queries = db.sessionQueries
     )
 

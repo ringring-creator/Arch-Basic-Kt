@@ -1,9 +1,9 @@
 package com.ring.ring.user.edit
 
-import com.ring.ring.data.User
 import com.ring.ring.di.DataModules
+import com.ring.ring.session.validate.ValidateSession
 import com.ring.ring.usecase.UseCase
-import com.ring.ring.usecase.session.ValidateSession
+import com.ring.ring.user.User
 import kotlinx.serialization.Serializable
 
 class EditUser(

@@ -1,13 +1,12 @@
-package com.ring.ring.data.repository
+package com.ring.ring.session.login
 
-import com.ring.ring.data.Session
-import com.ring.ring.data.db.SessionDataSource
 import com.ring.ring.di.DataModules
+import com.ring.ring.session.Session
 import java.security.SecureRandom
 import java.util.*
 
-class SessionRepository(
-    private val dataSource: SessionDataSource = DataModules.sessionDataSource
+class SaveSessionRepository(
+    private val dataSource: InsertSessionDataSource = DataModules.insertSessionDataSource
 ) {
     fun save(userId: Long): Session {
         val session = Session(
@@ -17,10 +16,6 @@ class SessionRepository(
         dataSource.insert(session)
         return session
     }
-
-    fun delete(session: Session) = dataSource.delete(session)
-
-    fun validate(session: Session): Boolean = dataSource.validate(session)
 
     private fun generateSecureRandomString(): String {
         val secureRandom = SecureRandom()
