@@ -4,11 +4,11 @@ import com.ring.ring.session.UseCase
 import kotlinx.serialization.Serializable
 
 class Login(
-    private val userRepository: GetUserRepository = LoginModules.getUserRepository,
+    private val userRepository: ExistUserRepository = LoginModules.getUserRepository,
     private val sessionRepository: SaveSessionRepository = LoginModules.saveSessionRepository,
 ) : UseCase<Login.Req, Login.Res>() {
     override suspend fun execute(req: Req): Res {
-        val userId = userRepository.loadId(req.user.toUser())
+        val userId = userRepository.exist(req.user.toUser())
             ?: throw LoginFailureException(message = "Id is not found.")
         val session = sessionRepository.save(userId)
         return Res(session.userId, session.credential)
@@ -24,7 +24,6 @@ class Login(
             val password: String,
         ) {
             fun toUser(): User = User(
-                id = null,
                 email = email,
                 password = password,
             )

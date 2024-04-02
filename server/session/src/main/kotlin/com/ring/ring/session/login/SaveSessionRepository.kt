@@ -5,14 +5,14 @@ import java.security.SecureRandom
 import java.util.*
 
 class SaveSessionRepository(
-    private val dataSource: InsertSessionDataSource = LoginModules.insertSessionDataSource
+    private val dataSource: SaveSessionDataSource = LoginModules.saveSessionDataSource
 ) {
     fun save(userId: Long): Session {
         val session = Session(
             userId = userId,
             credential = generateSecureRandomString(),
         )
-        dataSource.insert(session)
+        dataSource.save(session)
         return session
     }
 

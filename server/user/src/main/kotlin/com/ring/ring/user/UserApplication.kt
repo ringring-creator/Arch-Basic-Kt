@@ -1,6 +1,7 @@
 package com.ring.ring.user
 
 import com.ring.ring.user.edit.editUserRouting
+import com.ring.ring.user.exist.existUserRouting
 import com.ring.ring.user.get.getUserRouting
 import com.ring.ring.user.signup.signUpUserRestApiRouting
 import com.ring.ring.user.withdrawal.withdrawalUserRouting
@@ -64,6 +65,7 @@ private fun Application.userConfigureRouting() {
     routing {
         editUserRouting()
         getUserRouting()
+        existUserRouting()
         signUpUserRestApiRouting()
         withdrawalUserRouting()
     }
