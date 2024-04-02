@@ -2,19 +2,16 @@ package com.ring.ring.todo.edit
 
 import com.ring.ring.todo.Todo
 import com.ring.ring.todo.UseCase
-import com.ring.ring.todo.shared.ValidateSessionRepository
-import com.ring.ring.user.shared.NotLoggedInException
-import com.ring.ring.user.shared.Session
+import com.ring.ring.todo.ValidateSession
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 class EditTodo(
-    private val sessionRepository: ValidateSessionRepository = ValidateSessionRepository(),
+    private val validateSession: ValidateSession = ValidateSession(),
     private val repository: EditTodoRepository = EditTodoModules.editTodoRepository,
 ) : UseCase<EditTodo.Req, EditTodo.Res>() {
     override suspend fun execute(req: Req): Res {
-        val isValid = sessionRepository.validate(req.session)
-        if (isValid.not()) throw NotLoggedInException()
+        validateSession(req.session)
         repository.save(todo = req.toTodo())
         return Res()
     }
@@ -22,7 +19,7 @@ class EditTodo(
     @Serializable
     data class Req(
         val todo: ReqTodo,
-        val session: Session,
+        val session: ValidateSession.ReqSession,
     ) : UseCase.Req {
         @Serializable
         data class ReqTodo(

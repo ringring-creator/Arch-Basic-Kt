@@ -2,25 +2,22 @@ package com.ring.ring.user.get
 
 import com.ring.ring.user.UseCase
 import com.ring.ring.user.User
-import com.ring.ring.user.shared.NotLoggedInException
-import com.ring.ring.user.shared.Session
-import com.ring.ring.user.shared.ValidateSessionRepository
+import com.ring.ring.user.ValidateSession
 import kotlinx.serialization.Serializable
 
 class GetUser(
-    private val sessionRepository: ValidateSessionRepository = ValidateSessionRepository(),
+    private val validateSession: ValidateSession = ValidateSession(),
     private val repository: GetUserRepository = GetUserModules.getUserRepository,
 ) : UseCase<GetUser.Req, GetUser.Res>() {
     override suspend fun execute(req: Req): Res {
-        val isValid = sessionRepository.validate(req.session)
-        if (isValid.not()) throw NotLoggedInException()
+        validateSession(req.session)
         val user = repository.get(req.session.userId)
         return Res(user = user.toReqUser())
     }
 
     @Serializable
     data class Req(
-        val session: Session,
+        val session: ValidateSession.ReqSession,
     ) : UseCase.Req
 
     @Serializable

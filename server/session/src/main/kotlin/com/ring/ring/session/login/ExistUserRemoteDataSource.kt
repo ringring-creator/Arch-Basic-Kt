@@ -19,6 +19,7 @@ class ExistUserRemoteDataSource(
         val userId: Long?
     )
 
+
     suspend fun exist(user: User): ExistUserResponse {
         return httpClient.post("$URL/user/exist") {
             contentType(ContentType.Application.Json)

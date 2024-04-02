@@ -11,7 +11,8 @@ class ValidateSessionController(
     suspend fun validate(call: ApplicationCall) {
         val req = call.receive<ValidateSession.ReqSession>()
         val res = validateSession(req)
-        call.respond(HttpStatusCode.OK, res)
+        //Todo respond boolean
+        call.respond(HttpStatusCode.OK)
     }
 
 }

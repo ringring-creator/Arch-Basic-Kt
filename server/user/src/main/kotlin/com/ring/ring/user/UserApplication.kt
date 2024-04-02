@@ -3,7 +3,6 @@ package com.ring.ring.user
 import com.ring.ring.user.edit.editUserRouting
 import com.ring.ring.user.exist.existUserRouting
 import com.ring.ring.user.get.getUserRouting
-import com.ring.ring.user.shared.NotLoggedInException
 import com.ring.ring.user.signup.signUpUserRestApiRouting
 import com.ring.ring.user.withdrawal.withdrawalUserRouting
 import io.ktor.http.*
