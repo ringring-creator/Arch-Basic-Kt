@@ -15,6 +15,7 @@ application {
 }
 
 dependencies {
+    implementation(projects.server.data)
     implementation(libs.logback)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
@@ -27,16 +28,7 @@ dependencies {
     implementation(libs.ktor.server.cors)
     implementation(libs.kotlinx.datetime)
     implementation(libs.logback.classic)
-    implementation(libs.sqlite.driver)
+//    implementation(libs.sqlite.driver)
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.test.junit)
-}
-
-sqldelight {
-    databases {
-        create("LocalDb") {
-            packageName.set("data.db")
-            srcDirs("src/main/kotlin/com/ring/ring/")
-        }
-    }
 }

@@ -1,11 +1,12 @@
 package com.ring.ring.user.get
 
+import com.ring.ring.data.db.DataModules
 import com.ring.ring.user.User
 import data.db.UserQueries
 import data.db.UserTable
 
 class GetUserDataSource(
-    private val queries: UserQueries = GetUserModules.db.userQueries
+    private val queries: UserQueries = DataModules.db.userQueries
 ) {
     fun get(id: Long): User = queries
         .selectById(id)
