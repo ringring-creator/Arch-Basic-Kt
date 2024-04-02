@@ -1,6 +1,6 @@
-package com.ring.ring.exception
+package com.ring.ring.session.login
 
-class BadRequestException(
+class LoginFailureException(
     message: String? = null,
     throwable: Throwable? = null
 ) : Throwable(message, throwable)

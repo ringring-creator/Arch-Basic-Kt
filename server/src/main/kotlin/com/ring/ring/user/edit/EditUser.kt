@@ -1,14 +1,13 @@
 package com.ring.ring.user.edit
 
-import com.ring.ring.di.DataModules
 import com.ring.ring.session.validate.ValidateSession
-import com.ring.ring.usecase.UseCase
+import com.ring.ring.user.UseCase
 import com.ring.ring.user.User
 import kotlinx.serialization.Serializable
 
 class EditUser(
     private val validateSession: ValidateSession = ValidateSession(),
-    private val userRepository: EditUserRepository = DataModules.editUserRepository,
+    private val userRepository: EditUserRepository = EditUserModules.editUserRepository,
 ) : UseCase<EditUser.Req, EditUser.Res>() {
     override suspend fun execute(req: Req): Res {
         validateSession(req.session)

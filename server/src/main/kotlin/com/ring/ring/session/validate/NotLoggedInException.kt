@@ -1,6 +1,6 @@
-package com.ring.ring.exception
+package com.ring.ring.session.validate
 
-class LoginFailureException(
+class NotLoggedInException(
     message: String? = null,
     throwable: Throwable? = null
 ) : Throwable(message, throwable)

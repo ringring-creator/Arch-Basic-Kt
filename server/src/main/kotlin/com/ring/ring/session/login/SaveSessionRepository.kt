@@ -1,12 +1,11 @@
 package com.ring.ring.session.login
 
-import com.ring.ring.di.DataModules
 import com.ring.ring.session.Session
 import java.security.SecureRandom
 import java.util.*
 
 class SaveSessionRepository(
-    private val dataSource: InsertSessionDataSource = DataModules.insertSessionDataSource
+    private val dataSource: InsertSessionDataSource = LoginModules.insertSessionDataSource
 ) {
     fun save(userId: Long): Session {
         val session = Session(

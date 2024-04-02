@@ -1,13 +1,12 @@
 package com.ring.ring.todo.edit
 
-import com.ring.ring.di.DataModules
 import com.ring.ring.session.validate.ValidateSession
-import com.ring.ring.usecase.UseCase
+import com.ring.ring.todo.UseCase
 import kotlinx.serialization.Serializable
 
 class EditTodoDone(
     private val validateSession: ValidateSession = ValidateSession(),
-    private val repository: EditTodoRepository = DataModules.editTodoRepository,
+    private val repository: EditTodoRepository = EditTodoModules.editTodoRepository,
 ) : UseCase<EditTodoDone.Req, EditTodoDone.Res>() {
     override suspend fun execute(req: Req): Res {
         validateSession(req.session)

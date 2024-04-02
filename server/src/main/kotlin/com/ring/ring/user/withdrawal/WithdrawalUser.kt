@@ -1,13 +1,12 @@
 package com.ring.ring.user.withdrawal
 
-import com.ring.ring.di.DataModules
 import com.ring.ring.session.validate.ValidateSession
-import com.ring.ring.usecase.UseCase
+import com.ring.ring.user.UseCase
 import kotlinx.serialization.Serializable
 
 class WithdrawalUser(
     private val validateSession: ValidateSession = ValidateSession(),
-    private val repository: WithdrawalUserRepository = DataModules.withdrawalUserRepository,
+    private val repository: WithdrawalUserRepository = WithdrawalUserModules.withdrawalUserRepository,
 ) : UseCase<WithdrawalUser.Req, WithdrawalUser.Res>() {
     override suspend fun execute(req: Req): Res {
         validateSession(req.session)

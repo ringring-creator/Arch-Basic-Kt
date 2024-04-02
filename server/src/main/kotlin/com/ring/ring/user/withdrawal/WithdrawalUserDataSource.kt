@@ -1,10 +1,9 @@
 package com.ring.ring.user.withdrawal
 
-import com.ring.ring.di.DataModules
 import data.db.UserQueries
 
 class WithdrawalUserDataSource(
-    private val queries: UserQueries = DataModules.db.userQueries
+    private val queries: UserQueries = WithdrawalUserModules.db.userQueries
 ) {
     fun delete(id: Long) = queries.delete(id)
 }

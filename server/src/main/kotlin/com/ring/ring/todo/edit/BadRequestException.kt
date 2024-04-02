@@ -1,6 +1,6 @@
-package com.ring.ring.exception
+package com.ring.ring.todo.edit
 
-class NotLoggedInException(
+class BadRequestException(
     message: String? = null,
     throwable: Throwable? = null
 ) : Throwable(message, throwable)

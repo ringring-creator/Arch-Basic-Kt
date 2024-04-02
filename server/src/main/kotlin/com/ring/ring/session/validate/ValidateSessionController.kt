@@ -1,15 +1,12 @@
 package com.ring.ring.session.validate
 
-import com.ring.ring.di.DataModules
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
 class ValidateSessionController(
-    private val validateSession: ValidateSession = ValidateSession(
-        sessionRepository = DataModules.validateSessionRepository
-    )
+    private val validateSession: ValidateSession = ValidateSession()
 ) {
     suspend fun validate(call: ApplicationCall) {
         val req = call.receive<ValidateSession.ReqSession>()

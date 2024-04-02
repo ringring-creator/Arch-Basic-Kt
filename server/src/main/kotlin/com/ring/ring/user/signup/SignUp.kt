@@ -1,12 +1,11 @@
 package com.ring.ring.user.signup
 
-import com.ring.ring.di.DataModules
-import com.ring.ring.usecase.UseCase
+import com.ring.ring.user.UseCase
 import com.ring.ring.user.User
 import kotlinx.serialization.Serializable
 
 class SignUp(
-    private val repository: SignUpUserRepository = DataModules.signUpUserRepository,
+    private val repository: SignUpUserRepository = SignUpUserModules.signUpUserRepository,
 ) : UseCase<SignUp.Req, SignUp.Res>() {
     override suspend fun execute(req: Req): Res {
         val user = req.user.toUser()

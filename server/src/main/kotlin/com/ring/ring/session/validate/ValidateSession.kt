@@ -1,13 +1,11 @@
 package com.ring.ring.session.validate
 
-import com.ring.ring.di.DataModules
-import com.ring.ring.exception.NotLoggedInException
 import com.ring.ring.session.Session
-import com.ring.ring.usecase.UseCase
+import com.ring.ring.session.UseCase
 import kotlinx.serialization.Serializable
 
 class ValidateSession(
-    private val sessionRepository: ValidateSessionRepository = DataModules.validateSessionRepository,
+    private val sessionRepository: ValidateSessionRepository = ValidateSessionModules.validateSessionRepository,
 ) : UseCase<ValidateSession.ReqSession, ValidateSession.Res>() {
     override suspend fun execute(req: ReqSession): Res {
         val isInvalid = sessionRepository.validate(session = req.toSession()).not()
