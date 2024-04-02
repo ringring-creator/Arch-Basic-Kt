@@ -1,8 +1,6 @@
 package com.ring.ring.todo.delete
 
-import com.ring.ring.com.ring.ring.todo.UseCase
-import com.ring.ring.com.ring.ring.todo.delete.DeleteTodoModules
-import com.ring.ring.com.ring.ring.todo.delete.DeleteTodoRepository
+import com.ring.ring.todo.UseCase
 import com.ring.ring.todo.ValidateSession
 import kotlinx.serialization.Serializable
 

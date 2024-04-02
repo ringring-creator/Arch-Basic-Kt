@@ -1,6 +1,5 @@
-package com.ring.ring.com.ring.ring.todo.list
+package com.ring.ring.todo.list
 
-import com.ring.ring.todo.list.ListTodoController
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 

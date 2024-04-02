@@ -1,8 +1,6 @@
-package com.ring.ring.com.ring.ring.todo
+package com.ring.ring.todo
 
 import com.ring.ring.data.db.DataModules
-import com.ring.ring.todo.ValidateSessionDataSource
-import com.ring.ring.todo.ValidateSessionRepository
 
 object ValidateSessionModules {
     val validateSessionRepository = createValidateSessionRepository()

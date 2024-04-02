@@ -1,5 +1,6 @@
-package com.ring.ring.com.ring.ring.todo.delete
+package com.ring.ring.todo.delete
 
+import com.ring.ring.com.ring.ring.todo.delete.DeleteTodoDataSource
 import com.ring.ring.data.db.DataModules
 
 object DeleteTodoModules {

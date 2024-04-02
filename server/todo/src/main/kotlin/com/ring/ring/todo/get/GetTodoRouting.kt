@@ -1,6 +1,5 @@
-package com.ring.ring.com.ring.ring.todo.get
+package com.ring.ring.todo.get
 
-import com.ring.ring.todo.get.GetTodoController
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 

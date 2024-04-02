@@ -1,6 +1,6 @@
 package com.ring.ring.todo.get
 
-import com.ring.ring.com.ring.ring.todo.Todo
+import com.ring.ring.todo.Todo
 import data.db.TodoQueries
 import data.db.TodoTable
 

@@ -1,6 +1,6 @@
 package com.ring.ring.todo.edit
 
-import com.ring.ring.com.ring.ring.todo.Todo
+import com.ring.ring.todo.Todo
 import data.db.TodoQueries
 
 class EditTodoDataSource(private val queries: TodoQueries) {

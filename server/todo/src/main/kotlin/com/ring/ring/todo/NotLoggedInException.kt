@@ -1,4 +1,4 @@
-package com.ring.ring.com.ring.ring.todo
+package com.ring.ring.todo
 
 class NotLoggedInException(
     message: String? = null,

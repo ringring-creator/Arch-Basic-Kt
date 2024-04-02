@@ -1,8 +1,7 @@
 package com.ring.ring.todo.list
 
-import com.ring.ring.com.ring.ring.todo.Todo
-import com.ring.ring.com.ring.ring.todo.UseCase
-import com.ring.ring.com.ring.ring.todo.list.ListTodoModules
+import com.ring.ring.todo.Todo
+import com.ring.ring.todo.UseCase
 import com.ring.ring.todo.ValidateSession
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable

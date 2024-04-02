@@ -1,6 +1,5 @@
-package com.ring.ring.com.ring.ring.todo.edit
+package com.ring.ring.todo.edit
 
-import com.ring.ring.todo.edit.EditTodoController
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
