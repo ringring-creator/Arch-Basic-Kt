@@ -1,4 +1,4 @@
-package com.ring.ring.com.ring.ring.withdrawal
+package com.ring.ring.user.withdrawal
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

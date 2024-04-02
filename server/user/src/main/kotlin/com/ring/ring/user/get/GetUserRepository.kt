@@ -11,7 +11,4 @@ class GetUserRepository(
         dataSource.get(id = id)
     }
 
-    suspend fun loadId(user: User): Long? = withContext(Dispatchers.IO) {
-        dataSource.loadId(user)
-    }
 }

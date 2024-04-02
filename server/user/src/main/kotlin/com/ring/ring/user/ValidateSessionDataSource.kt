@@ -6,7 +6,7 @@ import data.db.SessionQueries
 class ValidateSessionDataSource(
     private val queries: SessionQueries = DataModules.db.sessionQueries
 ) {
-    fun validate(session: com.ring.ring.user.Session) = queries.valid(
+    fun validate(session: Session) = queries.valid(
         userId = session.userId,
         credential = session.credential
     ).executeAsOne()

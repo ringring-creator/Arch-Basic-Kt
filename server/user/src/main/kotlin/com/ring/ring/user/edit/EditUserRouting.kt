@@ -1,4 +1,4 @@
-package com.ring.ring.com.ring.ring.edit
+package com.ring.ring.user.edit
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*

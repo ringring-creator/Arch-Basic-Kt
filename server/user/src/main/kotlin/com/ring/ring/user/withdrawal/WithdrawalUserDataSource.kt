@@ -1,4 +1,4 @@
-package com.ring.ring.com.ring.ring.withdrawal
+package com.ring.ring.user.withdrawal
 
 import com.ring.ring.data.db.DataModules
 import data.db.UserQueries

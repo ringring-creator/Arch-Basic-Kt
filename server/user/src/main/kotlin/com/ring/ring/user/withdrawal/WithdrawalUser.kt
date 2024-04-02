@@ -1,7 +1,5 @@
 package com.ring.ring.user.withdrawal
 
-import com.ring.ring.com.ring.ring.withdrawal.WithdrawalUserModules
-import com.ring.ring.com.ring.ring.withdrawal.WithdrawalUserRepository
 import com.ring.ring.user.UseCase
 import com.ring.ring.user.ValidateSession
 import kotlinx.serialization.Serializable

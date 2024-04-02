@@ -1,6 +1,5 @@
-package com.ring.ring.com.ring.ring.signup
+package com.ring.ring.user.signup
 
-import com.ring.ring.user.signup.SignUpUserController
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 

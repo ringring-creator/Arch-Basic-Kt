@@ -1,6 +1,5 @@
 package com.ring.ring.session.login
 
-import com.ring.ring.com.ring.ring.login.LoginFailureException
 import com.ring.ring.session.UseCase
 import kotlinx.serialization.Serializable
 

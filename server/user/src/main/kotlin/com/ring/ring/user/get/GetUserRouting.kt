@@ -1,6 +1,5 @@
-package com.ring.ring.com.ring.ring.get
+package com.ring.ring.user.get
 
-import com.ring.ring.user.get.GetUserController
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 

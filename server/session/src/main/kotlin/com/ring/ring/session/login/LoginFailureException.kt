@@ -1,4 +1,4 @@
-package com.ring.ring.com.ring.ring.login
+package com.ring.ring.session.login
 
 class LoginFailureException(
     message: String? = null,

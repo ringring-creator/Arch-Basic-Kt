@@ -1,8 +1,8 @@
 package com.ring.ring.user
 
-import com.ring.ring.com.ring.ring.edit.editUserRouting
-import com.ring.ring.com.ring.ring.get.getUserRouting
-import com.ring.ring.com.ring.ring.signup.signUpUserRestApiRouting
+import com.ring.ring.user.edit.editUserRouting
+import com.ring.ring.user.get.getUserRouting
+import com.ring.ring.user.signup.signUpUserRestApiRouting
 import com.ring.ring.user.withdrawal.withdrawalUserRouting
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*

@@ -1,6 +1,5 @@
 package com.ring.ring.session.validate
 
-import com.ring.ring.com.ring.ring.validate.NotLoggedInException
 import com.ring.ring.session.Session
 import com.ring.ring.session.UseCase
 import kotlinx.serialization.Serializable

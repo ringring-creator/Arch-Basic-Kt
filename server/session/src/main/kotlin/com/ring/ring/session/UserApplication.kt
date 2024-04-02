@@ -1,9 +1,9 @@
 package com.ring.ring.session
 
-import com.ring.ring.com.ring.ring.login.LoginFailureException
-import com.ring.ring.com.ring.ring.login.loginSessionRouting
-import com.ring.ring.com.ring.ring.validate.NotLoggedInException
+import com.ring.ring.session.login.LoginFailureException
+import com.ring.ring.session.login.loginSessionRouting
 import com.ring.ring.session.logout.logoutSessionRouting
+import com.ring.ring.session.validate.NotLoggedInException
 import com.ring.ring.session.validate.validateSessionRouting
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*

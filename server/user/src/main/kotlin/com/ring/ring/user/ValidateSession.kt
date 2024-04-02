@@ -16,7 +16,7 @@ class ValidateSession(
         val userId: Long,
         val credential: String,
     ) : Req {
-        fun toSession(): com.ring.ring.user.Session = com.ring.ring.user.Session(
+        fun toSession(): Session = Session(
             userId = userId,
             credential = credential,
         )
