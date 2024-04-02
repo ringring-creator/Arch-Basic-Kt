@@ -4,7 +4,6 @@ import com.ring.ring.session.login.LoginFailureException
 import com.ring.ring.session.login.loginSessionRouting
 import com.ring.ring.session.logout.logoutSessionRouting
 import com.ring.ring.session.validate.NotLoggedInException
-import com.ring.ring.session.validate.validateSessionRouting
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -69,6 +68,5 @@ private fun Application.sessionConfigureRouting() {
     routing {
         loginSessionRouting()
         logoutSessionRouting()
-        validateSessionRouting()
     }
 }

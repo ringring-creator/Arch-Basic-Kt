@@ -4,7 +4,7 @@ import com.ring.ring.todo.UseCase
 import com.ring.ring.todo.shared.ValidateSession
 import kotlinx.serialization.Serializable
 
-class DeleteTodo(
+internal class DeleteTodo(
     private val validateSession: ValidateSession = ValidateSession(),
     private val repository: DeleteTodoRepository = DeleteTodoModules.deleteTodoRepository,
 ) : UseCase<DeleteTodo.Req, DeleteTodo.Res>() {

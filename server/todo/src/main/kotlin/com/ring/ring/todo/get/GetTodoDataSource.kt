@@ -4,7 +4,7 @@ import com.ring.ring.todo.Todo
 import data.db.TodoQueries
 import data.db.TodoTable
 
-class GetTodoDataSource(private val queries: TodoQueries) {
+internal class GetTodoDataSource(private val queries: TodoQueries) {
     fun get(id: Long): Todo = queries
         .selectById(id)
         .executeAsOne()

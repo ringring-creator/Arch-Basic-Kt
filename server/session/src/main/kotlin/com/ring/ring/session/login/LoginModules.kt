@@ -7,7 +7,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
-object LoginModules {
+internal object LoginModules {
     val getUserRepository = createGetUserRepository()
     val getUserDataSource = createGetUserDataSource()
     val saveSessionRepository = createSaveSessionRepository()

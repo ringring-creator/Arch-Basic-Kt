@@ -2,7 +2,7 @@ package com.ring.ring.user.edit
 
 import com.ring.ring.data.db.DataModules
 
-object EditUserModules {
+internal object EditUserModules {
     val editUserRepository = createEditUserRepository()
     val editUserDataSource = createEditUserDataSource()
 

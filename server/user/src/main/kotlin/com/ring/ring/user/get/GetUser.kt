@@ -5,7 +5,7 @@ import com.ring.ring.user.User
 import com.ring.ring.user.shared.ValidateSession
 import kotlinx.serialization.Serializable
 
-class GetUser(
+internal class GetUser(
     private val validateSession: ValidateSession = ValidateSession(),
     private val repository: GetUserRepository = GetUserModules.getUserRepository,
 ) : UseCase<GetUser.Req, GetUser.Res>() {

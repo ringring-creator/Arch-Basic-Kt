@@ -4,7 +4,7 @@ import com.ring.ring.user.UseCase
 import com.ring.ring.user.User
 import kotlinx.serialization.Serializable
 
-class SignUp(
+internal class SignUp(
     private val repository: SignUpUserRepository = SignUpUserModules.signUpUserRepository,
 ) : UseCase<SignUp.Req, SignUp.Res>() {
     override suspend fun execute(req: Req): Res {

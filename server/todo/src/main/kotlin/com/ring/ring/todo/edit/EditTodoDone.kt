@@ -4,7 +4,7 @@ import com.ring.ring.todo.UseCase
 import com.ring.ring.todo.shared.ValidateSession
 import kotlinx.serialization.Serializable
 
-class EditTodoDone(
+internal class EditTodoDone(
     private val validateSession: ValidateSession = ValidateSession(),
     private val repository: EditTodoRepository = EditTodoModules.editTodoRepository,
 ) : UseCase<EditTodoDone.Req, EditTodoDone.Res>() {

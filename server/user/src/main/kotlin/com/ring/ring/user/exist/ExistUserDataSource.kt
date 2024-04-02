@@ -4,7 +4,7 @@ import com.ring.ring.data.db.DataModules
 import com.ring.ring.user.User
 import data.db.UserQueries
 
-class ExistUserDataSource(
+internal class ExistUserDataSource(
     private val queries: UserQueries = DataModules.db.userQueries
 ) {
     fun exist(user: User): Long? = queries

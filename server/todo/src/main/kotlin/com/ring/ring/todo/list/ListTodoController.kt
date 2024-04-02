@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
-class ListTodoController(
+internal class ListTodoController(
     private val getTodoList: GetTodoList = GetTodoList(),
 ) {
     suspend fun list(call: ApplicationCall) {

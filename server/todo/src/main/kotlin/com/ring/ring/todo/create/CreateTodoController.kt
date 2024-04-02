@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
-class CreateTodoController(
+internal class CreateTodoController(
     private val createTodo: CreateTodo = CreateTodo(),
 ) {
     suspend fun create(call: ApplicationCall) {

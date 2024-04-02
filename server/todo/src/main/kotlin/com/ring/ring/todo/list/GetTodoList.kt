@@ -6,7 +6,7 @@ import com.ring.ring.todo.shared.ValidateSession
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
-class GetTodoList(
+internal class GetTodoList(
     private val validateSession: ValidateSession = ValidateSession(),
     private val repository: ListTodoRepository = ListTodoModules.listTodoRepository,
 ) : UseCase<GetTodoList.Req, GetTodoList.Res>() {

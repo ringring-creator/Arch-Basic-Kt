@@ -4,7 +4,7 @@ import com.ring.ring.user.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class SignUpUserRepository(
+internal class SignUpUserRepository(
     private val dataSource: SignUpUserDataSource = SignUpUserModules.signUpUserDataSource,
 ) {
     suspend fun save(user: User) = withContext(Dispatchers.IO) {

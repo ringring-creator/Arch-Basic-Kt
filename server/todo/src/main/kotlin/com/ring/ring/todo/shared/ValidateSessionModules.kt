@@ -2,7 +2,7 @@ package com.ring.ring.todo.shared
 
 import com.ring.ring.data.db.DataModules
 
-object ValidateSessionModules {
+internal object ValidateSessionModules {
     val validateSessionRepository = createValidateSessionRepository()
     val validateSessionDataSource = createValidateSessionDataSource()
 

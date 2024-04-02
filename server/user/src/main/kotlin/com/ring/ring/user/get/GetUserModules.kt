@@ -2,7 +2,7 @@ package com.ring.ring.user.get
 
 import com.ring.ring.data.db.DataModules
 
-object GetUserModules {
+internal object GetUserModules {
     val getUserRepository = createGetUserRepository()
     val getUserDataSource = createGetUserDataSource()
 

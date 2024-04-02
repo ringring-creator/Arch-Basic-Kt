@@ -4,7 +4,7 @@ import com.ring.ring.session.UseCase
 import com.ring.ring.session.validate.ValidateSession
 import kotlinx.serialization.Serializable
 
-class Logout(
+internal class Logout(
     private val validateSession: ValidateSession = ValidateSession(),
     private val sessionRepository: DeleteSessionRepository = LogoutModules.deleteSessionRepository,
 ) : UseCase<Logout.Req, Logout.Res>() {

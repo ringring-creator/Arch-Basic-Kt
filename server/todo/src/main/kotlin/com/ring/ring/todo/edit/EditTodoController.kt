@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
-class EditTodoController(
+internal class EditTodoController(
     private val editTodo: EditTodo = EditTodo(),
     private val editTodoDone: EditTodoDone = EditTodoDone(),
 ) {

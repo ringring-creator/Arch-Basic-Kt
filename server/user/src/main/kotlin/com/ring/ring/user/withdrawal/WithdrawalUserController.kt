@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
-class WithdrawalUserController(
+internal class WithdrawalUserController(
     private val withdrawalUser: WithdrawalUser = WithdrawalUser(),
 ) {
     suspend fun withdrawal(call: ApplicationCall) {

@@ -4,7 +4,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Todo(
+internal data class Todo(
     val id: Long?,
     val title: String,
     val description: String,

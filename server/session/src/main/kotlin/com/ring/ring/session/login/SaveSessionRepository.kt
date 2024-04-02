@@ -4,7 +4,7 @@ import com.ring.ring.session.Session
 import java.security.SecureRandom
 import java.util.*
 
-class SaveSessionRepository(
+internal class SaveSessionRepository(
     private val dataSource: SaveSessionDataSource = LoginModules.saveSessionDataSource
 ) {
     fun save(userId: Long): Session {

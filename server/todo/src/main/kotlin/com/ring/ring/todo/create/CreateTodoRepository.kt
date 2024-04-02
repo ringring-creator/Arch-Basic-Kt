@@ -4,7 +4,7 @@ import com.ring.ring.todo.Todo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class CreateTodoRepository(
+internal class CreateTodoRepository(
     private val dataSource: CreateTodoDataSource,
 ) {
     suspend fun save(todo: Todo) = withContext(Dispatchers.IO) {

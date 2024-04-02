@@ -6,7 +6,7 @@ import com.ring.ring.todo.shared.ValidateSession
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
-class EditTodo(
+internal class EditTodo(
     private val validateSession: ValidateSession = ValidateSession(),
     private val repository: EditTodoRepository = EditTodoModules.editTodoRepository,
 ) : UseCase<EditTodo.Req, EditTodo.Res>() {

@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
-class ExistUserController(
+internal class ExistUserController(
     private val existUser: ExistUser = ExistUser(),
 ) {
     suspend fun get(call: ApplicationCall) {

@@ -4,7 +4,7 @@ import com.ring.ring.user.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class EditUserRepository(
+internal class EditUserRepository(
     private val dataSource: EditUserDataSource = EditUserModules.editUserDataSource,
 ) {
     suspend fun save(user: User) = withContext(Dispatchers.IO) {

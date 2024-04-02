@@ -2,7 +2,7 @@ package com.ring.ring.user.signup
 
 import com.ring.ring.data.db.DataModules
 
-object SignUpUserModules {
+internal object SignUpUserModules {
     val signUpUserRepository = createSignUpUserRepository()
     val signUpUserDataSource = createSignUpUserDataSource()
 

@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
-class DeleteTodoController(
+internal class DeleteTodoController(
     private val deleteTodo: DeleteTodo = DeleteTodo(),
 ) {
     suspend fun delete(call: ApplicationCall) {

@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
-class SignUpUserController(
+internal class SignUpUserController(
     private val signUp: SignUp = SignUp(),
 ) {
     suspend fun signUp(call: ApplicationCall) {

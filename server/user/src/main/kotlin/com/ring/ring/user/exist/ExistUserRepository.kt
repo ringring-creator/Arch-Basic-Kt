@@ -4,7 +4,7 @@ import com.ring.ring.user.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ExistUserRepository(
+internal class ExistUserRepository(
     private val dataSource: ExistUserDataSource = ExistUserModules.getUserDataSource,
 ) {
     suspend fun exist(user: User): Long? = withContext(Dispatchers.IO) {

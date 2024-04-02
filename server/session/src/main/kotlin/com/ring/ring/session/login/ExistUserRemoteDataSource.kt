@@ -6,7 +6,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
-class ExistUserRemoteDataSource(
+internal class ExistUserRemoteDataSource(
     private val httpClient: HttpClient
 ) {
     @Serializable

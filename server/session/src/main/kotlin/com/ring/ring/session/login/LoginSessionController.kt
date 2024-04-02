@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
-class LoginSessionController(
+internal class LoginSessionController(
     private val login: Login = Login(),
 ) {
     suspend fun login(call: ApplicationCall) {

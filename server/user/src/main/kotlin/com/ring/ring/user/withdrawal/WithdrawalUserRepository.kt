@@ -3,7 +3,7 @@ package com.ring.ring.user.withdrawal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class WithdrawalUserRepository(
+internal class WithdrawalUserRepository(
     private val dataSource: WithdrawalUserDataSource = WithdrawalUserModules.withdrawalUserDataSource,
 ) {
     suspend fun delete(id: Long) = withContext(Dispatchers.IO) {

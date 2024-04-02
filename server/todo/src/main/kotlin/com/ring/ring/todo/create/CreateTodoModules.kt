@@ -2,7 +2,7 @@ package com.ring.ring.todo.create
 
 import com.ring.ring.data.db.DataModules
 
-object CreateTodoModules {
+internal object CreateTodoModules {
     val createTodoRepository = createCreateTodoRepository()
 
     private fun createCreateTodoRepository(): CreateTodoRepository = CreateTodoRepository(

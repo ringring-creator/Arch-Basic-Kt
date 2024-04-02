@@ -1,9 +1,8 @@
 package com.ring.ring.todo.delete
 
-import com.ring.ring.com.ring.ring.todo.delete.DeleteTodoDataSource
 import com.ring.ring.data.db.DataModules
 
-object DeleteTodoModules {
+internal object DeleteTodoModules {
     val deleteTodoRepository = createDeleteTodoRepository()
 
     private fun createDeleteTodoRepository(): DeleteTodoRepository = DeleteTodoRepository(

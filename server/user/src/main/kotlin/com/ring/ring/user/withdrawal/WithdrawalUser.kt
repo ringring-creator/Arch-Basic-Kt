@@ -4,7 +4,7 @@ import com.ring.ring.user.UseCase
 import com.ring.ring.user.shared.ValidateSession
 import kotlinx.serialization.Serializable
 
-class WithdrawalUser(
+internal class WithdrawalUser(
     private val validateSession: ValidateSession = ValidateSession(),
     private val repository: WithdrawalUserRepository = WithdrawalUserModules.withdrawalUserRepository,
 ) : UseCase<WithdrawalUser.Req, WithdrawalUser.Res>() {

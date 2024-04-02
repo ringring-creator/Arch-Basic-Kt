@@ -3,7 +3,7 @@ package com.ring.ring.todo.create
 import com.ring.ring.todo.Todo
 import data.db.TodoQueries
 
-class CreateTodoDataSource(private val queries: TodoQueries) {
+internal class CreateTodoDataSource(private val queries: TodoQueries) {
     fun insert(todo: Todo) = queries.insert(
         title = todo.title,
         description = todo.description,

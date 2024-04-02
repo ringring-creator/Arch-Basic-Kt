@@ -4,7 +4,7 @@ import com.ring.ring.user.UseCase
 import com.ring.ring.user.User
 import kotlinx.serialization.Serializable
 
-class ExistUser(
+internal class ExistUser(
     private val repository: ExistUserRepository = ExistUserModules.getUserRepository,
 ) : UseCase<ExistUser.Req, ExistUser.Res>() {
     override suspend fun execute(req: Req): Res {

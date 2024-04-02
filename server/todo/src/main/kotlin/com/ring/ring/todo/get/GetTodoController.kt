@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
-class GetTodoController(
+internal class GetTodoController(
     private val getTodo: GetTodo = GetTodo(),
 ) {
     suspend fun get(call: ApplicationCall) {

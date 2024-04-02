@@ -3,7 +3,7 @@ package com.ring.ring.session.login
 import com.ring.ring.session.UseCase
 import kotlinx.serialization.Serializable
 
-class Login(
+internal class Login(
     private val userRepository: ExistUserRepository = LoginModules.getUserRepository,
     private val sessionRepository: SaveSessionRepository = LoginModules.saveSessionRepository,
 ) : UseCase<Login.Req, Login.Res>() {

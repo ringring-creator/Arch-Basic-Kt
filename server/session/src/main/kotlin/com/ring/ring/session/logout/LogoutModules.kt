@@ -2,7 +2,7 @@ package com.ring.ring.session.logout
 
 import com.ring.ring.data.db.DataModules
 
-object LogoutModules {
+internal object LogoutModules {
     val deleteSessionRepository = createDeleteSessionRepository()
     val deleteSessionDataSource = createDeleteSessionDataSource()
 

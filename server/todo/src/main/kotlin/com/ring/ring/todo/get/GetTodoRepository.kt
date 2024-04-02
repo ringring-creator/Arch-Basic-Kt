@@ -4,7 +4,7 @@ import com.ring.ring.todo.Todo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class GetTodoRepository(
+internal class GetTodoRepository(
     private val dataSource: GetTodoDataSource,
 ) {
     suspend fun get(id: Long): Todo = withContext(Dispatchers.IO) {

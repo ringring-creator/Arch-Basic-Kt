@@ -4,7 +4,7 @@ import com.ring.ring.data.db.DataModules
 import com.ring.ring.user.User
 import data.db.UserQueries
 
-class EditUserDataSource(
+internal class EditUserDataSource(
     private val queries: UserQueries = DataModules.db.userQueries
 ) {
     fun update(user: User) {

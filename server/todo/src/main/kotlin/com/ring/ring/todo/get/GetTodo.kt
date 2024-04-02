@@ -5,7 +5,7 @@ import com.ring.ring.todo.UseCase
 import com.ring.ring.todo.shared.ValidateSession
 import kotlinx.serialization.Serializable
 
-class GetTodo(
+internal class GetTodo(
     private val validateSession: ValidateSession = ValidateSession(),
     private val repository: GetTodoRepository = GetTodoModules.getTodoRepository,
 ) : UseCase<GetTodo.Req, GetTodo.Res>() {
