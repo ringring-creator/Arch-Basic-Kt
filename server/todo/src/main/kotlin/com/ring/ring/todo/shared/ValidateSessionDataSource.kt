@@ -1,4 +1,4 @@
-package com.ring.ring.user
+package com.ring.ring.todo.shared
 
 import com.ring.ring.data.db.DataModules
 import data.db.SessionQueries

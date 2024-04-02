@@ -1,4 +1,4 @@
-package com.ring.ring.user
+package com.ring.ring.user.shared
 
 import com.ring.ring.data.db.DataModules
 

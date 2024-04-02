@@ -1,4 +1,4 @@
-package com.ring.ring.todo
+package com.ring.ring.todo.shared
 
 import com.ring.ring.data.db.DataModules
 

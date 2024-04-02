@@ -6,6 +6,7 @@ import com.ring.ring.todo.edit.BadRequestException
 import com.ring.ring.todo.edit.editTodoRouting
 import com.ring.ring.todo.get.getTodoRouting
 import com.ring.ring.todo.list.listTodoRouting
+import com.ring.ring.todo.shared.NotLoggedInException
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

@@ -1,4 +1,4 @@
-package com.ring.ring.user
+package com.ring.ring.todo.shared
 
 class ValidateSessionRepository(
     private val dataSource: ValidateSessionDataSource = ValidateSessionModules.validateSessionDataSource
