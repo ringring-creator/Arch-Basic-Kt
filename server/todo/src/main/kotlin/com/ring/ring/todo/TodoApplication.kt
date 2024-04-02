@@ -1,11 +1,12 @@
 package com.ring.ring.todo
 
+import com.ring.ring.com.ring.ring.todo.NotLoggedInException
 import com.ring.ring.com.ring.ring.todo.create.createTodoRouting
 import com.ring.ring.com.ring.ring.todo.delete.deleteTodoRouting
-import com.ring.ring.com.ring.ring.todo.edit.BadRequestException
 import com.ring.ring.com.ring.ring.todo.edit.editTodoRouting
 import com.ring.ring.com.ring.ring.todo.get.getTodoRouting
 import com.ring.ring.com.ring.ring.todo.list.listTodoRouting
+import com.ring.ring.todo.edit.BadRequestException
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -52,6 +53,10 @@ private fun Application.configureStatusPages() {
             when (cause) {
                 is BadRequestException -> {
                     call.respondText(text = "400: ${cause.message}", status = HttpStatusCode.BadRequest)
+                }
+
+                is NotLoggedInException -> {
+                    call.respondText(text = "403: ${cause.message}", status = HttpStatusCode.Forbidden)
                 }
 
                 else -> {

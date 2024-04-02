@@ -47,7 +47,15 @@ private fun Application.configureCors() {
 private fun Application.configureStatusPages() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
-            call.respondText(text = "500: ${cause.message}", status = HttpStatusCode.InternalServerError)
+            when (cause) {
+                is NotLoggedInException -> {
+                    call.respondText(text = "403: ${cause.message}", status = HttpStatusCode.Forbidden)
+                }
+
+                else -> {
+                    call.respondText(text = "500: ${cause.message}", status = HttpStatusCode.InternalServerError)
+                }
+            }
         }
     }
 }
