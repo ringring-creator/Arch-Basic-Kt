@@ -2,16 +2,19 @@ package com.ring.ring.todo.create
 
 import com.ring.ring.todo.Todo
 import com.ring.ring.todo.UseCase
-import com.ring.ring.todo.ValidateSession
+import com.ring.ring.todo.shared.ValidateSessionRepository
+import com.ring.ring.user.shared.NotLoggedInException
+import com.ring.ring.user.shared.Session
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 class CreateTodo(
-    private val validateSession: ValidateSession = ValidateSession(),
+    private val sessionRepository: ValidateSessionRepository = ValidateSessionRepository(),
     private val repository: CreateTodoRepository = CreateTodoModules.createTodoRepository,
 ) : UseCase<CreateTodo.Req, CreateTodo.Res>() {
     override suspend fun execute(req: Req): Res {
-        validateSession(req.session)
+        val isValid = sessionRepository.validate(req.session)
+        if (isValid.not()) throw NotLoggedInException()
         repository.save(todo = req.todo.toTodo())
         return Res()
     }
@@ -19,7 +22,7 @@ class CreateTodo(
     @Serializable
     data class Req(
         val todo: ReqTodo,
-        val session: ValidateSession.ReqSession,
+        val session: Session,
     ) : UseCase.Req {
         @Serializable
         data class ReqTodo(

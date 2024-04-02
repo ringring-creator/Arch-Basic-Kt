@@ -1,15 +1,18 @@
 package com.ring.ring.todo.delete
 
 import com.ring.ring.todo.UseCase
-import com.ring.ring.todo.ValidateSession
+import com.ring.ring.todo.shared.ValidateSessionRepository
+import com.ring.ring.user.shared.NotLoggedInException
+import com.ring.ring.user.shared.Session
 import kotlinx.serialization.Serializable
 
 class DeleteTodo(
-    private val validateSession: ValidateSession = ValidateSession(),
+    private val sessionRepository: ValidateSessionRepository = ValidateSessionRepository(),
     private val repository: DeleteTodoRepository = DeleteTodoModules.deleteTodoRepository,
 ) : UseCase<DeleteTodo.Req, DeleteTodo.Res>() {
     override suspend fun execute(req: Req): Res {
-        validateSession(req.session)
+        val isValid = sessionRepository.validate(req.session)
+        if (isValid.not()) throw NotLoggedInException()
         repository.delete(req.todoId)
         return Res()
     }
@@ -17,7 +20,7 @@ class DeleteTodo(
     @Serializable
     data class Req(
         val todoId: Long,
-        val session: ValidateSession.ReqSession,
+        val session: Session,
     ) : UseCase.Req
 
     class Res : UseCase.Res

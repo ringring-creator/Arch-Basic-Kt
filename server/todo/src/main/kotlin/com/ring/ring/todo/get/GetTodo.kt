@@ -2,15 +2,18 @@ package com.ring.ring.todo.get
 
 import com.ring.ring.todo.Todo
 import com.ring.ring.todo.UseCase
-import com.ring.ring.todo.ValidateSession
+import com.ring.ring.todo.shared.ValidateSessionRepository
+import com.ring.ring.user.shared.NotLoggedInException
+import com.ring.ring.user.shared.Session
 import kotlinx.serialization.Serializable
 
 class GetTodo(
-    private val validateSession: ValidateSession = ValidateSession(),
+    private val sessionRepository: ValidateSessionRepository = ValidateSessionRepository(),
     private val repository: GetTodoRepository = GetTodoModules.getTodoRepository,
 ) : UseCase<GetTodo.Req, GetTodo.Res>() {
     override suspend fun execute(req: Req): Res {
-        validateSession(req.session)
+        val isValid = sessionRepository.validate(req.session)
+        if (isValid.not()) throw NotLoggedInException()
         val todo = repository.get(req.todoId)
         return Res(todo = todo.toGetTodo())
     }
@@ -18,7 +21,7 @@ class GetTodo(
     @Serializable
     data class Req(
         val todoId: Long,
-        val session: ValidateSession.ReqSession,
+        val session: Session,
     ) : UseCase.Req
 
     @Serializable

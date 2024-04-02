@@ -8,9 +8,8 @@ class ValidateSession(
     private val sessionRepository: ValidateSessionRepository = ValidateSessionModules.validateSessionRepository,
 ) : UseCase<ValidateSession.ReqSession, ValidateSession.Res>() {
     override suspend fun execute(req: ReqSession): Res {
-        val isInvalid = sessionRepository.validate(session = req.toSession()).not()
-        if (isInvalid) throw NotLoggedInException("session is invalid")
-        return Res()
+        val isValid = sessionRepository.validate(session = req.toSession())
+        return Res(isValid)
     }
 
     @Serializable
@@ -24,5 +23,6 @@ class ValidateSession(
         )
     }
 
-    class Res : UseCase.Res
+    @Serializable
+    data class Res(val isValid: Boolean) : UseCase.Res
 }

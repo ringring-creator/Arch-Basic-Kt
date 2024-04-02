@@ -2,23 +2,26 @@ package com.ring.ring.todo.list
 
 import com.ring.ring.todo.Todo
 import com.ring.ring.todo.UseCase
-import com.ring.ring.todo.ValidateSession
+import com.ring.ring.todo.shared.ValidateSessionRepository
+import com.ring.ring.user.shared.NotLoggedInException
+import com.ring.ring.user.shared.Session
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 class GetTodoList(
-    private val validateSession: ValidateSession = ValidateSession(),
+    private val sessionRepository: ValidateSessionRepository = ValidateSessionRepository(),
     private val repository: ListTodoRepository = ListTodoModules.listTodoRepository,
 ) : UseCase<GetTodoList.Req, GetTodoList.Res>() {
     override suspend fun execute(req: Req): Res {
-        validateSession(req.session)
+        val isValid = sessionRepository.validate(req.session)
+        if (isValid.not()) throw NotLoggedInException()
         val todoList = repository.list(req.session.userId)
         return Res(todoList = todoList.map { it.toGetTodoListItem() })
     }
 
     @Serializable
     data class Req(
-        val session: ValidateSession.ReqSession,
+        val session: Session,
     ) : UseCase.Req
 
     @Serializable
