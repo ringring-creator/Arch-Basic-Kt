@@ -1,5 +1,6 @@
 package com.ring.ring
 
+import com.ring.ring.session.sessionModule
 import com.ring.ring.todo.todoModule
 import com.ring.ring.user.userModule
 import io.ktor.server.application.*

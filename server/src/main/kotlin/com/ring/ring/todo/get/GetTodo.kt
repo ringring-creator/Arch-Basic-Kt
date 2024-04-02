@@ -2,7 +2,7 @@ package com.ring.ring.todo.get
 
 import com.ring.ring.todo.Todo
 import com.ring.ring.todo.UseCase
-import com.ring.ring.validate.ValidateSession
+import com.ring.ring.user.ValidateSession
 import kotlinx.serialization.Serializable
 
 class GetTodo(

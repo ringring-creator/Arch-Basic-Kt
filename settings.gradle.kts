@@ -28,3 +28,5 @@ include("server:data")
 findProject(":server:data")?.name = "data"
 include("server:session")
 findProject(":server:session")?.name = "session"
+include("server:user")
+findProject(":server:user")?.name = "user"

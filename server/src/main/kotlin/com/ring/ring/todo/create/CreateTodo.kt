@@ -2,7 +2,7 @@ package com.ring.ring.todo.create
 
 import com.ring.ring.todo.Todo
 import com.ring.ring.todo.UseCase
-import com.ring.ring.validate.ValidateSession
+import com.ring.ring.todo.ValidateSession
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
