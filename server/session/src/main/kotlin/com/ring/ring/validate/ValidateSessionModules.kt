@@ -1,6 +1,8 @@
-package com.ring.ring.session.validate
+package com.ring.ring.com.ring.ring.validate
 
 import com.ring.ring.data.db.DataModules
+import com.ring.ring.validate.ValidateSessionDataSource
+import com.ring.ring.validate.ValidateSessionRepository
 
 object ValidateSessionModules {
     val validateSessionRepository = createValidateSessionRepository()

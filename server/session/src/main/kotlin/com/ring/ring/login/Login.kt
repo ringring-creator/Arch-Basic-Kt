@@ -1,8 +1,7 @@
-package com.ring.ring.session.login
+package com.ring.ring.login
 
-import com.ring.ring.user.UseCase
-import com.ring.ring.user.User
-import com.ring.ring.user.get.GetUserRepository
+import com.ring.ring.com.ring.ring.UseCase
+import com.ring.ring.com.ring.ring.login.LoginFailureException
 import kotlinx.serialization.Serializable
 
 class Login(

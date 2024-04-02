@@ -1,7 +1,9 @@
-package com.ring.ring.session.validate
+package com.ring.ring.validate
 
-import com.ring.ring.session.Session
-import com.ring.ring.session.UseCase
+import com.ring.ring.com.ring.ring.Session
+import com.ring.ring.com.ring.ring.UseCase
+import com.ring.ring.com.ring.ring.validate.NotLoggedInException
+import com.ring.ring.com.ring.ring.validate.ValidateSessionModules
 import kotlinx.serialization.Serializable
 
 class ValidateSession(

@@ -1,7 +1,8 @@
-package com.ring.ring.session.logout
+package com.ring.ring.logout
 
-import com.ring.ring.session.UseCase
-import com.ring.ring.session.validate.ValidateSession
+import com.ring.ring.com.ring.ring.UseCase
+import com.ring.ring.com.ring.ring.logout.LogoutModules
+import com.ring.ring.validate.ValidateSession
 import kotlinx.serialization.Serializable
 
 class Logout(

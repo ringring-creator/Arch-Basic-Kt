@@ -1,7 +1,7 @@
 package com.ring.ring.user.withdrawal
 
-import com.ring.ring.session.validate.ValidateSession
 import com.ring.ring.user.UseCase
+import com.ring.ring.validate.ValidateSession
 import kotlinx.serialization.Serializable
 
 class WithdrawalUser(

@@ -1,6 +1,7 @@
-package com.ring.ring.session.logout
+package com.ring.ring.logout
 
-import com.ring.ring.session.Session
+import com.ring.ring.com.ring.ring.Session
+import com.ring.ring.com.ring.ring.logout.LogoutModules
 
 class DeleteSessionRepository(
     private val dataSource: DeleteSessionDataSource = LogoutModules.deleteSessionDataSource

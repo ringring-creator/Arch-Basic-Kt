@@ -1,4 +1,4 @@
-package com.ring.ring.session.validate
+package com.ring.ring.com.ring.ring.validate
 
 class NotLoggedInException(
     message: String? = null,

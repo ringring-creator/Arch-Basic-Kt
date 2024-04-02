@@ -26,3 +26,5 @@ include(":composeApp")
 include(":server")
 include("server:data")
 findProject(":server:data")?.name = "data"
+include("server:session")
+findProject(":server:session")?.name = "session"

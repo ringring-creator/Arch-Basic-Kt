@@ -1,4 +1,4 @@
-package com.ring.ring.session.validate
+package com.ring.ring.validate
 
 import io.ktor.http.*
 import io.ktor.server.application.*

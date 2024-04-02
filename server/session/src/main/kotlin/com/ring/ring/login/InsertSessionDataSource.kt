@@ -1,7 +1,7 @@
-package com.ring.ring.session.login
+package com.ring.ring.login
 
+import com.ring.ring.com.ring.ring.Session
 import com.ring.ring.data.db.DataModules
-import com.ring.ring.session.Session
 import data.db.SessionQueries
 
 class InsertSessionDataSource(

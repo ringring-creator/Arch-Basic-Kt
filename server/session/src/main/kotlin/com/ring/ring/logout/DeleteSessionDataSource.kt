@@ -1,7 +1,7 @@
-package com.ring.ring.session.logout
+package com.ring.ring.logout
 
+import com.ring.ring.com.ring.ring.Session
 import com.ring.ring.data.db.DataModules
-import com.ring.ring.session.Session
 import data.db.SessionQueries
 
 class DeleteSessionDataSource(

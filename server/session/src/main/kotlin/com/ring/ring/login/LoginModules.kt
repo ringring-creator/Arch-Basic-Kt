@@ -1,11 +1,10 @@
-package com.ring.ring.session.login
+package com.ring.ring.login
 
 import com.ring.ring.data.db.DataModules
-import com.ring.ring.user.get.GetUserDataSource
-import com.ring.ring.user.get.GetUserRepository
 
 object LoginModules {
     val getUserRepository = createGetUserRepository()
+    val getUserDataSource = createGetUserDataSource()
     val saveSessionRepository = createSaveSessionRepository()
     val insertSessionDataSource = createInsertSessionDataSource()
 

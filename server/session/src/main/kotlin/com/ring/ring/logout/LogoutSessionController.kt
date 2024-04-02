@@ -1,4 +1,4 @@
-package com.ring.ring.session.logout
+package com.ring.ring.logout
 
 import io.ktor.http.*
 import io.ktor.server.application.*

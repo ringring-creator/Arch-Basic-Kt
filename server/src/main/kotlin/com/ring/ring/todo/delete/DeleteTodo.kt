@@ -1,7 +1,7 @@
 package com.ring.ring.todo.delete
 
-import com.ring.ring.session.validate.ValidateSession
 import com.ring.ring.todo.UseCase
+import com.ring.ring.validate.ValidateSession
 import kotlinx.serialization.Serializable
 
 class DeleteTodo(
