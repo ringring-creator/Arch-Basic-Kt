@@ -1,11 +1,11 @@
 package com.ring.ring.user.edit
 
-import com.ring.ring.data.db.DataModules
+import com.ring.ring.user.shared.SharedModules
 import com.ring.ring.user.shared.User
-import data.db.UserQueries
+import user.shared.UserQueries
 
 internal class EditUserDataSource(
-    private val queries: UserQueries = DataModules.db.userQueries
+    private val queries: UserQueries = SharedModules.db.userQueries
 ) {
     fun update(user: User) {
         val id = user.id ?: throw IllegalStateException()

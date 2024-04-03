@@ -1,6 +1,6 @@
 package com.ring.ring.user.exist
 
-import com.ring.ring.data.db.DataModules
+import com.ring.ring.user.shared.SharedModules
 
 internal object ExistUserModules {
     val getUserRepository = createGetUserRepository()
@@ -10,6 +10,6 @@ internal object ExistUserModules {
     )
 
     private fun createGetUserDataSource(): ExistUserDataSource = ExistUserDataSource(
-        queries = DataModules.db.userQueries
+        queries = SharedModules.db.userQueries
     )
 }

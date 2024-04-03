@@ -24,8 +24,6 @@ dependencyResolutionManagement {
 
 include(":composeApp")
 include(":server")
-include("server:data")
-findProject(":server:data")?.name = "data"
 include("server:maintenance-session-service")
 findProject(":server:maintenance-session-service")?.name = "maintenance-session-service"
 include("server:validation-session-service")

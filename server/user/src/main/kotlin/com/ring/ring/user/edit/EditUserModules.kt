@@ -1,6 +1,6 @@
 package com.ring.ring.user.edit
 
-import com.ring.ring.data.db.DataModules
+import com.ring.ring.user.shared.SharedModules
 
 internal object EditUserModules {
     val editUserRepository = createEditUserRepository()
@@ -11,6 +11,6 @@ internal object EditUserModules {
         )
 
     private fun createEditUserDataSource(): EditUserDataSource = EditUserDataSource(
-        queries = DataModules.db.userQueries
+        queries = SharedModules.db.userQueries
     )
 }

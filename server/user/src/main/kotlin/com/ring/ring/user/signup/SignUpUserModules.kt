@@ -1,6 +1,6 @@
 package com.ring.ring.user.signup
 
-import com.ring.ring.data.db.DataModules
+import com.ring.ring.user.shared.SharedModules
 
 internal object SignUpUserModules {
     val signUpUserRepository = createSignUpUserRepository()
@@ -10,6 +10,6 @@ internal object SignUpUserModules {
     )
 
     private fun createSignUpUserDataSource(): SignUpUserDataSource = SignUpUserDataSource(
-        queries = DataModules.db.userQueries
+        queries = SharedModules.db.userQueries
     )
 }

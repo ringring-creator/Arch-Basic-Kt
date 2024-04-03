@@ -15,7 +15,6 @@ application {
 }
 
 dependencies {
-    implementation(projects.server.data)
     implementation(projects.server.user)
     implementation(projects.server.validationSessionService)
     implementation(projects.server.maintenanceSessionService)
