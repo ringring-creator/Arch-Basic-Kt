@@ -1,8 +1,8 @@
 package com.ring.ring.todo.list
 
 import com.ring.ring.todo.shared.Todo
-import data.db.TodoQueries
-import data.db.TodoTable
+import todo.shared.TodoQueries
+import todo.shared.TodoTable
 
 internal class ListTodoDataSource(private val queries: TodoQueries) {
     fun list(userId: Long): List<Todo> = queries

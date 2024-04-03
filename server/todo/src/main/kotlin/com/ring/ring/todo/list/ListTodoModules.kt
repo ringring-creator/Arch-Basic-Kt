@@ -1,6 +1,6 @@
 package com.ring.ring.todo.list
 
-import com.ring.ring.data.db.DataModules
+import com.ring.ring.todo.shared.SharedModules
 
 internal object ListTodoModules {
     val listTodoRepository = createListTodoRepository()
@@ -10,6 +10,6 @@ internal object ListTodoModules {
     )
 
     private fun createListTodoDataSource(): ListTodoDataSource = ListTodoDataSource(
-        queries = DataModules.db.todoQueries
+        queries = SharedModules.db.todoQueries
     )
 }

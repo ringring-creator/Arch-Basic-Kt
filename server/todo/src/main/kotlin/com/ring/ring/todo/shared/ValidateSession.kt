@@ -3,7 +3,7 @@ package com.ring.ring.todo.shared
 import kotlinx.serialization.Serializable
 
 internal class ValidateSession(
-    private val sessionRepository: ValidateSessionRepository = ValidateSessionModules.validateSessionRepository,
+    private val sessionRepository: ValidateSessionRepository = SharedModules.validateSessionRepository,
 ) : UseCase<ValidateSession.ReqSession, ValidateSession.Res>() {
     override suspend fun execute(req: ReqSession): Res {
         val isInvalid = sessionRepository.validate(session = req.toSession()).not()

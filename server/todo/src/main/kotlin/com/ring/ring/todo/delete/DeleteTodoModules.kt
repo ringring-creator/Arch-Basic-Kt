@@ -1,6 +1,6 @@
 package com.ring.ring.todo.delete
 
-import com.ring.ring.data.db.DataModules
+import com.ring.ring.todo.shared.SharedModules
 
 internal object DeleteTodoModules {
     val deleteTodoRepository = createDeleteTodoRepository()
@@ -10,6 +10,6 @@ internal object DeleteTodoModules {
     )
 
     private fun createDeleteTodoDataSource(): DeleteTodoDataSource = DeleteTodoDataSource(
-        queries = DataModules.db.todoQueries
+        queries = SharedModules.db.todoQueries
     )
 }

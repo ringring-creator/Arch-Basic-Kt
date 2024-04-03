@@ -1,8 +1,8 @@
 package com.ring.ring.todo.get
 
 import com.ring.ring.todo.shared.Todo
-import data.db.TodoQueries
-import data.db.TodoTable
+import todo.shared.TodoQueries
+import todo.shared.TodoTable
 
 internal class GetTodoDataSource(private val queries: TodoQueries) {
     fun get(id: Long): Todo = queries

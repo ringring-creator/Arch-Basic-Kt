@@ -1,6 +1,6 @@
 package com.ring.ring.todo.delete
 
-import data.db.TodoQueries
+import todo.shared.TodoQueries
 
 internal class DeleteTodoDataSource(private val queries: TodoQueries) {
     fun delete(id: Long) = queries.delete(id)

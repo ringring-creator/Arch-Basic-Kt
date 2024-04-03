@@ -1,6 +1,7 @@
 package com.ring.ring.todo.create
 
-import com.ring.ring.data.db.DataModules
+import com.ring.ring.todo.shared.SharedModules
+
 
 internal object CreateTodoModules {
     val createTodoRepository = createCreateTodoRepository()
@@ -10,6 +11,6 @@ internal object CreateTodoModules {
     )
 
     private fun createCreateTodoDataSource(): CreateTodoDataSource = CreateTodoDataSource(
-        queries = DataModules.db.todoQueries
+        queries = SharedModules.db.todoQueries
     )
 }

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.serialization)
     alias(libs.plugins.ktor)
+    alias(libs.plugins.sqldelight)
 }
 
 group = "com.ring.ring"
@@ -12,7 +13,6 @@ repositories {
 }
 
 dependencies {
-    implementation(projects.server.data)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.content.negotiation.jvm)
@@ -26,8 +26,18 @@ dependencies {
     implementation(libs.ktor.server.cors)
     implementation(libs.kotlinx.datetime)
     implementation(libs.logback.classic)
+    implementation(libs.sqlite.driver)
 }
 
 kotlin {
     jvmToolchain(17)
+}
+
+sqldelight {
+    databases {
+        create("LocalDb") {
+            packageName.set("todo.shared")
+            srcDirs("src/main/kotlin/com/ring/ring/")
+        }
+    }
 }

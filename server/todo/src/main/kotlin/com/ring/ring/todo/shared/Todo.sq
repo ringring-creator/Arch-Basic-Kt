@@ -7,10 +7,7 @@ CREATE TABLE TodoTable(
     description TEXT NOT NULL,
     done INTEGER AS Boolean NOT NULL,
     deadline TEXT AS LocalDate NOT NULL,
-    userId INTEGER NOT NULL,
-    FOREIGN KEY (userId)
-    REFERENCES UserTable(id)
-    ON DELETE CASCADE
+    userId INTEGER NOT NULL
 );
 
 selectAll:

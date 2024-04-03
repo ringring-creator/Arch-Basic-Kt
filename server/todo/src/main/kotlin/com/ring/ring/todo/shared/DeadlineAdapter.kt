@@ -1,4 +1,4 @@
-package com.ring.ring.data.db
+package com.ring.ring.todo.shared
 
 import app.cash.sqldelight.ColumnAdapter
 import kotlinx.datetime.LocalDate

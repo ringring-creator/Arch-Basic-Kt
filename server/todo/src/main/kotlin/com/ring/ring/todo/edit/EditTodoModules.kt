@@ -1,6 +1,6 @@
 package com.ring.ring.todo.edit
 
-import com.ring.ring.data.db.DataModules
+import com.ring.ring.todo.shared.SharedModules
 
 internal object EditTodoModules {
     val editTodoRepository = createEditTodoRepository()
@@ -10,6 +10,6 @@ internal object EditTodoModules {
     )
 
     private fun createEditTodoDataSource(): EditTodoDataSource = EditTodoDataSource(
-        queries = DataModules.db.todoQueries
+        queries = SharedModules.db.todoQueries
     )
 }
