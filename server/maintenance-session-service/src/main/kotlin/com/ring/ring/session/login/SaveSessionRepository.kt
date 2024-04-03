@@ -5,7 +5,7 @@ import java.security.SecureRandom
 import java.util.*
 
 internal class SaveSessionRepository(
-    private val dataSource: SaveSessionDataSource = LoginModules.saveSessionDataSource
+    private val dataSource: SaveSessionDataSource
 ) {
     fun save(userId: Long): Session {
         val session = Session(

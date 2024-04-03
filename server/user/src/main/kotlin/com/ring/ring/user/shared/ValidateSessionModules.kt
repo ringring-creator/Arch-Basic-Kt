@@ -8,7 +8,6 @@ import kotlinx.serialization.json.Json
 
 internal object ValidateSessionModules {
     val validateSessionRepository = createValidateSessionRepository()
-    val validateSessionDataSource = createValidateSessionDataSource()
 
     private fun createValidateSessionRepository() = ValidateSessionRepository(
         dataSource = createValidateSessionDataSource()

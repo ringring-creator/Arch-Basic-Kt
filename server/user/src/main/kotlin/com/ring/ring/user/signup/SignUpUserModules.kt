@@ -4,7 +4,6 @@ import com.ring.ring.data.db.DataModules
 
 internal object SignUpUserModules {
     val signUpUserRepository = createSignUpUserRepository()
-    val signUpUserDataSource = createSignUpUserDataSource()
 
     private fun createSignUpUserRepository(): SignUpUserRepository = SignUpUserRepository(
         dataSource = createSignUpUserDataSource()

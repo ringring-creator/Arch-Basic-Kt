@@ -9,9 +9,7 @@ import kotlinx.serialization.json.Json
 
 internal object LoginModules {
     val getUserRepository = createGetUserRepository()
-    val getUserDataSource = createGetUserDataSource()
     val saveSessionRepository = createSaveSessionRepository()
-    val saveSessionDataSource = createInsertSessionDataSource()
 
     private fun createGetUserRepository(): ExistUserRepository = ExistUserRepository(
         dataSource = createGetUserDataSource()

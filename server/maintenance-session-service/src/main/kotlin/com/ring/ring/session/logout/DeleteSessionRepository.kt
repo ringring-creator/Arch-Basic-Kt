@@ -3,8 +3,8 @@ package com.ring.ring.session.logout
 import com.ring.ring.session.shared.Session
 
 internal class DeleteSessionRepository(
-    private val remoteDataSource: DeleteSessionRemoteDataSource = LogoutModules.deleteSessionRemoteDataSource,
-    private val localDataSource: DeleteSessionDataSource = LogoutModules.deleteSessionDataSource,
+    private val remoteDataSource: DeleteSessionRemoteDataSource,
+    private val localDataSource: DeleteSessionDataSource,
 ) {
     suspend fun delete(session: Session) {
         localDataSource.delete(session)

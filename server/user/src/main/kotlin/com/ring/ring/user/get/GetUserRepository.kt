@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 internal class GetUserRepository(
-    private val dataSource: GetUserDataSource = GetUserModules.getUserDataSource,
+    private val dataSource: GetUserDataSource,
 ) {
     suspend fun get(id: Long): User = withContext(Dispatchers.IO) {
         dataSource.get(id = id)

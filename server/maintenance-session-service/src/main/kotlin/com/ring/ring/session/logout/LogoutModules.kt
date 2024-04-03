@@ -9,10 +9,7 @@ import kotlinx.serialization.json.Json
 
 internal object LogoutModules {
     val validateSessionRepository = createValidateSessionRepository()
-    val validateSessionDataSource = createValidateSessionRemoteDataSource()
     val deleteSessionRepository = createDeleteSessionRepository()
-    val deleteSessionDataSource = createDeleteSessionDataSource()
-    val deleteSessionRemoteDataSource = createDeleteSessionRemoteDataSource()
 
     private fun createValidateSessionRepository() = ValidateSessionRepository(
         dataSource = createValidateSessionRemoteDataSource()
