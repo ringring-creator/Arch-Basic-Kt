@@ -19,7 +19,7 @@ dependencies {
     implementation(projects.server.user)
     implementation(projects.server.validationSessionService)
     implementation(projects.server.maintenanceSessionService)
-    implementation(projects.server.todo)
+    implementation(projects.server.todoService)
     implementation(libs.logback)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
