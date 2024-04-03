@@ -17,7 +17,8 @@ application {
 dependencies {
     implementation(projects.server.data)
     implementation(projects.server.user)
-    implementation(projects.server.session)
+    implementation(projects.server.validationSessionService)
+    implementation(projects.server.maintenanceSessionService)
     implementation(projects.server.todo)
     implementation(libs.logback)
     implementation(libs.ktor.server.core)

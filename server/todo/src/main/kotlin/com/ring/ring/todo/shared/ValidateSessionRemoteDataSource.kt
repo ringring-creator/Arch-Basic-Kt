@@ -1,4 +1,4 @@
-package com.ring.ring.user.shared
+package com.ring.ring.todo.shared
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -10,7 +10,7 @@ internal class ValidateSessionRemoteDataSource(
     private val httpClient: HttpClient
 ) {
     @Serializable
-    private data class ValidateSessionResponse(
+    data class ValidateSessionResponse(
         val isValid: Boolean
     )
 

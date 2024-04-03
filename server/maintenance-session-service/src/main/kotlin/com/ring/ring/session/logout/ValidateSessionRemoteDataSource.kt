@@ -1,5 +1,6 @@
-package com.ring.ring.user.shared
+package com.ring.ring.session.logout
 
+import com.ring.ring.session.shared.Session
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*

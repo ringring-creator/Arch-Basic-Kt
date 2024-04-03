@@ -1,4 +1,4 @@
-package com.ring.ring.user.shared
+package com.ring.ring.session.shared
 
 import kotlinx.serialization.Serializable
 

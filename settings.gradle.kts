@@ -26,8 +26,10 @@ include(":composeApp")
 include(":server")
 include("server:data")
 findProject(":server:data")?.name = "data"
-include("server:session")
-findProject(":server:session")?.name = "session"
+include("server:maintenance-session-service")
+findProject(":server:maintenance-session-service")?.name = "maintenance-session-service"
+include("server:validation-session-service")
+findProject(":server:validation-session-service")?.name = "validation-session-service"
 include("server:user")
 findProject(":server:user")?.name = "user"
 include("server:todo")

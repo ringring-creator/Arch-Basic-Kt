@@ -1,7 +1,7 @@
 package com.ring.ring.todo.shared
 
 internal class ValidateSessionRepository(
-    private val dataSource: ValidateSessionDataSource = ValidateSessionModules.validateSessionDataSource
+    private val dataSource: ValidateSessionRemoteDataSource = ValidateSessionModules.validateSessionDataSource
 ) {
-    fun validate(session: Session): Boolean = dataSource.validate(session)
+    suspend fun validate(session: Session): Boolean = dataSource.validate(session)
 }
