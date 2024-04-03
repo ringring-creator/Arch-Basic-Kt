@@ -1,6 +1,6 @@
 package com.ring.ring.session.login
 
-import com.ring.ring.session.UseCase
+import com.ring.ring.session.shared.UseCase
 import kotlinx.serialization.Serializable
 
 internal class Login(

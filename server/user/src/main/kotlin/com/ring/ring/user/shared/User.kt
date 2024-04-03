@@ -1,4 +1,4 @@
-package com.ring.ring.user
+package com.ring.ring.user.shared
 
 internal data class User(
     val id: Long?,

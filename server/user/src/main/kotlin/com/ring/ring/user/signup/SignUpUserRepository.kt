@@ -1,6 +1,6 @@
 package com.ring.ring.user.signup
 
-import com.ring.ring.user.User
+import com.ring.ring.user.shared.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

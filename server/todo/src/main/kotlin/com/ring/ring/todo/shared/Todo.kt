@@ -1,4 +1,4 @@
-package com.ring.ring.todo
+package com.ring.ring.todo.shared
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable

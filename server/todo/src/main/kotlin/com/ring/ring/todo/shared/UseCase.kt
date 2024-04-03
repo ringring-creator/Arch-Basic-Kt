@@ -1,4 +1,4 @@
-package com.ring.ring.user
+package com.ring.ring.todo.shared
 
 abstract class UseCase<Req : UseCase.Req, Res : UseCase.Res> {
     abstract suspend fun execute(req: Req): Res

@@ -1,7 +1,7 @@
 package com.ring.ring.user.get
 
-import com.ring.ring.user.UseCase
-import com.ring.ring.user.User
+import com.ring.ring.user.shared.UseCase
+import com.ring.ring.user.shared.User
 import com.ring.ring.user.shared.ValidateSession
 import kotlinx.serialization.Serializable
 

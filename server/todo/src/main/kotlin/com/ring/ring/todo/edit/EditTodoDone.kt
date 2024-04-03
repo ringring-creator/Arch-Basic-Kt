@@ -1,6 +1,6 @@
 package com.ring.ring.todo.edit
 
-import com.ring.ring.todo.UseCase
+import com.ring.ring.todo.shared.UseCase
 import com.ring.ring.todo.shared.ValidateSession
 import kotlinx.serialization.Serializable
 

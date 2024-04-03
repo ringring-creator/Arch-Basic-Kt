@@ -1,7 +1,7 @@
 package com.ring.ring.session.validate
 
 import com.ring.ring.data.db.DataModules
-import com.ring.ring.session.Session
+import com.ring.ring.session.shared.Session
 import data.db.SessionQueries
 
 internal class ValidateSessionDataSource(

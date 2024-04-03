@@ -1,6 +1,6 @@
 package com.ring.ring.todo.list
 
-import com.ring.ring.todo.Todo
+import com.ring.ring.todo.shared.Todo
 import data.db.TodoQueries
 import data.db.TodoTable
 

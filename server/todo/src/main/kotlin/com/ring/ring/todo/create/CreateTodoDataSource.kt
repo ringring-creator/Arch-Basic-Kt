@@ -1,6 +1,6 @@
 package com.ring.ring.todo.create
 
-import com.ring.ring.todo.Todo
+import com.ring.ring.todo.shared.Todo
 import data.db.TodoQueries
 
 internal class CreateTodoDataSource(private val queries: TodoQueries) {

@@ -1,4 +1,4 @@
-package com.ring.ring.session
+package com.ring.ring.session.shared
 
 internal data class Session(
     val userId: Long,

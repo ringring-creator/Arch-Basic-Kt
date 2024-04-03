@@ -1,6 +1,6 @@
 package com.ring.ring.session.logout
 
-import com.ring.ring.session.UseCase
+import com.ring.ring.session.shared.UseCase
 import com.ring.ring.session.validate.ValidateSession
 import kotlinx.serialization.Serializable
 

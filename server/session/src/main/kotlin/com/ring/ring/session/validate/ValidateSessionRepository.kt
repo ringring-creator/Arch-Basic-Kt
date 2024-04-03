@@ -1,6 +1,6 @@
 package com.ring.ring.session.validate
 
-import com.ring.ring.session.Session
+import com.ring.ring.session.shared.Session
 
 internal class ValidateSessionRepository(
     private val dataSource: ValidateSessionDataSource = ValidateSessionModules.validateSessionDataSource

@@ -1,6 +1,5 @@
 package com.ring.ring.user.shared
 
-import com.ring.ring.user.UseCase
 import kotlinx.serialization.Serializable
 
 internal class ValidateSession(

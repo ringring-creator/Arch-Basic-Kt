@@ -1,7 +1,7 @@
 package com.ring.ring.user.exist
 
 import com.ring.ring.data.db.DataModules
-import com.ring.ring.user.User
+import com.ring.ring.user.shared.User
 import data.db.UserQueries
 
 internal class ExistUserDataSource(

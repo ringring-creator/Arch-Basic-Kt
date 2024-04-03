@@ -1,7 +1,7 @@
 package com.ring.ring.user.signup
 
-import com.ring.ring.user.UseCase
-import com.ring.ring.user.User
+import com.ring.ring.user.shared.UseCase
+import com.ring.ring.user.shared.User
 import kotlinx.serialization.Serializable
 
 internal class SignUp(

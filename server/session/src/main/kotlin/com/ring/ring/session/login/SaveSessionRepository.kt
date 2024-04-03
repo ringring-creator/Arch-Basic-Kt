@@ -1,6 +1,6 @@
 package com.ring.ring.session.login
 
-import com.ring.ring.session.Session
+import com.ring.ring.session.shared.Session
 import java.security.SecureRandom
 import java.util.*
 
