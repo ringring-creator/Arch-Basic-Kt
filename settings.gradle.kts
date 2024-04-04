@@ -28,7 +28,7 @@ include("server:maintenance-session-service")
 findProject(":server:maintenance-session-service")?.name = "maintenance-session-service"
 include("server:validation-session-service")
 findProject(":server:validation-session-service")?.name = "validation-session-service"
-include("server:user")
-findProject(":server:user")?.name = "user"
+include("server:user-service")
+findProject(":server:user-service")?.name = "user-service"
 include("server:todo-service")
 findProject(":server:todo-service")?.name = "todo-service"
