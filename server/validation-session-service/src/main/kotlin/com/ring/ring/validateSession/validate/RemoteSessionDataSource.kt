@@ -11,11 +11,6 @@ internal class RemoteSessionDataSource(
     private val httpClient: HttpClient
 ) {
     @Serializable
-    private data class ExistRequest(
-        val session: Session
-    )
-
-    @Serializable
     private data class ExistResponse(
         val isValid: Boolean
     )
@@ -23,7 +18,7 @@ internal class RemoteSessionDataSource(
     suspend fun exist(session: Session): Boolean {
         return httpClient.post("$URL/session/exist") {
             contentType(ContentType.Application.Json)
-            setBody(ExistRequest(session))
+            setBody(session)
         }.body<ExistResponse>().isValid
     }
 

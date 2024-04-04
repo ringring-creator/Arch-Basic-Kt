@@ -10,7 +10,7 @@ internal class ExistSessionController(
 ) {
     suspend fun exist(call: ApplicationCall) {
         val req = call.receive<ExistSession.Req>()
-        existSession(req)
-        call.respond(HttpStatusCode.OK)
+        val res = existSession(req)
+        call.respond(HttpStatusCode.OK, res)
     }
 }

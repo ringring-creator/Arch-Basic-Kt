@@ -7,8 +7,6 @@ fun Route.deleteTodoRouting() {
     val controller = DeleteTodoController()
     route("/todo") {
         post("delete") { controller.delete(call) }
-    }
-    route("/todo") {
-        post("delete") { controller.deleteByUserId(call) }
+        post("delete-all") { controller.deleteByUserId(call) }
     }
 }

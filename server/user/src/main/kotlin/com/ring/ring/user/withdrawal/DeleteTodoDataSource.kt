@@ -14,7 +14,7 @@ internal class DeleteTodoDataSource(
     )
 
     suspend fun delete(userId: Long) {
-        httpClient.post("$URL/user/delete") {
+        httpClient.post("$URL/todo/delete-all") {
             contentType(ContentType.Application.Json)
             setBody(DeleteRequest(userId))
         }
