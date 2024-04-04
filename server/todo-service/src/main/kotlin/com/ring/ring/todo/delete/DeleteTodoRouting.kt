@@ -8,4 +8,7 @@ fun Route.deleteTodoRouting() {
     route("/todo") {
         post("delete") { controller.delete(call) }
     }
+    route("/todo") {
+        post("delete") { controller.deleteByUserId(call) }
+    }
 }

@@ -37,3 +37,7 @@ WHERE id = :id;
 delete:
 DELETE FROM TodoTable
 WHERE id = :id;
+
+deleteByUserId:
+DELETE FROM TodoTable
+WHERE userId = :userId;

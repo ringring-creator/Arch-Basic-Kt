@@ -1,9 +1,9 @@
 package com.ring.ring
 
 import com.ring.ring.session.maintenanceSessionModule
-import com.ring.ring.session.validationSessionModule
 import com.ring.ring.todo.todoModule
 import com.ring.ring.user.userModule
+import com.ring.ring.validateSession.validationSessionModule
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*

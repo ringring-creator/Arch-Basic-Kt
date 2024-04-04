@@ -9,4 +9,8 @@ internal class DeleteTodoRepository(
     suspend fun delete(id: Long) = withContext(Dispatchers.IO) {
         dataSource.delete(id = id)
     }
+
+    fun deleteByUserId(userId: Long) {
+        dataSource.deleteByUserId(userId = userId)
+    }
 }

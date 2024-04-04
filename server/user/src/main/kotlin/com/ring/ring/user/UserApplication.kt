@@ -16,7 +16,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
 
-
 fun Application.userModule() {
     configureSerialization()
     configureCors()

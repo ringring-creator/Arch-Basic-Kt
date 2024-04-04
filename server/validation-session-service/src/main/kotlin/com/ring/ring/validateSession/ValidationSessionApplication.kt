@@ -1,11 +1,8 @@
-package com.ring.ring.session
+package com.ring.ring.validateSession
 
-import com.ring.ring.session.delete.deleteSessionRouting
-import com.ring.ring.session.exist.existSessionRouting
-import com.ring.ring.session.login.LoginFailureException
-import com.ring.ring.session.login.loginSessionRouting
-import com.ring.ring.session.logout.logoutSessionRouting
-import com.ring.ring.session.shared.NotLoggedInException
+import com.ring.ring.validateSession.delete.deleteSessionRouting
+import com.ring.ring.validateSession.validate.NotLoggedInException
+import com.ring.ring.validateSession.validate.validationSessionRouting
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -17,11 +14,11 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
 
 
-fun Application.maintenanceSessionModule() {
+fun Application.validationSessionModule() {
     configureSerialization()
     configureCors()
     configureStatusPages()
-    sessionConfigureRouting()
+    validationSessionConfigureRouting()
 }
 
 private fun Application.configureSerialization() {
@@ -50,10 +47,6 @@ private fun Application.configureStatusPages() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
             when (cause) {
-                is LoginFailureException -> {
-                    call.respondText(text = "401: ${cause.message}", status = HttpStatusCode.Unauthorized)
-                }
-
                 is NotLoggedInException -> {
                     call.respondText(text = "403: ${cause.message}", status = HttpStatusCode.Forbidden)
                 }
@@ -66,11 +59,9 @@ private fun Application.configureStatusPages() {
     }
 }
 
-private fun Application.sessionConfigureRouting() {
+private fun Application.validationSessionConfigureRouting() {
     routing {
-        existSessionRouting()
-        loginSessionRouting()
-        logoutSessionRouting()
+        validationSessionRouting()
         deleteSessionRouting()
     }
 }

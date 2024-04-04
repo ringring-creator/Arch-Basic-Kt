@@ -6,11 +6,15 @@ import kotlinx.serialization.Serializable
 
 internal class WithdrawalUser(
     private val validateSession: ValidateSession = ValidateSession(),
-    private val repository: WithdrawalUserRepository = WithdrawalUserModules.withdrawalUserRepository,
+    private val userRepository: WithdrawalUserRepository = WithdrawalUserModules.withdrawalUserRepository,
+    private val todoRepository: DeleteTodoRepository = WithdrawalUserModules.todoRepository,
+    private val sessionRepository: DeleteSessionRepository = WithdrawalUserModules.sessionRepository,
 ) : UseCase<WithdrawalUser.Req, WithdrawalUser.Res>() {
     override suspend fun execute(req: Req): Res {
         validateSession(req.session)
-        repository.delete(id = req.session.userId)
+        userRepository.delete(req.session.userId)
+        todoRepository.delete(req.session.userId)
+        sessionRepository.delete(req.session.userId)
         return Res()
     }
 

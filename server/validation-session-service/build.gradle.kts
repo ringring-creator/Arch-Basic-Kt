@@ -36,7 +36,7 @@ kotlin {
 sqldelight {
     databases {
         create("LocalDb") {
-            packageName.set("session.shared")
+            packageName.set("validateSession.shared")
             srcDirs("src/main/kotlin/com/ring/ring/")
         }
     }
