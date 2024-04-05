@@ -1,10 +1,10 @@
-package com.ring.ring.todo.shared
+package com.ring.ring.data.db
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class Todo(
+data class Todo(
     val id: Long?,
     val title: String,
     val description: String,

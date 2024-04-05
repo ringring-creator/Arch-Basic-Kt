@@ -1,6 +1,6 @@
 package com.ring.ring.todo.get
 
-import com.ring.ring.todo.shared.Todo
+import com.ring.ring.data.db.Todo
 import com.ring.ring.todo.shared.UseCase
 import com.ring.ring.todo.shared.ValidateSession
 import kotlinx.serialization.Serializable
@@ -44,5 +44,4 @@ internal class GetTodo(
         deadline = deadline.toString(),
         userId = userId.toString(),
     )
-
 }

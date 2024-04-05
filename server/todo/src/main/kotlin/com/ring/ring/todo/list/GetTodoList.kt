@@ -1,6 +1,6 @@
 package com.ring.ring.todo.list
 
-import com.ring.ring.todo.shared.Todo
+import com.ring.ring.data.db.Todo
 import com.ring.ring.todo.shared.UseCase
 import com.ring.ring.todo.shared.ValidateSession
 import kotlinx.datetime.LocalDate

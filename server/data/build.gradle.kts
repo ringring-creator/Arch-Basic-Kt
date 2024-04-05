@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.serialization)
 }
 
 group = "com.ring.ring"
@@ -13,6 +14,7 @@ repositories {
 dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.sqlite.driver)
+    implementation(libs.ktor.serialization.kotlinx.json)
 }
 
 kotlin {
