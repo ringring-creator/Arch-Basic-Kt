@@ -1,35 +1,20 @@
 package com.ring.ring.validateSession.validate
 
 import com.ring.ring.validateSession.shared.SharedModules
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 
 internal object ValidateSessionModules {
+    private val remoteSessionDataSource = createRemoteValidateSessionDataSource()
+    private val validateSessionDataSource = createLocalValidateSessionDataSource()
     val validateSessionRepository = createValidateSessionRepository()
 
     private fun createValidateSessionRepository() = ValidateSessionRepository(
-        remoteSessionDataSource = createRemoteValidateSessionDataSource(),
-        localDataSource = createLocalValidateSessionDataSource()
+        remoteSessionDataSource = remoteSessionDataSource,
+        localDataSource = validateSessionDataSource
     )
 
     private fun createRemoteValidateSessionDataSource() = RemoteSessionDataSource(
-        httpClient = createHttpClient(),
+        httpClient = SharedModules.httpClient,
     )
-
-    private fun createHttpClient() = HttpClient(CIO) {
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                }
-            )
-        }
-    }
 
     private fun createLocalValidateSessionDataSource() = ValidateSessionDataSource(
         queries = SharedModules.db.sessionQueries

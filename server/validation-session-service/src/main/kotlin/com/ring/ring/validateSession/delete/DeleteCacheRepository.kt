@@ -1,15 +1,17 @@
 package com.ring.ring.validateSession.delete
 
 import com.ring.ring.validateSession.shared.Session
+import com.ring.ring.validateSession.shared.SharedModules
+import validateSession.shared.SessionQueries
 
 internal class DeleteCacheRepository(
-    private val localDataSource: DeleteCacheDataSource
+    private val queries: SessionQueries = SharedModules.db.sessionQueries,
 ) {
     fun delete(session: Session) {
-        localDataSource.delete(session)
+        queries.delete(session.userId, session.credential)
     }
 
     fun deleteById(userId: Long) {
-        localDataSource.deleteById(userId)
+        queries.deleteById(userId)
     }
 }

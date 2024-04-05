@@ -1,7 +1,7 @@
 package com.ring.ring.validateSession
 
 import com.ring.ring.validateSession.delete.deleteSessionRouting
-import com.ring.ring.validateSession.validate.NotLoggedInException
+import com.ring.ring.validateSession.shared.NotLoggedInException
 import com.ring.ring.validateSession.validate.validationSessionRouting
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*

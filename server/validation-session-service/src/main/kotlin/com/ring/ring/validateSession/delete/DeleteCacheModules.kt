@@ -6,10 +6,6 @@ internal object DeleteCacheModules {
     val validateSessionRepository = createValidateSessionRepository()
 
     private fun createValidateSessionRepository() = DeleteCacheRepository(
-        localDataSource = createLocalValidateSessionDataSource()
-    )
-
-    private fun createLocalValidateSessionDataSource() = DeleteCacheDataSource(
-        queries = SharedModules.db.sessionQueries
+        queries = SharedModules.db.sessionQueries,
     )
 }
