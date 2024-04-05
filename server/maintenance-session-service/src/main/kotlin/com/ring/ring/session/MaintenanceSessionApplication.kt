@@ -2,9 +2,9 @@ package com.ring.ring.session
 
 import com.ring.ring.session.delete.deleteSessionRouting
 import com.ring.ring.session.exist.existSessionRouting
-import com.ring.ring.session.login.LoginFailureException
 import com.ring.ring.session.login.loginSessionRouting
 import com.ring.ring.session.logout.logoutSessionRouting
+import com.ring.ring.session.shared.LoginFailureException
 import com.ring.ring.session.shared.NotLoggedInException
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*

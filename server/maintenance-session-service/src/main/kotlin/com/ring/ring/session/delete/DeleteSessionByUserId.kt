@@ -3,9 +3,9 @@ package com.ring.ring.session.delete
 import com.ring.ring.session.shared.UseCase
 import kotlinx.serialization.Serializable
 
-internal class DeleteSession(
-    private val sessionRepository: DeleteSessionRepository = DeleteSessionModules.deleteSessionRepository,
-) : UseCase<DeleteSession.Req, DeleteSession.Res>() {
+internal class DeleteSessionByUserId(
+    private val sessionRepository: DeleteSessionByUserIdRepository = DeleteSessionModules.deleteSessionRepository,
+) : UseCase<DeleteSessionByUserId.Req, DeleteSessionByUserId.Res>() {
     override suspend fun execute(req: Req): Res {
         sessionRepository.delete(req.userId)
         return Res()

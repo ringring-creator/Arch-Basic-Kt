@@ -3,9 +3,9 @@ package com.ring.ring.session.exist
 import com.ring.ring.session.shared.SharedModules
 
 internal object ExistModules {
-    val validateSessionDataSource = createDeleteSessionDataSource()
+    val existSessionRepository = createExistSessionRepository()
 
-    private fun createDeleteSessionDataSource(): ValidateSessionDataSource = ValidateSessionDataSource(
+    private fun createExistSessionRepository(): ExistSessionRepository = ExistSessionRepository(
         queries = SharedModules.db.sessionQueries
     )
 }

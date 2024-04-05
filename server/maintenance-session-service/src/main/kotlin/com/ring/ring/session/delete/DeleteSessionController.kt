@@ -6,10 +6,10 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 
 internal class DeleteSessionController(
-    private val deleteSession: DeleteSession = DeleteSession(),
+    private val deleteSession: DeleteSessionByUserId = DeleteSessionByUserId(),
 ) {
     suspend fun delete(call: ApplicationCall) {
-        val req = call.receive<DeleteSession.Req>()
+        val req = call.receive<DeleteSessionByUserId.Req>()
         deleteSession(req)
         call.respond(HttpStatusCode.OK)
     }

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 
 internal class ExistSession(
-    private val repository: ExistSessionRepository = ExistSessionRepository(),
+    private val repository: ExistSessionRepository = ExistModules.existSessionRepository,
 ) : UseCase<ExistSession.Req, ExistSession.Res>() {
     override suspend fun execute(req: Req): Res {
         val isValid = repository.validate(req.toSession())

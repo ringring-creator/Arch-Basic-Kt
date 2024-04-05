@@ -5,7 +5,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
-internal class DeleteSessionRemoteDataSource(
+internal class DeleteSessionByUserIdRemoteDataSource(
     private val httpClient: HttpClient
 ) {
     @Serializable
