@@ -2,15 +2,16 @@ package com.ring.ring.todo.delete
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import todo.shared.TodoQueries
 
 internal class DeleteTodoRepository(
-    private val dataSource: DeleteTodoDataSource,
+    private val queries: TodoQueries,
 ) {
     suspend fun delete(id: Long) = withContext(Dispatchers.IO) {
-        dataSource.delete(id = id)
+        queries.delete(id)
     }
 
     fun deleteByUserId(userId: Long) {
-        dataSource.deleteByUserId(userId = userId)
+        queries.deleteByUserId(userId)
     }
 }

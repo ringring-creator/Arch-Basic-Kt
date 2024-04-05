@@ -6,10 +6,6 @@ internal object ListTodoModules {
     val listTodoRepository = createListTodoRepository()
 
     private fun createListTodoRepository(): ListTodoRepository = ListTodoRepository(
-        dataSource = createListTodoDataSource()
-    )
-
-    private fun createListTodoDataSource(): ListTodoDataSource = ListTodoDataSource(
-        queries = SharedModules.db.todoQueries
+        queries = SharedModules.db.todoQueries,
     )
 }

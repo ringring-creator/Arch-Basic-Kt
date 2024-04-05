@@ -1,13 +1,11 @@
 package com.ring.ring.todo.list
 
-import com.ring.ring.todo.shared.Todo
-import com.ring.ring.todo.shared.UseCase
-import com.ring.ring.todo.shared.ValidateSession
+import com.ring.ring.todo.shared.*
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 internal class GetTodoList(
-    private val validateSession: ValidateSession = ValidateSession(),
+    private val sessionRepository: ValidateSessionRepository = SharedModules.validateSessionRepository,
     private val repository: ListTodoRepository = ListTodoModules.listTodoRepository,
 ) : UseCase<GetTodoList.Req, GetTodoList.Res>() {
     override suspend fun execute(req: Req): Res {
@@ -16,9 +14,14 @@ internal class GetTodoList(
         return Res(todoList = todoList.map { it.toGetTodoListItem() })
     }
 
+    private suspend fun validateSession(session: Session) {
+        val isInvalid = sessionRepository.validate(session = session).not()
+        if (isInvalid) throw NotLoggedInException("session is invalid")
+    }
+
     @Serializable
     data class Req(
-        val session: ValidateSession.ReqSession,
+        val session: Session,
     ) : UseCase.Req
 
     @Serializable

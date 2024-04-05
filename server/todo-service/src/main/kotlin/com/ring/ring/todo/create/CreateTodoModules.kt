@@ -7,10 +7,6 @@ internal object CreateTodoModules {
     val createTodoRepository = createCreateTodoRepository()
 
     private fun createCreateTodoRepository(): CreateTodoRepository = CreateTodoRepository(
-        dataSource = createCreateTodoDataSource()
-    )
-
-    private fun createCreateTodoDataSource(): CreateTodoDataSource = CreateTodoDataSource(
-        queries = SharedModules.db.todoQueries
+        queries = SharedModules.db.todoQueries,
     )
 }

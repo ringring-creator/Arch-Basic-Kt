@@ -1,4 +1,4 @@
-package com.ring.ring.todo.edit
+package com.ring.ring.todo.shared
 
 internal class BadRequestException(
     message: String? = null,
