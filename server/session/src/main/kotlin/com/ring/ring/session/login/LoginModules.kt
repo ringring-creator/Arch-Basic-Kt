@@ -11,7 +11,6 @@ internal object LoginModules {
     val getUserRepository = createGetUserRepository()
     val getUserDataSource = createGetUserDataSource()
     val saveSessionRepository = createSaveSessionRepository()
-    val saveSessionDataSource = createInsertSessionDataSource()
 
     private fun createGetUserRepository(): ExistUserRepository = ExistUserRepository(
         dataSource = createGetUserDataSource()
@@ -34,10 +33,6 @@ internal object LoginModules {
     }
 
     private fun createSaveSessionRepository(): SaveSessionRepository = SaveSessionRepository(
-        dataSource = createInsertSessionDataSource()
-    )
-
-    private fun createInsertSessionDataSource(): SaveSessionDataSource = SaveSessionDataSource(
-        queries = DataModules.db.sessionQueries
+        dataSource = DataModules.sessionDataSource
     )
 }

@@ -8,6 +8,8 @@ import java.util.*
 
 object DataModules {
     val db = createDb()
+    val sessionDataSource = createSessionDataSource()
+
     private fun createDb() = LocalDb(
         driver = createSqliteDriver(),
         TodoTableAdapter = createTodoTableAdapter()
@@ -23,5 +25,9 @@ object DataModules {
         url = "jdbc:sqlite:db/database.db",
         schema = LocalDb.Schema,
         properties = Properties().apply { put("foreign_keys", "true") }
+    )
+
+    private fun createSessionDataSource(): SessionDataSource = SessionDataSource(
+        queries = db.sessionQueries
     )
 }

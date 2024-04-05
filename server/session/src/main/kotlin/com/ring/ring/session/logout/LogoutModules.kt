@@ -4,13 +4,9 @@ import com.ring.ring.data.db.DataModules
 
 internal object LogoutModules {
     val deleteSessionRepository = createDeleteSessionRepository()
-    val deleteSessionDataSource = createDeleteSessionDataSource()
 
     private fun createDeleteSessionRepository(): DeleteSessionRepository = DeleteSessionRepository(
-        dataSource = createDeleteSessionDataSource()
+        dataSource = DataModules.sessionDataSource
     )
 
-    private fun createDeleteSessionDataSource(): DeleteSessionDataSource = DeleteSessionDataSource(
-        queries = DataModules.db.sessionQueries
-    )
 }
