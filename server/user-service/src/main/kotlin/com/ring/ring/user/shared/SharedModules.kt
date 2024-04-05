@@ -11,6 +11,7 @@ import user.shared.LocalDb
 import java.util.*
 
 internal object SharedModules {
+    val httpClient = createHttpClient()
     val validateSessionRepository = createValidateSessionRepository()
     val db = createDb()
 
@@ -25,11 +26,7 @@ internal object SharedModules {
     )
 
     private fun createValidateSessionRepository() = ValidateSessionRepository(
-        dataSource = createValidateSessionDataSource()
-    )
-
-    private fun createValidateSessionDataSource() = ValidateSessionRemoteDataSource(
-        httpClient = createHttpClient(),
+        httpClient = httpClient,
     )
 
     private fun createHttpClient() = HttpClient(CIO) {

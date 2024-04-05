@@ -6,10 +6,6 @@ internal object SignUpUserModules {
     val signUpUserRepository = createSignUpUserRepository()
 
     private fun createSignUpUserRepository(): SignUpUserRepository = SignUpUserRepository(
-        dataSource = createSignUpUserDataSource()
-    )
-
-    private fun createSignUpUserDataSource(): SignUpUserDataSource = SignUpUserDataSource(
-        queries = SharedModules.db.userQueries
+        queries = SharedModules.db.userQueries,
     )
 }

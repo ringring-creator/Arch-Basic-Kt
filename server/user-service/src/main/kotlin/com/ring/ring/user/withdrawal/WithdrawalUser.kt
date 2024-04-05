@@ -1,11 +1,10 @@
 package com.ring.ring.user.withdrawal
 
-import com.ring.ring.user.shared.UseCase
-import com.ring.ring.user.shared.ValidateSession
+import com.ring.ring.user.shared.*
 import kotlinx.serialization.Serializable
 
 internal class WithdrawalUser(
-    private val validateSession: ValidateSession = ValidateSession(),
+    private val validateSessionRepository: ValidateSessionRepository = SharedModules.validateSessionRepository,
     private val userRepository: WithdrawalUserRepository = WithdrawalUserModules.withdrawalUserRepository,
     private val todoRepository: DeleteTodoRepository = WithdrawalUserModules.todoRepository,
     private val sessionRepository: DeleteSessionRepository = WithdrawalUserModules.sessionRepository,
@@ -18,9 +17,14 @@ internal class WithdrawalUser(
         return Res()
     }
 
+    private suspend fun validateSession(session: Session) {
+        val isInvalid = validateSessionRepository.validate(session = session).not()
+        if (isInvalid) throw NotLoggedInException("session is invalid")
+    }
+
     @Serializable
     data class Req(
-        val session: ValidateSession.ReqSession,
+        val session: Session,
     ) : UseCase.Req
 
     class Res : UseCase.Res

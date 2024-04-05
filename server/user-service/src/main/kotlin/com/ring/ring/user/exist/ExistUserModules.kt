@@ -6,10 +6,6 @@ internal object ExistUserModules {
     val getUserRepository = createGetUserRepository()
 
     private fun createGetUserRepository(): ExistUserRepository = ExistUserRepository(
-        dataSource = createGetUserDataSource()
-    )
-
-    private fun createGetUserDataSource(): ExistUserDataSource = ExistUserDataSource(
-        queries = SharedModules.db.userQueries
+        queries = SharedModules.db.userQueries,
     )
 }

@@ -1,11 +1,6 @@
 package com.ring.ring.user.withdrawal
 
 import com.ring.ring.user.shared.SharedModules
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 
 internal object WithdrawalUserModules {
     val withdrawalUserRepository = createWithdrawalUserRepository()
@@ -17,7 +12,7 @@ internal object WithdrawalUserModules {
     )
 
     private fun createDeleteSessionDataSource() = DeleteSessionDataSource(
-        httpClient = createHttpClient(),
+        httpClient = SharedModules.httpClient,
     )
 
     private fun createTodoRepository() = DeleteTodoRepository(
@@ -25,20 +20,8 @@ internal object WithdrawalUserModules {
     )
 
     private fun createDeleteTodoDataSource() = DeleteTodoDataSource(
-        httpClient = createHttpClient()
+        httpClient = SharedModules.httpClient
     )
-
-    private fun createHttpClient() = HttpClient(CIO) {
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                }
-            )
-        }
-    }
 
     private fun createWithdrawalUserRepository(): WithdrawalUserRepository = WithdrawalUserRepository(
         dataSource = createWithdrawalUserDataSource()

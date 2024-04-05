@@ -1,13 +1,18 @@
 package com.ring.ring.user.signup
 
+import com.ring.ring.user.shared.SharedModules
 import com.ring.ring.user.shared.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import user.shared.UserQueries
 
 internal class SignUpUserRepository(
-    private val dataSource: SignUpUserDataSource,
+    private val queries: UserQueries = SharedModules.db.userQueries,
 ) {
     suspend fun save(user: User) = withContext(Dispatchers.IO) {
-        dataSource.insert(user = user)
+        queries.insert(
+            email = user.email,
+            password = user.password,
+        )
     }
 }

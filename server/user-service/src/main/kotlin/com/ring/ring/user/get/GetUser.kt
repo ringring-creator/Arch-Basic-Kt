@@ -1,12 +1,10 @@
 package com.ring.ring.user.get
 
-import com.ring.ring.user.shared.UseCase
-import com.ring.ring.user.shared.User
-import com.ring.ring.user.shared.ValidateSession
+import com.ring.ring.user.shared.*
 import kotlinx.serialization.Serializable
 
 internal class GetUser(
-    private val validateSession: ValidateSession = ValidateSession(),
+    private val sessionRepository: ValidateSessionRepository = SharedModules.validateSessionRepository,
     private val repository: GetUserRepository = GetUserModules.getUserRepository,
 ) : UseCase<GetUser.Req, GetUser.Res>() {
     override suspend fun execute(req: Req): Res {
@@ -15,9 +13,14 @@ internal class GetUser(
         return Res(user = user.toReqUser())
     }
 
+    private suspend fun validateSession(session: Session) {
+        val isInvalid = sessionRepository.validate(session = session).not()
+        if (isInvalid) throw NotLoggedInException("session is invalid")
+    }
+
     @Serializable
     data class Req(
-        val session: ValidateSession.ReqSession,
+        val session: Session,
     ) : UseCase.Req
 
     @Serializable

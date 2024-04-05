@@ -7,10 +7,6 @@ internal object EditUserModules {
 
     private fun createEditUserRepository(): EditUserRepository =
         EditUserRepository(
-            dataSource = createEditUserDataSource()
+            queries = SharedModules.db.userQueries
         )
-
-    private fun createEditUserDataSource(): EditUserDataSource = EditUserDataSource(
-        queries = SharedModules.db.userQueries
-    )
 }
