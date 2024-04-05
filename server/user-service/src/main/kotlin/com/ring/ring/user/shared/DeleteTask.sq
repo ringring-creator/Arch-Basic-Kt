@@ -1,0 +1,18 @@
+import com.ring.ring.user.shared.DeleteTask.Type;
+
+CREATE TABLE DeleteTaskTable(
+    type Text AS Type NOT NULL,
+    userId INTEGER NOT NULL,
+    UNIQUE(type, userId)
+);
+
+selectAll:
+SELECT * FROM DeleteTaskTable ORDER BY userId;
+
+insert:
+INSERT INTO DeleteTaskTable(type,userId)
+VALUES(?,?);
+
+delete:
+DELETE FROM DeleteTaskTable
+WHERE type = :type AND userId = :userId;

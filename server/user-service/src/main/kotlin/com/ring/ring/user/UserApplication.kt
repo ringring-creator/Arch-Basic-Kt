@@ -5,6 +5,7 @@ import com.ring.ring.user.exist.existUserRouting
 import com.ring.ring.user.get.getUserRouting
 import com.ring.ring.user.shared.NotLoggedInException
 import com.ring.ring.user.signup.signUpUserRestApiRouting
+import com.ring.ring.user.withdrawal.WithdrawalWorker
 import com.ring.ring.user.withdrawal.withdrawalUserRouting
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -14,6 +15,7 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 
 fun Application.userModule() {
@@ -21,6 +23,11 @@ fun Application.userModule() {
     configureCors()
     configureStatusPages()
     userConfigureRouting()
+}
+
+fun launchWithdrawalThread() = runBlocking {
+    val worker = WithdrawalWorker()
+    worker.execute()
 }
 
 private fun Application.configureSerialization() {

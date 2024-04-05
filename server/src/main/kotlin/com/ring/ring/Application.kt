@@ -2,6 +2,7 @@ package com.ring.ring
 
 import com.ring.ring.session.maintenanceSessionModule
 import com.ring.ring.todo.todoModule
+import com.ring.ring.user.launchWithdrawalThread
 import com.ring.ring.user.userModule
 import com.ring.ring.validateSession.validationSessionModule
 import io.ktor.server.application.*
@@ -16,5 +17,6 @@ fun main() {
     embeddedServer(Netty, port = 8084, host = "0.0.0.0", module = Application::validationSessionModule)
         .start(wait = false)
     embeddedServer(Netty, port = 8083, host = "0.0.0.0", module = Application::todoModule)
-        .start(wait = true)
+        .start(wait = false)
+    launchWithdrawalThread()
 }
