@@ -1,7 +1,7 @@
 package com.ring.ring.user.exist
 
+import com.ring.ring.data.db.User
 import com.ring.ring.user.shared.UseCase
-import com.ring.ring.user.shared.User
 import kotlinx.serialization.Serializable
 
 internal class ExistUser(

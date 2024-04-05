@@ -1,6 +1,6 @@
-package com.ring.ring.user.shared
+package com.ring.ring.data.db
 
-internal data class User(
+data class User(
     val id: Long?,
     val email: String,
     val password: String,

@@ -1,6 +1,7 @@
 package com.ring.ring.user.withdrawal
 
 import com.ring.ring.data.db.DataModules
+import com.ring.ring.data.db.UserDataSource
 
 internal object WithdrawalUserModules {
     val withdrawalUserRepository = createWithdrawalUserRepository()
@@ -10,7 +11,7 @@ internal object WithdrawalUserModules {
         dataSource = createWithdrawalUserDataSource()
     )
 
-    private fun createWithdrawalUserDataSource(): WithdrawalUserDataSource = WithdrawalUserDataSource(
+    private fun createWithdrawalUserDataSource(): UserDataSource = UserDataSource(
         queries = DataModules.db.userQueries
     )
 }

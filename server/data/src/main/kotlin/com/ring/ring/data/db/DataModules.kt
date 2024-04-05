@@ -10,6 +10,7 @@ object DataModules {
     val db = createDb()
     val todoDataSource = createTodoDataSource()
     val sessionDataSource = createSessionDataSource()
+    val userDataSource = createUserDataSource()
 
     private fun createDb() = LocalDb(
         driver = createSqliteDriver(),
@@ -34,5 +35,9 @@ object DataModules {
 
     private fun createSessionDataSource(): SessionDataSource = SessionDataSource(
         queries = db.sessionQueries
+    )
+
+    private fun createUserDataSource() = UserDataSource(
+        queries = db.userQueries
     )
 }
