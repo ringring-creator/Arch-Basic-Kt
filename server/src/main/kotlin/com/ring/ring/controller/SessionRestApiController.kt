@@ -7,17 +7,22 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
+interface SessionController {
+    suspend fun login(call: ApplicationCall)
+    suspend fun logout(call: ApplicationCall)
+}
+
 class SessionRestApiController(
     private val login: Login = Login(),
     private val logout: Logout = Logout(),
-) {
-    suspend fun login(call: ApplicationCall) {
+) : SessionController {
+    override suspend fun login(call: ApplicationCall) {
         val req = call.receive<Login.Req>()
         val res = login(req)
         call.respond(HttpStatusCode.OK, res)
     }
 
-    suspend fun logout(call: ApplicationCall) {
+    override suspend fun logout(call: ApplicationCall) {
         val req = call.receive<Logout.Req>()
         logout(req)
         call.respond(HttpStatusCode.OK)

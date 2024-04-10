@@ -1,9 +1,9 @@
-package com.ring.ring.data.db
+package com.ring.ring.db
 
 import app.cash.sqldelight.ColumnAdapter
-import com.ring.ring.data.Todo
-import data.db.TodoQueries
-import data.db.TodoTable
+import com.ring.ring.repository.Todo
+import db.TodoQueries
+import db.TodoTable
 import kotlinx.datetime.LocalDate
 
 class DeadlineAdapter : ColumnAdapter<LocalDate, String> {
@@ -16,18 +16,26 @@ class DeadlineAdapter : ColumnAdapter<LocalDate, String> {
     }
 }
 
-class TodoDataSource(private val queries: TodoQueries) {
-    fun list(userId: Long): List<Todo> = queries
+interface TodoDataSource {
+    fun list(userId: Long): List<Todo>
+    fun get(id: Long): Todo
+    fun upsert(todo: Todo)
+    fun updateDone(id: Long, done: Boolean)
+    fun delete(id: Long)
+}
+
+class TodoDbDataSource(private val queries: TodoQueries) : TodoDataSource {
+    override fun list(userId: Long): List<Todo> = queries
         .selectAll(userId)
         .executeAsList()
         .map { convert(it) }
 
-    fun get(id: Long): Todo = queries
+    override fun get(id: Long): Todo = queries
         .selectById(id)
         .executeAsOne()
         .let { convert(it) }
 
-    fun upsert(todo: Todo) {
+    override fun upsert(todo: Todo) {
         if (todo.id == null) {
             insert(todo = todo)
         } else {
@@ -35,12 +43,12 @@ class TodoDataSource(private val queries: TodoQueries) {
         }
     }
 
-    fun updateDone(id: Long, done: Boolean) = queries.updateDone(
+    override fun updateDone(id: Long, done: Boolean) = queries.updateDone(
         done = done,
         id = id,
     )
 
-    fun delete(id: Long) = queries.delete(id)
+    override fun delete(id: Long) = queries.delete(id)
 
     private fun insert(todo: Todo) = queries.insert(
         title = todo.title,

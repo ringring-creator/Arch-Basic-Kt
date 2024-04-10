@@ -1,7 +1,7 @@
 package com.ring.ring.usecase.user
 
-import com.ring.ring.data.repository.SessionRepository
 import com.ring.ring.di.DataModules
+import com.ring.ring.repository.SessionRepository
 import com.ring.ring.usecase.UseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

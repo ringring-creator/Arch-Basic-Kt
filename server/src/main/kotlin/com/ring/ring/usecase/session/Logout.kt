@@ -1,7 +1,7 @@
 package com.ring.ring.usecase.session
 
-import com.ring.ring.data.repository.SessionRepository
 import com.ring.ring.di.DataModules
+import com.ring.ring.repository.SessionRepository
 import com.ring.ring.usecase.UseCase
 import kotlinx.serialization.Serializable
 

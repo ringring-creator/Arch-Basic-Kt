@@ -1,9 +1,9 @@
 package com.ring.ring.usecase.session
 
-import com.ring.ring.data.Session
-import com.ring.ring.data.repository.SessionRepository
 import com.ring.ring.di.DataModules
 import com.ring.ring.exception.NotLoggedInException
+import com.ring.ring.repository.Session
+import com.ring.ring.repository.SessionRepository
 import com.ring.ring.usecase.UseCase
 import kotlinx.serialization.Serializable
 

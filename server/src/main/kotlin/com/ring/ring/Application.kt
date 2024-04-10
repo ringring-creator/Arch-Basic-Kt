@@ -3,7 +3,6 @@ package com.ring.ring
 import com.ring.ring.plugin.configureCors
 import com.ring.ring.plugin.configureSerialization
 import com.ring.ring.plugin.configureStatusPages
-import com.ring.ring.router.configureRouting
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*

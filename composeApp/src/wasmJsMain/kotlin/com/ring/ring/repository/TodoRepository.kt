@@ -1,4 +1,4 @@
-package com.ring.ring.data.repository
+package com.ring.ring.repository
 
 import com.ring.ring.data.Session
 import com.ring.ring.data.Todo

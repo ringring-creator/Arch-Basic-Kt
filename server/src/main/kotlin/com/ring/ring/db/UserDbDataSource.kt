@@ -1,23 +1,30 @@
-package com.ring.ring.data.db
+package com.ring.ring.db
 
-import com.ring.ring.data.User
 import com.ring.ring.di.DataModules
-import data.db.UserQueries
-import data.db.UserTable
+import com.ring.ring.repository.User
+import db.UserQueries
+import db.UserTable
 
-class UserDataSource(
+interface UserDataSource {
+    fun get(id: Long): User
+    fun loadId(user: User): Long?
+    fun upsert(user: User)
+    fun delete(id: Long)
+}
+
+class UserDbDataSource(
     private val queries: UserQueries = DataModules.db.userQueries
-) {
-    fun get(id: Long): User = queries
+) : UserDataSource {
+    override fun get(id: Long): User = queries
         .selectById(id)
         .executeAsOne()
         .let { convert(it) }
 
-    fun loadId(user: User): Long? = queries
+    override fun loadId(user: User): Long? = queries
         .selectIdByEmailAndPassword(user.email, user.password)
         .executeAsOneOrNull()
 
-    fun upsert(user: User) {
+    override fun upsert(user: User) {
         if (user.id == null) {
             insert(user = user)
         } else {
@@ -25,7 +32,7 @@ class UserDataSource(
         }
     }
 
-    fun delete(id: Long) = queries.delete(id)
+    override fun delete(id: Long) = queries.delete(id)
 
     private fun insert(user: User) = queries.insert(
         email = user.email,

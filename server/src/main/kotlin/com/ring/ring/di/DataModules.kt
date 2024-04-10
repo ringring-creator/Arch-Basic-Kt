@@ -2,46 +2,44 @@ package com.ring.ring.di
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import com.ring.ring.data.db.DeadlineAdapter
-import com.ring.ring.data.db.SessionDataSource
-import com.ring.ring.data.db.TodoDataSource
-import com.ring.ring.data.db.UserDataSource
-import com.ring.ring.data.repository.SessionRepository
-import com.ring.ring.data.repository.TodoRepository
-import com.ring.ring.data.repository.UserRepository
-import data.db.LocalDb
-import data.db.TodoTable
+import com.ring.ring.db.DeadlineAdapter
+import com.ring.ring.db.SessionDbDataSource
+import com.ring.ring.db.TodoDbDataSource
+import com.ring.ring.db.UserDbDataSource
+import com.ring.ring.repository.*
+import db.LocalDb
+import db.TodoTable
 import java.util.*
 
 object DataModules {
     val db = createDb()
-    val todoRepository = createTodoRepository()
-    val userRepository = createUserRepository()
+    val todoRepository: TodoRepository = createTodoRepository()
+    val userRepository: UserRepository = createUserRepository()
+    val sessionRepository: SessionRepository = createSessionRepository()
     val userDataSource = createUserDataSource()
-    val sessionRepository = createSessionRepository()
     val sessionDataSource = createSessionDataSource()
 
-    private fun createTodoRepository(): TodoRepository = TodoRepository(
+    private fun createTodoRepository(): DefaultTodoRepository = DefaultTodoRepository(
         dataSource = createTodoDataSource()
     )
 
-    private fun createTodoDataSource(): TodoDataSource = TodoDataSource(
+    private fun createTodoDataSource(): TodoDbDataSource = TodoDbDataSource(
         queries = db.todoQueries
     )
 
-    private fun createUserRepository(): UserRepository = UserRepository(
+    private fun createUserRepository(): DefaultUserRepository = DefaultUserRepository(
         dataSource = createUserDataSource()
     )
 
-    private fun createUserDataSource(): UserDataSource = UserDataSource(
+    private fun createUserDataSource(): UserDbDataSource = UserDbDataSource(
         queries = db.userQueries
     )
 
-    private fun createSessionRepository(): SessionRepository = SessionRepository(
+    private fun createSessionRepository(): DefaultSessionRepository = DefaultSessionRepository(
         dataSource = createSessionDataSource()
     )
 
-    private fun createSessionDataSource(): SessionDataSource = SessionDataSource(
+    private fun createSessionDataSource(): SessionDbDataSource = SessionDbDataSource(
         queries = db.sessionQueries
     )
 

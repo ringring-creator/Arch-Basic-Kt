@@ -35,7 +35,7 @@ dependencies {
 sqldelight {
     databases {
         create("LocalDb") {
-            packageName.set("data.db")
+            packageName.set("db")
             srcDirs("src/main/kotlin/com/ring/ring/")
         }
     }
